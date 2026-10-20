@@ -1,4 +1,4 @@
-name: xnu
+name: xnu (LG V60 timelm)
 
 on:
   workflow_dispatch:
