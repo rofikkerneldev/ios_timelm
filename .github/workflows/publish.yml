@@ -1,0 +1,47 @@
+name: publish-release
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download XNU artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: xnu-kernel
+          run-id: 39405521270
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: kernel-files
+
+      - name: Inspect files
+        run: |
+          ls -la kernel-files
+          (cd kernel-files && tar -czvf ../xnu-kernel-timelm.tar.gz *)
+
+      - name: Upload to Pixeldrain
+        run: |
+          for f in kernel-files/*; do
+            if [ -f "$f" ]; then
+              echo "Uploading $f to Pixeldrain..."
+              curl -s -u :64e8a6ac-6e73-4dab-8bc0-d5e4dabade82 -T "$f" https://pixeldrain.com/api/file/ || true
+              echo ""
+            fi
+          done
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v1.0.0 kernel-files/* xnu-kernel-timelm.tar.gz \
+            --title "XNU Kernel v1.0.0" \
+            --notes "Prebuilt XNU Kernel for timelm SM8250" || \
+          gh release upload v1.0.0 kernel-files/* xnu-kernel-timelm.tar.gz --clobber
