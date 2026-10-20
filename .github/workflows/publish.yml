@@ -31,11 +31,15 @@ jobs:
         run: |
           for f in kernel-files/*; do
             if [ -f "$f" ]; then
-              echo "Uploading $f to Pixeldrain..."
-              curl -s -u :64e8a6ac-6e73-4dab-8bc0-d5e4dabade82 -T "$f" https://pixeldrain.com/api/file/ || true
-              echo ""
+              base=$(basename "$f")
+              echo "Uploading $base to Pixeldrain..."
+              res=$(curl -s -u :64e8a6ac-6e73-4dab-8bc0-d5e4dabade82 -T "$f" "https://pixeldrain.com/api/file/$base")
+              echo "Response: $res"
             fi
           done
+          echo "Uploading tar.gz..."
+          res_tar=$(curl -s -u :64e8a6ac-6e73-4dab-8bc0-d5e4dabade82 -T xnu-kernel-timelm.tar.gz "https://pixeldrain.com/api/file/xnu-kernel-timelm.tar.gz")
+          echo "Tar Response: $res_tar"
 
       - name: Create GitHub Release
         env:
