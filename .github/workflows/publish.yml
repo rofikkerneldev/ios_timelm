@@ -19,6 +19,7 @@ on:
 permissions:
   contents: write
   actions: read
+  issues: write
 
 env:
   PD_AUTH: 64e8a6ac-6e73-4dab-8bc0-d5e4dabade82
@@ -88,19 +89,52 @@ jobs:
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # gh cannot guess the repository here: the workflow does not
           # check the tree out.
           GH_REPO: ${{ github.repository }}
         run: |
-          set -euo pipefail
+          set -uo pipefail
           tag="kernel-latest"
           notes="XNU kernel for LG V60 ThinQ 5G (timelm, SM8250), xnu run ${{ steps.xnu.outputs.run_id }}."
-          if gh release view "$tag" >/dev/null 2>&1; then
+          log=/tmp/publish-release.log
+          {
+            echo "== release state =="
+            rel=$(curl -sS -H "Authorization: Bearer $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/tags/$tag")
+            printf '%s\n' "$rel" | head -c 300; echo
+            rid=$(printf '%s' "$rel" | jq -r '.id // empty')
+            if [ -n "$rid" ]; then
+              echo "== release $rid exists: update =="
+              curl -sS -X PATCH -H "Authorization: Bearer $GITHUB_TOKEN" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/$rid" \
+                -d "$(jq -n --arg b "$notes" '{body:$b}')" | jq -r '.html_url // .message'
+            else
+              echo "== no release yet: create =="
+              curl -sS -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
+                -H "Accept: application/vnd.github+json" \
+                "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" \
+                -d "$(jq -n --arg t "$tag" --arg n "XNU kernel for timelm (LG V60)" \
+                      --arg b "$notes" --arg c "$GITHUB_SHA" \
+                      '{tag_name:$t,name:$n,body:$b,target_commitish:$c}')" \
+                | jq -r '.html_url // .message'
+            fi
+            echo "== upload assets =="
             gh release upload "$tag" kernel-files/* xnu-kernel-timelm.tar.gz pixeldrain-links.txt --clobber
-            gh release edit "$tag" --notes "$notes"
-          else
-            gh release create "$tag" kernel-files/* xnu-kernel-timelm.tar.gz pixeldrain-links.txt \
-              --title "XNU kernel for timelm (LG V60)" --notes "$notes" \
-              --target "$GITHUB_SHA"
+            echo "== release url =="
+            gh release view "$tag" --json url,tagName -q '.url'
+          } > "$log" 2>&1
+          rc=$?
+          cat "$log"
+          if [ "$rc" -ne 0 ]; then
+            echo "::error::release step failed (rc=$rc); log posted as an issue"
+            jq -Rs --arg sha "$GITHUB_SHA" \
+              '{title:"publish-release failed", body:(. + "\n\ncommit: " + $sha)}' < "$log" \
+              | curl -sS -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
+                  -H "Accept: application/vnd.github+json" \
+                  "https://api.github.com/repos/$GITHUB_REPOSITORY/issues" --data-binary @- \
+              | jq -r '.html_url // .message'
           fi
-          gh release view "$tag" --json url,tagName -q '.url'
+          exit "$rc"
