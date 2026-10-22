@@ -86,6 +86,21 @@ jobs:
           done
           cat pixeldrain-links.txt
 
+      - name: Publish the pixeldrain links
+        # The CI log needs a token, annotations do not: they show up in the
+        # public check-runs API, so the download links are readable from
+        # anywhere.
+        run: |
+          set -euo pipefail
+          {
+            echo "### pixeldrain links"
+            echo '```'
+            cat pixeldrain-links.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          msg=$(sed 's/%/%25/g' pixeldrain-links.txt | tr '\n' '%0A')
+          echo "::notice title=pixeldrain links::${msg}"
+
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -129,12 +144,6 @@ jobs:
           rc=$?
           cat "$log"
           if [ "$rc" -ne 0 ]; then
-            echo "::error::release step failed (rc=$rc); log posted as an issue"
-            jq -Rs --arg sha "$GITHUB_SHA" \
-              '{title:"publish-release failed", body:(. + "\n\ncommit: " + $sha)}' < "$log" \
-              | curl -sS -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
-                  -H "Accept: application/vnd.github+json" \
-                  "https://api.github.com/repos/$GITHUB_REPOSITORY/issues" --data-binary @- \
-              | jq -r '.html_url // .message'
+            echo "::error title=publish-release failed::$(sed 's/%/%25/g' "$log" | tr '\n' '%0A')"
           fi
           exit "$rc"
