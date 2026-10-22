@@ -1,24 +1,56 @@
 name: publish-release
 
 on:
+  # Every finished kernel build publishes itself: no hardcoded run id, no
+  # manual step. workflow_dispatch stays for a re-publish of an older build.
+  workflow_run:
+    workflows: ["xnu (LG V60 timelm)"]
+    types: [completed]
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/publish.yml"
+    inputs:
+      run_id:
+        description: "xnu workflow run id to publish (empty = latest successful)"
+        default: ""
 
 permissions:
   contents: write
+  actions: read
+
+env:
+  PD_AUTH: 64e8a6ac-6e73-4dab-8bc0-d5e4dabade82
 
 jobs:
   release:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
+      - name: Resolve xnu run
+        id: xnu
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          run_id="${{ inputs.run_id }}"
+          if [ -z "$run_id" ]; then
+            run_id=$(gh run list -R "$GITHUB_REPOSITORY" \
+              -w "xnu (LG V60 timelm)" --status success --limit 1 \
+              --json databaseId -q '.[0].databaseId')
+          fi
+          if [ -z "$run_id" ]; then
+            echo "no successful xnu run found" >&2
+            exit 1
+          fi
+          echo "run_id=$run_id" >> "$GITHUB_OUTPUT"
+          echo "publishing xnu run $run_id"
+          gh run view "$run_id" -R "$GITHUB_REPOSITORY" \
+            --json headSha,conclusion,displayTitle \
+            -q '"commit \(.headSha[0:8]) \(.conclusion): \(.displayTitle)"'
+
       - name: Download XNU artifact
         uses: actions/download-artifact@v4
         with:
           name: xnu-kernel
-          run-id: 39405521270
+          run-id: ${{ steps.xnu.outputs.run_id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: kernel-files
 
@@ -29,23 +61,27 @@ jobs:
 
       - name: Upload to Pixeldrain
         run: |
-          for f in kernel-files/*; do
+          for f in kernel-files/* xnu-kernel-timelm.tar.gz; do
             if [ -f "$f" ]; then
               base=$(basename "$f")
               echo "Uploading $base to Pixeldrain..."
-              res=$(curl -s -u :64e8a6ac-6e73-4dab-8bc0-d5e4dabade82 -T "$f" "https://pixeldrain.com/api/file/$base")
+              res=$(curl -s -u ":$PD_AUTH" -T "$f" "https://pixeldrain.com/api/file/$base")
               echo "Response: $res"
             fi
           done
-          echo "Uploading tar.gz..."
-          res_tar=$(curl -s -u :64e8a6ac-6e73-4dab-8bc0-d5e4dabade82 -T xnu-kernel-timelm.tar.gz "https://pixeldrain.com/api/file/xnu-kernel-timelm.tar.gz")
-          echo "Tar Response: $res_tar"
 
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release create v1.0.0 kernel-files/* xnu-kernel-timelm.tar.gz \
-            --title "XNU Kernel v1.0.0" \
-            --notes "Prebuilt XNU Kernel for timelm SM8250" || \
-          gh release upload v1.0.0 kernel-files/* xnu-kernel-timelm.tar.gz --clobber
+          set -euo pipefail
+          tag="kernel-latest"
+          notes="XNU kernel for LG V60 ThinQ 5G (timelm, SM8250), xnu run ${{ steps.xnu.outputs.run_id }}."
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" kernel-files/* xnu-kernel-timelm.tar.gz --clobber
+            gh release edit "$tag" --notes "$notes"
+          else
+            gh release create "$tag" kernel-files/* xnu-kernel-timelm.tar.gz \
+              --title "XNU kernel for timelm (LG V60)" --notes "$notes"
+          fi
+          gh release view "$tag" --json url,tagName -q '.url'

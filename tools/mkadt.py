@@ -9,10 +9,22 @@ import hashlib, os, struct, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import adt  # noqa: E402
 
-# Kernel-managed RAM: above every Qualcomm XPU carve-out (see NOTES.md)
-PHYS_BASE = 0xb0000000
-MEM_SIZE = 0x4d000000
-# --highmem (phone only): the upper DDR bank.
+# Kernel-managed RAM.
+#
+# LG V60 (timelm) bootloader DTB reserved-memory (dtb/boot_unpacked/dtb), low
+# bank 0x80000000-0xffffffff:
+#   0x80000000+0x600000 hyp, 0x80700000+0x160000 xbl/aop, 0x80860000 cmd-db,
+#   0x80900000 smem, 0x80b00000+0x5300000 removed, 0x86200000 camera,
+#   0x86700000 wlan, 0x86800000/0x86810000/0x8681a000 ipa, 0x86900000 npu,
+#   0x86e00000 video, 0x87300000 cvp, 0x87800000 cdsp, 0x88c00000 slpi,
+#   0x8a100000+0x2500000 spss/cdsp, 0x8c600000 secure, 0x8c700000+0x4600000
+#   secure, 0x9c000000+0x1200000 splash (the framebuffer), 0x9e300000,
+#   0xb0000000+0x280000 ramoops.
+# So the low bank is usable from 0xb0280000 (behind ramoops) up to the
+# top-of-bank pools (rmtfs/ramdump sit around 0xfd000000): keep a margin.
+PHYS_BASE = 0xb0280000
+MEM_SIZE = 0x3fd80000
+# --highmem (phone only): the upper DDR bank, 0x100000000 (see NOTES.md).
 HIGH_PHYS_BASE = 0x100000000
 HIGH_MEM_SIZE = 0x170000000
 # /arm-io children are relative to this; it must not be 0 (serial_init bails)
@@ -20,7 +32,8 @@ SOC_BASE = 0x01000000
 
 GICD, GICD_SIZE = 0x17a00000, 0x10000
 GICR, GICR_SIZE = 0x17a60000, 0x100000
-FB, FB_SIZE = 0x9c000000, 0x1700000
+# The ABL splash region (reserved-memory) is the panel memory: 18 MiB.
+FB, FB_SIZE = 0x9c000000, 0x1200000
 TIMELM_ECID = 0x54494d454c4d0001  # 'TIMELM' + 1, synthetic
 FB_W, FB_H, FB_STRIDE = 1080, 2460, 1080 * 4
 # Internal UFS host (ufshc@1d84000 "ufs_mem"); QEMU virt has none
@@ -134,7 +147,7 @@ def build(seed=None, qemu=False, highmem=False):
         cpu_nodes.append(node(f'cpu{core}', [
             ph(),
             ('device_type', cstr('cpu')),
-            ('compatible', cstr('qcom,kryo585') + cstr('qcom,kryo485') + cstr('ARM,v8')),
+            ('compatible', cstr('qcom,kryo585') + cstr('ARM,v8')),
             ('reg', u32(core << 8)),  # actual MPIDR Aff1:Aff0, NOT logical ID
             ('cpu-id', u32(core)),   # descriptive: XNU assigns IDs by DT order
             ('cluster-id', u32(0)),  # descriptive; see ml_parse_cpu_topology
@@ -220,10 +233,11 @@ def build(seed=None, qemu=False, highmem=False):
 
     # Identity of the iPhone X whose userland runs here: compatible[0] is
     # hw.model/hw.target (D22AP), model is hw.machine/hw.product
-    # (iPhone10,3). 'xiaomi,sweet' stays for SweetPlatformExpert matching.
+    # (iPhone10,3). The kernel's platform expert matches 'lge,timelm'
+    # (patch 0082) and the CPU driver 'qcom,kryo585'.
     return node('device-tree', [
         ph(),
-        ('compatible', cstr('D22AP') + cstr('iPhone10,3') + cstr('lge,timelm') + cstr('qcom,sm8250') + cstr('xiaomi,sweet') + cstr('qcom,sm7150') + cstr('AppleARM')),
+        ('compatible', cstr('D22AP') + cstr('iPhone10,3') + cstr('lge,timelm') + cstr('qcom,sm8250') + cstr('AppleARM')),
         ('model', cstr('iPhone10,3')),
         ('target-type', cstr('D22')),
         ('target-sub-type', cstr('D22AP')),
@@ -234,9 +248,18 @@ def build(seed=None, qemu=False, highmem=False):
 
 
 if __name__ == '__main__':
-    root = build(qemu='--qemu' in sys.argv, highmem='--highmem' in sys.argv)
+    # --mem low|high (--highmem is the old name for --mem high)
+    mem = 'high' if '--highmem' in sys.argv else 'low'
+    for i, a in enumerate(sys.argv):
+        if a == '--mem' and i + 1 < len(sys.argv):
+            mem = sys.argv[i + 1]
+        elif a.startswith('--mem='):
+            mem = a.split('=', 1)[1]
+    assert mem in ('low', 'high'), f'--mem: low|high (got {mem})'
+    root = build(qemu='--qemu' in sys.argv, highmem=(mem == 'high'))
     blob = adt.serialize(root)
     open(sys.argv[1], 'wb').write(blob)
     if '--dump' in sys.argv:
         adt.dump(adt.parse(blob)[0])
-    print(f'{sys.argv[1]}: {len(blob)} bytes', file=sys.stderr)
+    base, size = (HIGH_PHYS_BASE, HIGH_MEM_SIZE) if mem == 'high' else (PHYS_BASE, MEM_SIZE)
+    print(f'{sys.argv[1]}: {len(blob)} bytes, ram 0x{base:x}+0x{size:x}', file=sys.stderr)
