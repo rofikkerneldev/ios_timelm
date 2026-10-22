@@ -105,45 +105,59 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # gh cannot guess the repository here: the workflow does not
-          # check the tree out.
-          GH_REPO: ${{ github.repository }}
         run: |
           set -uo pipefail
           tag="kernel-latest"
+          api="https://api.github.com/repos/$GITHUB_REPOSITORY"
           notes="XNU kernel for LG V60 ThinQ 5G (timelm, SM8250), xnu run ${{ steps.xnu.outputs.run_id }}."
           log=/tmp/publish-release.log
           {
-            echo "== release state =="
-            rel=$(curl -sS -H "Authorization: Bearer $GITHUB_TOKEN" \
-              -H "Accept: application/vnd.github+json" \
-              "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/tags/$tag")
-            printf '%s\n' "$rel" | head -c 300; echo
+            gh_api() {
+              curl -sS -H "Authorization: Bearer $GITHUB_TOKEN" \
+                -H "Accept: application/vnd.github+json" "$@"
+            }
+            echo "== release =="
+            rel=$(gh_api "$api/releases/tags/$tag")
             rid=$(printf '%s' "$rel" | jq -r '.id // empty')
-            if [ -n "$rid" ]; then
-              echo "== release $rid exists: update =="
-              curl -sS -X PATCH -H "Authorization: Bearer $GITHUB_TOKEN" \
-                -H "Accept: application/vnd.github+json" \
-                "https://api.github.com/repos/$GITHUB_REPOSITORY/releases/$rid" \
-                -d "$(jq -n --arg b "$notes" '{body:$b}')" | jq -r '.html_url // .message'
-            else
-              echo "== no release yet: create =="
-              curl -sS -X POST -H "Authorization: Bearer $GITHUB_TOKEN" \
-                -H "Accept: application/vnd.github+json" \
-                "https://api.github.com/repos/$GITHUB_REPOSITORY/releases" \
+            if [ -z "$rid" ]; then
+              echo "no release $tag yet, creating it"
+              rel=$(gh_api -X POST "$api/releases" \
                 -d "$(jq -n --arg t "$tag" --arg n "XNU kernel for timelm (LG V60)" \
                       --arg b "$notes" --arg c "$GITHUB_SHA" \
-                      '{tag_name:$t,name:$n,body:$b,target_commitish:$c}')" \
-                | jq -r '.html_url // .message'
+                      '{tag_name:$t,name:$n,body:$b,target_commitish:$c}')")
+              rid=$(printf '%s' "$rel" | jq -r '.id // empty')
+              [ -n "$rid" ] || { echo "create failed:"; printf '%s\n' "$rel" | head -c 600; echo; exit 1; }
             fi
-            echo "== upload assets =="
-            gh release upload "$tag" kernel-files/* xnu-kernel-timelm.tar.gz pixeldrain-links.txt --clobber
-            echo "== release url =="
-            gh release view "$tag" --json url,tagName -q '.url'
+            echo "release id $rid"
+            gh_api -X PATCH "$api/releases/$rid" \
+              -d "$(jq -n --arg b "$notes" '{body:$b}')" | jq -r '.html_url // .message'
+            upload=$(printf '%s' "$rel" | jq -r '.upload_url')
+            echo "== assets =="
+            for f in kernel-files/* xnu-kernel-timelm.tar.gz pixeldrain-links.txt; do
+              [ -f "$f" ] || continue
+              name=$(basename "$f")
+              size=$(stat -c%s "$f")
+              old=$(printf '%s' "$rel" | jq -r --arg n "$name" '.assets[] | select(.name==$n) | .id')
+              if [ -n "$old" ]; then
+                echo "replace $name (old asset $old)"
+                gh_api -X DELETE "$api/releases/assets/$old" | jq -r '.message // "deleted"'
+              fi
+              echo "upload $name ($size bytes)"
+              url=$(printf '%s' "$upload" | sed "s|{?name,label}|?name=$name|")
+              code=$(curl -sS -o /tmp/asset.out -w '%{http_code}' -X POST \
+                -H "Authorization: Bearer $GITHUB_TOKEN" \
+                -H "Content-Type: application/octet-stream" \
+                --data-binary "@$f" "$url")
+              echo "  -> HTTP $code $(head -c 300 /tmp/asset.out)"
+              case "$code" in
+                200|201) ;;
+                *) exit_code=1 ;;
+              esac
+            done
+            echo "== result =="
+            gh_api "$api/releases/$rid" | jq -r '.html_url, (.assets[] | "  " + .name + " " + (.size|tostring))'
           } > "$log" 2>&1
-          rc=$?
+          rc=${exit_code:-0}
           cat "$log"
-          if [ "$rc" -ne 0 ]; then
-            echo "::error title=publish-release failed::$(sed 's/%/%25/g' "$log" | tr '\n' '%0A')"
-          fi
+          echo "::notice title=publish-release log::$(sed 's/%/%25/g' "$log" | tr '\n' '%0A')"
           exit "$rc"
