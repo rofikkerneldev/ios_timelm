@@ -6,6 +6,10 @@ on:
   workflow_run:
     workflows: ["xnu (LG V60 timelm)"]
     types: [completed]
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/publish.yml"
   workflow_dispatch:
     inputs:
       run_id:
@@ -61,27 +65,42 @@ jobs:
 
       - name: Upload to Pixeldrain
         run: |
+          set -euo pipefail
+          : > pixeldrain-links.txt
           for f in kernel-files/* xnu-kernel-timelm.tar.gz; do
             if [ -f "$f" ]; then
               base=$(basename "$f")
               echo "Uploading $base to Pixeldrain..."
               res=$(curl -s -u ":$PD_AUTH" -T "$f" "https://pixeldrain.com/api/file/$base")
               echo "Response: $res"
+              # Keep the ids in a file so they can be read back from the
+              # release assets (the CI log needs a token).
+              id=$(printf '%s' "$res" | sed -n 's/.*"id":"\([^"]*\)".*/\1/p')
+              sha=$(printf '%s' "$res" | sed -n 's/.*"hash_sha256":"\([^"]*\)".*/\1/p')
+              if [ -n "$id" ]; then
+                printf '%s\t%s\tsha256:%s\thttps://pixeldrain.com/api/file/%s\n' \
+                  "$base" "$id" "$sha" "$id" >> pixeldrain-links.txt
+              fi
             fi
           done
+          cat pixeldrain-links.txt
 
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # gh cannot guess the repository here: the workflow does not
+          # check the tree out.
+          GH_REPO: ${{ github.repository }}
         run: |
           set -euo pipefail
           tag="kernel-latest"
           notes="XNU kernel for LG V60 ThinQ 5G (timelm, SM8250), xnu run ${{ steps.xnu.outputs.run_id }}."
           if gh release view "$tag" >/dev/null 2>&1; then
-            gh release upload "$tag" kernel-files/* xnu-kernel-timelm.tar.gz --clobber
+            gh release upload "$tag" kernel-files/* xnu-kernel-timelm.tar.gz pixeldrain-links.txt --clobber
             gh release edit "$tag" --notes "$notes"
           else
-            gh release create "$tag" kernel-files/* xnu-kernel-timelm.tar.gz \
-              --title "XNU kernel for timelm (LG V60)" --notes "$notes"
+            gh release create "$tag" kernel-files/* xnu-kernel-timelm.tar.gz pixeldrain-links.txt \
+              --title "XNU kernel for timelm (LG V60)" --notes "$notes" \
+              --target "$GITHUB_SHA"
           fi
           gh release view "$tag" --json url,tagName -q '.url'
