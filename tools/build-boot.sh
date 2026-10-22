@@ -22,9 +22,9 @@ KERNEL="xnu/out/kernel.development.sweet"
 BUILD=/tmp/opencode/timelm-build
 
 case "$MEM" in
-	high) ADT="shim/out/timelm.adt" ;;
-	low)  ADT="shim/out/timelm-low.adt" ;;
-	*)    echo "usage: $0 [high|low] [output name]" >&2; exit 1 ;;
+	high) ADT="${ADT:-shim/out/timelm.adt}" ;;
+	low)  ADT="${ADT:-shim/out/timelm-low.adt}" ;;
+	*)    ADT="${ADT:-shim/out/timelm-$MEM.adt}" ;;
 esac
 
 [ -f "$KERNEL" ] || { echo "missing $KERNEL (run tools/fetch-kernel.sh)" >&2; exit 1; }

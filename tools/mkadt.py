@@ -79,9 +79,10 @@ def node(name, props=(), children=()):
     return n
 
 
-def build(seed=None, qemu=False, highmem=False):
+def build(seed=None, qemu=False, highmem=False, phys_base=None, mem_size=None):
     """qemu=True: same tree, but with QEMU virt's GIC addresses and CNTFRQ (tools/qemu-sweet.py)."""
-    phys_base, mem_size = (HIGH_PHYS_BASE, HIGH_MEM_SIZE) if highmem else (PHYS_BASE, MEM_SIZE)
+    if phys_base is None:
+        phys_base, mem_size = (HIGH_PHYS_BASE, HIGH_MEM_SIZE) if highmem else (PHYS_BASE, MEM_SIZE)
     gicd, gicr, timebase = (QEMU_GICD, QEMU_GICR, QEMU_TIMEBASE) if qemu else (GICD, GICR, TIMEBASE)
     seed = seed if seed is not None else os.urandom(64)
     phandle = iter(range(1, 1000))
@@ -249,17 +250,28 @@ def build(seed=None, qemu=False, highmem=False):
 
 if __name__ == '__main__':
     # --mem low|high (--highmem is the old name for --mem high)
+    # --mem 0xBASE:0xSIZE  an explicit window, to test DRAM bank boundaries
     mem = 'high' if '--highmem' in sys.argv else 'low'
     for i, a in enumerate(sys.argv):
         if a == '--mem' and i + 1 < len(sys.argv):
             mem = sys.argv[i + 1]
         elif a.startswith('--mem='):
             mem = a.split('=', 1)[1]
-    assert mem in ('low', 'high'), f'--mem: low|high (got {mem})'
-    root = build(qemu='--qemu' in sys.argv, highmem=(mem == 'high'))
+    phys_base = mem_size = None
+    if mem not in ('low', 'high'):
+        try:
+            b, s = mem.split(':')
+            phys_base, mem_size = int(b, 0), int(s, 0)
+        except ValueError:
+            raise SystemExit(f'--mem: low|high|0xBASE:0xSIZE (got {mem})')
+    root = build(qemu='--qemu' in sys.argv, highmem=(mem == 'high'),
+                 phys_base=phys_base, mem_size=mem_size)
     blob = adt.serialize(root)
     open(sys.argv[1], 'wb').write(blob)
     if '--dump' in sys.argv:
         adt.dump(adt.parse(blob)[0])
-    base, size = (HIGH_PHYS_BASE, HIGH_MEM_SIZE) if mem == 'high' else (PHYS_BASE, MEM_SIZE)
+    if phys_base is None:
+        base, size = (HIGH_PHYS_BASE, HIGH_MEM_SIZE) if mem == 'high' else (PHYS_BASE, MEM_SIZE)
+    else:
+        base, size = phys_base, mem_size
     print(f'{sys.argv[1]}: {len(blob)} bytes, ram 0x{base:x}+0x{size:x}', file=sys.stderr)
