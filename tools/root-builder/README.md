@@ -59,3 +59,16 @@ fastboot boot shim-boot-timelm-high-ufs.img
   `cd src && ./build-root-tools.sh` (butuh gcc, make, python3-pip, network).
 - Setelah flashing, kernel menulis ke userdata; image asli tetap ada di
   `$WORK/out` sebagai restore.
+
+## Alternatif tanpa root
+
+Kalau server kamu tidak punya `sudo`, pakai jalur yang membangun image di
+dalam guest qemu (butuh `qemu-system-x86_64` + file netboot Alpine lts, tidak
+perlu root sama sekali):
+
+```bash
+tools/vm/fetch-guest.sh                       # vmlinuz-lts, initramfs-lts, modloop-lts
+tools/build-iosroot-vm.sh OS.dmg SYSTEMOS.dmg APPOS.dmg out.simg
+```
+
+Lihat `tools/vm/README.md` untuk detailnya.
