@@ -2,6 +2,42 @@
 
 Tanggal: 2026-10-23. Mulai dari file ini agar tidak mengulang investigasi sebelumnya.
 
+## IMAGE AKTIF BERIKUTNYA: 0086 RAM-disk quiet, RTC wait dilewati
+
+[Download timelm-0086-rd-c1.img](https://pixeldrain.com/u/ejaXM7dn).
+[CI 39974714520 sukses](https://github.com/rofikkerneldev/ios_timelm/actions/runs/39974714520),
+commit kernel `beaed0f90ed9fd286ee6ccadb1741dbde6d2b99f`.
+
+```text
+image SHA256 322ccbde46e8b2569aca584a397f51d00c896afe9fd3563a139a125742866f81
+kernel SHA256 aa2a737c5b79f2b5102d47cac5bc7f99faf3a9008d314bfcef1066be862da9a8
+trial         0086-rd-r39974714520
+```
+
+```bash
+fastboot boot timelm-0086-rd-c1.img
+```
+
+Satu CPU, timer 27, `startup_debug=0`, root RAM-disk; userdata tetap tidak perlu
+diflash ulang. [Manifest](docs/evidence/0086-build.json). File lokal:
+`shim/out/timelm-0086-rd-c1.img`; kernel aktif `xnu/out/kernel.development.sweet`
+sekarang adalah **0086**. Source rekonstruksi: `$HOME/work/timelm-0086/verify`.
+Backup 0085: `$HOME/work/timelm-0086/kernel-before0086.sweet`.
+
+86 patch apply, 12 regression test, kompilasi lokal translation unit yang berubah,
+build XNU macOS dan tes SGI setelah build lulus. Seluruh 10 segmen XNU dalam boot
+image, ADT/DTB, commit dan patch digest serta checksum upload telah diverifikasi.
+**0086 belum diuji pada HP.** Tidak ada klaim reboot atau boot userland sudah selesai.
+
+Marker IRQ tetap bertuliskan `TIMELM IRQ FIX 0085` karena perbaikan tersebut
+diwariskan. Bedakan image baru memakai **trial 0086** dan marker `TIMELM RTC 0086`.
+Target berikutnya: melewati `IOKitInitializeTime`, mencapai static PID 1, lalu
+melihat apakah sistem tetap hidup melampaui waktu reset sebelumnya. Jika milestone
+maju tetapi reset tetap periodik, lanjutkan investigasi reset reason/watchdog.
+DTB memiliki `/soc@0/watchdog@17c10000`, compatible `qcom,apss-wdt-sm8250` /
+`qcom,kpss-wdt`, reg `0x17c10000+0x1000`. Ini petunjuk lokasi, bukan izin untuk
+menulis offset yang belum divalidasi terhadap source driver SM8250.
+
 ## UPDATE TERBARU: quiet membuktikan timer/SGI bekerja, reboot pada penantian RTC
 
 User telah menguji `trial=0085-rd-quiet-r39968689712` dan mengonfirmasi
