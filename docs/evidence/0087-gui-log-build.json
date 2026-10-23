@@ -1,0 +1,45 @@
+{
+  "payload_sha256": "bb8e6799ba46e940481320b14571ce7ccadba8b5eead4caf863788a05d00dd49",
+  "adt_sha256": "0df5676a33c9136356a7cef28f67df9293c25cdbd95405bf31f122c81bb4c761",
+  "virtual_timer_intid": 27,
+  "cmdline": "debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress rd=ufsroot0 ufsrw=1 rootrw=1 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin wdt=-1 sweetfb_hz=5 startup_debug=0 sweetbeat=5 sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=1 timelm_wdt=stop launchd_unsecure_cache=1 sweetaccel=1 sweetakslog=32 sweetiolog=- sweetsample=- sweetscan=- sweetfb_noconsole=1 ufslogsecs=10 timelm_trial=0087-gui-log-r39984162472",
+  "phys_base": "0x100000000",
+  "mem_size": "0x170000000",
+  "kernel_segments_verified": 10,
+  "watchdog_action": "shim stops APSS watchdog if enabled; runtime result unverified",
+  "image": "timelm-0087-ufs-rw-c1-wdtstop-gui-log.img",
+  "image_size": 16945152,
+  "image_sha256": "e1dfb191b5988c8985510db70f1b03bea30dad27b53b0819bc849a3f9fae8e59",
+  "kernel_sha256": "42b9033b867b5b02ff8eb2beab03a983a781f6a3c6f129c4380c9132332823c0",
+  "dtb_sha256": "ba67ec4dcde5288135133c39b7703b049502aa296cced431807c41104fbb68a4",
+  "shim_sha256": "42d794c59b7e9c8e4597cbf7309b1c08ad6ff7671b1daa4ca76f2dcaee50d506",
+  "source_commit": "a7bacb181c677a8e83c651288b295de8e8c8d229",
+  "source_dirty": true,
+  "patches_sha256": "afc0be50f55ee580b68b6bfde6945711c77b83d05e47c4b29200955df94a78b6",
+  "download_url": "https://pixeldrain.com/u/GnxdmsDC",
+  "uploaded_sha256": "e1dfb191b5988c8985510db70f1b03bea30dad27b53b0819bc849a3f9fae8e59",
+  "hardware_tested": false,
+  "kernel_ci_run": 39984162472,
+  "kernel_source_commit": "4ec36d14f2fc301d61d59443c2807c3146de7c7f",
+  "source_dirty_reason": "Analysis/handoff/evidence documents only; kernel patch digest and all binary components match original 0087 GUI",
+  "geometry_audit": "0087-live-recovery-geometry.json",
+  "controlled_comparison": {
+    "baseline_image": "timelm-0087-ufs-rw-c1-wdtstop-gui.img",
+    "baseline_sha256": "53a8e4f5faff615877e035ba5608c6183c5a8a7b4d15d84f0e965dae9af8ad1c",
+    "new_image": "timelm-0087-ufs-rw-c1-wdtstop-gui-log.img",
+    "new_sha256": "e1dfb191b5988c8985510db70f1b03bea30dad27b53b0819bc849a3f9fae8e59",
+    "equal_components": [
+      "kernel",
+      "shim",
+      "ADT including original random seed",
+      "DTB",
+      "all payload bytes outside command-line buffer"
+    ],
+    "changed_arguments": [
+      "sweetlog=0 -> sweetlog=1",
+      "ufslogsecs=10 explicit, same as default",
+      "unique timelm_trial"
+    ]
+  },
+  "recovery_file_audit": "0087-live-hfs-path-audit.json: completed read-only after device reconnected; tmp/run metadata and selected migration/SpringBoard/Setup preferences verified live."
+}

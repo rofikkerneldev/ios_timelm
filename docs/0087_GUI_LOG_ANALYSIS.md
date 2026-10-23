@@ -1,6 +1,11 @@
 # 0087 GUI: logo berhenti, bar merah dan Nexus EPERM
 
-2026-10-23. Status: laporan user parsial, **full log akan dikirim**.
+2026-10-23. **Update: transkripsi foto sudah diterima dan dianalisis di
+[0087_FULL_LOG_ANALYSIS.md](0087_FULL_LOG_ANALYSIS.md).** Dokumen ini menyimpan
+laporan parsial sebelumnya dan penelusuran Nexus; status pending di bawah adalah
+konteks saat laporan awal. Root mounted, error `/tmp` dan virtual random sekarang
+memiliki bukti tambahan. Penyebab logo berhenti masih belum terkonfirmasi.
+
 Profil diidentifikasi user sebagai versi GUI; runtime marker/hash belum disuplai.
 Ini hasil tambahan setelah laporan 0087-diag menampilkan logo Apple.
 

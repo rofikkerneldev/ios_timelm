@@ -1,0 +1,102 @@
+{
+  "image": "/home/rofikkernel/work/ios16-root.img",
+  "scope": "Original host image only; opened rb, not live phone filesystem",
+  "files": {
+    "usr/libexec/dirs_cleaner": {
+      "id": 430,
+      "kind": "file",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o100555",
+      "size": 54144,
+      "sha256": "f9ee81f822c5577cf013182d11cfd730c4e7c803b5945d91dccc44661934e10f"
+    },
+    "usr/libexec/prng_seedctl": {
+      "id": 132,
+      "kind": "file",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o100755",
+      "size": 53440,
+      "sha256": "321cbfba4b85f960cf1d153b27f9dbb35a5c14ab0044334fe78bb499e266b40b"
+    },
+    "sbin/mount_hfs": {
+      "id": 318097,
+      "kind": "file",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o120777",
+      "size": 45,
+      "sha256": "a1b58b2db46ca08d6700d7b43999c2ef80ddd7f251a23f8d542518ec9323be7b"
+    },
+    "private/var/mobile/Library/Preferences/com.apple.migration.plist": {
+      "id": 321638,
+      "kind": "file",
+      "uid": 501,
+      "gid": 501,
+      "mode": "0o100600",
+      "size": 145,
+      "sha256": "2c8b8563b740e9fdf44cd9d0ca7a18157f54513d583f19963cc3c7817b81d499",
+      "plist": {
+        "DMUserDataDisposition": {
+          "SyntheticDidUpgrade": false,
+          "buildVersion": "20H392"
+        },
+        "LastSystemVersion": "20H392"
+      }
+    },
+    "private/var/mobile/Library/Preferences/com.apple.springboard.plist": {
+      "id": 321639,
+      "kind": "file",
+      "uid": 501,
+      "gid": 501,
+      "mode": "0o100600",
+      "size": 171,
+      "sha256": "e80395c626cc633e4998428d4c85bba17f55a36b00fd2d74e3b479450b037856",
+      "plist": {
+        "BKNoWatchdogs": true,
+        "FBLaunchWatchdogExceptions": {
+          "com.apple.purplebuddy": 100.0
+        },
+        "MCForceShowCloudConfigurationUI": false
+      }
+    },
+    "private/var/mobile/Library/Preferences/com.apple.purplebuddy.plist": {
+      "id": 321640,
+      "kind": "file",
+      "uid": 501,
+      "gid": 501,
+      "mode": "0o100600",
+      "size": 130,
+      "sha256": "abcbddfc473a6a97fe19a3c70ac9e5c0c2935b49ea73a5b215dfa265f62c5549",
+      "plist": {
+        "SetupDone": true,
+        "SetupFinishedAllSteps": true,
+        "SetupVersion": 11,
+        "daemonizeNeedsToRun": false
+      }
+    },
+    "tmp": {
+      "id": 306382,
+      "kind": "file",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o120777",
+      "symlink": "private/var/tmp"
+    },
+    "private/var/tmp": {
+      "id": 306375,
+      "kind": "dir",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o41777"
+    },
+    "private/var/run": {
+      "id": 306371,
+      "kind": "dir",
+      "uid": 0,
+      "gid": 1,
+      "mode": "0o40775"
+    }
+  }
+}

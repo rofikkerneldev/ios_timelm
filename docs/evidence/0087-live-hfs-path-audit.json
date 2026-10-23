@@ -1,0 +1,82 @@
+{
+  "source": "Live /dev/block/sda28 via recovery ADB, read-only B-tree lookup; no mount, fsck or filesystem writes",
+  "hfs_signature": "HX",
+  "catalog_node_size": 8192,
+  "catalog_root_node": 270,
+  "key_compare_type": "0xbc",
+  "paths": {
+    "tmp": {
+      "id": 306382,
+      "kind": "file",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o120777",
+      "sha256": "7a6bb3db615226cf3e3f706010725c1c0df4d578787915b573e9fe554ba41dfc",
+      "symlink": "private/var/tmp"
+    },
+    "private/var/tmp": {
+      "id": 306375,
+      "kind": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o41777"
+    },
+    "private/var/run": {
+      "id": 306371,
+      "kind": "directory",
+      "uid": 0,
+      "gid": 1,
+      "mode": "0o40775"
+    },
+    "private/var/mobile/Library/Preferences/com.apple.migration.plist": {
+      "id": 321638,
+      "kind": "file",
+      "uid": 501,
+      "gid": 501,
+      "mode": "0o100600",
+      "sha256": "2c8b8563b740e9fdf44cd9d0ca7a18157f54513d583f19963cc3c7817b81d499",
+      "plist": {
+        "DMUserDataDisposition": {
+          "SyntheticDidUpgrade": false,
+          "buildVersion": "20H392"
+        },
+        "LastSystemVersion": "20H392"
+      }
+    },
+    "private/var/mobile/Library/Preferences/com.apple.springboard.plist": {
+      "id": 322030,
+      "kind": "file",
+      "uid": 501,
+      "gid": 501,
+      "mode": "0o100600",
+      "sha256": "bede0142e987f0b2fecde39c9f892071213e53c12934910ff9c86a2b319ed7b3",
+      "plist": {
+        "FBLaunchWatchdogExceptions": {
+          "com.apple.purplebuddy": 100.0
+        },
+        "MCForceShowCloudConfigurationUI": false,
+        "BKNoWatchdogs": true
+      }
+    },
+    "private/var/mobile/Library/Preferences/com.apple.purplebuddy.plist": {
+      "id": 321640,
+      "kind": "file",
+      "uid": 501,
+      "gid": 501,
+      "mode": "0o100600",
+      "sha256": "abcbddfc473a6a97fe19a3c70ac9e5c0c2935b49ea73a5b215dfa265f62c5549",
+      "plist": {
+        "SetupDone": true,
+        "SetupFinishedAllSteps": true,
+        "SetupVersion": 11,
+        "daemonizeNeedsToRun": false
+      }
+    }
+  },
+  "adb_read_calls": 17,
+  "complete": true,
+  "date": "2026-10-23",
+  "auditor_path": "/home/rofikkernel/work/timelm-0087-full-log/live_hfs_readonly.py",
+  "auditor_sha256": "db0c44b1e8a14ba775f26d101e1e6736d956ec4a7ea9dcf63a49b2505ddf7b68",
+  "limitation": "Metadata and selected plist fields read from disk; not a runtime iOS getattrlist/create probe or complete filesystem consistency check."
+}

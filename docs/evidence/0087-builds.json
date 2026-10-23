@@ -43,7 +43,8 @@
           "pu0-sgil-1"
         ],
         "heartbeat_visibility": "User no longer sees it, possibly visible before animation; actual counter progression/stall unconfirmed.",
-        "full_log_status": "User will send full log shortly; exact text not yet available."
+        "full_log_status": "GUI photo transcription received; see ../0087_FULL_LOG_ANALYSIS.md. Does not independently establish diag runtime trace.",
+        "additional_unverified_transcription_note": "The virtual-random and /tmp wording now appears in the confirmed GUI transcription; no separate full diag trace supplied."
       }
     },
     {
@@ -68,18 +69,25 @@
       "uploaded_sha256": "53a8e4f5faff615877e035ba5608c6183c5a8a7b4d15d84f0e965dae9af8ad1c",
       "hardware_tested": true,
       "phone_result": {
-        "status": "partial; full log promised by user",
-        "identity_method": "user GUI profile description; runtime marker/hash not supplied",
-        "evidence": "../0087_GUI_LOG_ANALYSIS.md",
+        "status": "Photo transcription analyzed; post-logo state unconfirmed",
+        "identity_method": "Runtime trial 0087-gui-r39984162472 and console flag 1 in user photo transcription; binary hash not measured on phone.",
+        "evidence": "../0087_FULL_LOG_ANALYSIS.md",
         "observations": [
           "Brief Apple animation then static logo",
           "Red bar remains",
           "Reported delayed __nexus_register / rapportd(82): nxprov_create: 1",
           "Extent of black area unclear"
         ],
-        "interactive_gui_confirmed": false
+        "interactive_gui_confirmed": false,
+        "full_log_status": "GUI photo transcription received; see ../0087_FULL_LOG_ANALYSIS.md. Does not independently establish diag runtime trace.",
+        "heartbeat_sequence_captured": [
+          3,
+          5,
+          6
+        ],
+        "raw_log_complete": false
       }
     }
   ],
-  "hardware_test_scope": "Both profiles tried by user filename: diag logo report; GUI brief Apple animation then static logo/red bar and delayed Nexus error. Full GUI log pending; interactive GUI, heartbeat/swap and final reboot status unconfirmed."
+  "hardware_test_scope": "Both profiles tried. GUI runtime trial confirmed by supplied photo transcription; root mounted, UMD and launchd cache steps complete, heartbeat 3/5/6 before logo. Post-logo liveness and interactive GUI unconfirmed."
 }

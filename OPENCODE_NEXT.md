@@ -2,26 +2,48 @@
 
 Checkpoint terbaru 2026-10-23. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
-**Update 0087-GUI:** logo sempat animasi lalu diam, bar merah tetap terlihat;
-sesudah jeda ada `__nexus_register` / `rapportd(82): nxprov_create: 1` menurut
-transkripsi user. Full log akan dikirim. [Analisis source](docs/0087_GUI_LOG_ANALYSIS.md):
-errno 1 = EPERM pada jalur jaringan Skywalk; PID 82 adalah rapportd. Belum ada
-bukti hubungan kausal dengan UI berhenti. Prioritas berikutnya membaca full log,
-menentukan liveness/swap dan perilaku console sebelum build/perubahan baru.
+**Image tes terbaru: 0087-GUI-log — belum diuji HP.**
+[Download GnxdmsDC](https://pixeldrain.com/u/GnxdmsDC),
+[langkah tes/pull log](docs/0087_RECOVERY_LOG_TRIAL.md),
+[manifest](docs/evidence/0087-gui-log-build.json).
+Trial `0087-gui-log-r39984162472`, SHA256
+`e1dfb191b5988c8985510db70f1b03bea30dad27b53b0819bc849a3f9fae8e59`.
+Kernel/shim/ADT/DTB/static init dan payload di luar command-line buffer identik
+0087-GUI; hanya sweetlog=1, flush 10 detik eksplisit dan trial baru. Capture boot
+sesudah logo, lalu user kembali ke recovery untuk agent mengambil ring log.
 
-Tambahan diag: user membaca kira-kira `failed to load virtual random`, `tmo`, dan
-`pu0-sgil-1`; belum ada teks lengkap. Heartbeat tidak lagi terlihat, mungkin ada
-sebelum animasi. Jangan menganggap heartbeat berhenti atau RNG/ramdisk/tmp rusak.
-Jika baris terakhir adalah `cpu0-sgi1=1`, ini counter satu SGI1 ditangani, bukan
-error, dan tidak wajib terus bertambah pada cpus=1. Full log masih akan dikirim.
+**ADB recovery berhasil diaudit read-only:** server `127.0.0.1:15037`, gunakan
+`/home/rofikkernel/alpha/out/host/linux-x86/bin/adb -H 127.0.0.1 -P 15037`.
+Live userdata `/dev/block/sda28` 32 GiB, logical sector 4096; HFSX di dalamnya
+16 GiB. Tail 4198400 byte mulai block 8387583 berada di luar volume dan sudah
+dibackup. [Bukti geometry](docs/evidence/0087-live-recovery-geometry.json).
+ADB sempat terputus lalu kembali; audit file live kemudian selesai via 17 read
+B-tree tanpa mount/write. `/tmp` target 01777 dan `/var/run` ada; preferensi migrasi
+20H392/SyntheticDidUpgrade=false, BKNoWatchdogs dan SetupDone terkonfirmasi pada
+HP. [Bukti audit live](docs/evidence/0087-live-hfs-path-audit.json). Ini bukan probe
+runtime getattrlist atau fsck. User perlu kembali ke recovery setelah tes image log.
 
-**Laporan HP terbaru — 0087-diag:** user mengonfirmasi image
-`timelm-0087-ufs-rw-c1-wdtstop-diag.img`; logo Apple terlihat, sekitar lima baris
-`exec xpcproxy`, dan bar merah di bawah. User masih menunggu progres boot.
-[Catatan hasil sementara](docs/evidence/apple-logo-phone-report.txt).
-Durasi akhir, heartbeat/swap dan reboot belum dikonfirmasi. Asal bar merah belum
-diidentifikasi. Jangan menandai GUI interaktif berhasil atau crash loop dari
-informasi ini; pesan `exec` sendiri bukan error.
+**Full log 0087-GUI sudah diterima:** [analisis utama](docs/0087_FULL_LOG_ANALYSIS.md),
+[salinan transkripsi](docs/evidence/0087-full-user-transcription.txt),
+[temuan terstruktur](docs/evidence/0087-full-log-findings.json).
+Trial runtime terbaca `0087-gui-r39984162472`, console flag 1. Root HFS journaled
+sudah mounted, UMD selesai, cache diterima launchd; heartbeat 3 → 5 → 6 terlihat
+hingga fase cache loader. Foto berakhir di logo/garis merah; tidak ada observasi
+heartbeat/swap sesudah logo. File ini transkripsi foto terpotong, bukan raw log.
+
+Prioritas: **capture sesudah cache/present**, bukan reflash root atau menganggap
+volume Data terpisah wajib. `dc_reset /tmp` dan `/var/run` EINVAL sudah terkonfirmasi;
+audit binary menunjuk jalur realpath/getattrlist yang meminta atribut data
+protection (kandidat mismatch HFS, perlu probe). Virtual random -147 terbukti
+berasal dari pencarian `AppleVirtIOEntropy` yang tidak menemukan service; bukan
+bukti seluruh PRNG kernel gagal. Pesan `rapportd ... nxprov_create: 1` sebelumnya
+adalah EPERM Skywalk, tetapi tidak terdapat pada transkripsi baru ini.
+
+**Langkah agent berikutnya:** tes image log di atas lalu pull/decode ring lewat
+recovery; verifikasi header/flush/trial. Kriteria geometry sudah dipenuhi untuk HP
+ini. Bila capture tetap gagal, 0088 dibatasi instrumentasi status/counter present
+yang tetap terbaca setelah frame, lalu probe atribut HFS. Kernel belum dibangun
+ulang karena belum ada perubahan source yang ditentukan dari bukti runtime.
 
 **Referensi display Topaz sudah dibandingkan:**
 [analisis source dan roadmap display](docs/TOPAZ_DISPLAY_COMPARISON.md).
@@ -29,8 +51,8 @@ Topaz 0102 memakai copy-and-flip bila back buffer tersedia; direct scanout dan G
 rendering adalah pekerjaan berbeda. Kernel timelm 0087 sudah memiliki loop cache
 maintenance nyata pada disassembly. Allocator Topaz di bawah 4 GiB tidak bisa
 langsung diasumsikan cocok dengan VM HIGH timelm yang seluruhnya di atas 4 GiB.
-Tetap tes image 0087 berikut dahulu; belum ada alasan dari perbandingan ini untuk
-build baru atau menulis register DPU. Roadmap lanjut: observasi present → jalur
+Gunakan 0087 sebagai baseline; perbandingan ini sendiri tidak membenarkan
+menulis register DPU atau mengimpor driver GPU. Roadmap lanjut: observasi present → jalur
 copy ABL → audit DPU/RAM → double buffer → zero-copy opsional → GPU Adreno 650.
 
 **Tambahan log 0086 sudah dianalisis:** [analisis dan symbolication](docs/0086_FULL_LOG_ANALYSIS.md).
@@ -38,8 +60,8 @@ Transkripsi sembilan screenshot memastikan SpringBoard PID 26 dan heartbeat/time
 bergerak di antara foto. PC/LR SpringBoard resolve ke `mach_msg2_trap` /
 `mach_msg2_internal`, serta `workq_kernreturn` / `pthread_wqthread`: bukti jalur
 IPC/workqueue, bukan bukti crash. Tidak ada pesan `/tmp` atau laporan `CRASH` pada
-transkripsi yang terpotong ini. Tetap tes 0087-diag; jangan membangun kernel baru
-hanya karena log lama mengulang IOAcceleratorES -> 0 found.
+transkripsi yang terpotong ini. Gunakan sebagai konteks 0086; utamakan gap observasi
+0087 pada analisis baru sebelum memilih perubahan source berikutnya.
 
 ## Status: iOS userland berjalan, GUI interaktif belum terkonfirmasi
 
@@ -70,7 +92,7 @@ Milestone yang sudah dilewati:
 Belum terbukti: GUI/SpringBoard, GPU fisik, touch/keys/USB timelm, SMP dan stabilitas
 jangka panjang. Static init pada trial md0 berbeda dari launchd iOS pada trial UFS.
 
-## Image aktif berikutnya: 0087 diag dahulu, lalu GUI
+## Image baseline: 0087 diag dan GUI sudah dicoba
 
 [Album kedua image](https://pixeldrain.com/l/rTmgiJB6).
 
@@ -93,8 +115,9 @@ trials      0087-diag-r39984162472 / 0087-gui-r39984162472
 ```
 
 **Kedua profil sudah dicoba user:** diag menampilkan logo; GUI sempat animasi lalu
-diam dengan bar merah dan pesan Nexus di atas. GUI interaktif, durasi akhir,
-liveness dan reboot belum terkonfirmasi. Keduanya mengizinkan filesystem writes pada userdata,
+diam dengan bar merah. Trial GUI sudah terkonfirmasi dari log. Heartbeat ada sampai
+cache loader, tetapi liveness sesudah logo, GUI interaktif dan reboot belum
+terkonfirmasi. Keduanya mengizinkan filesystem writes pada userdata,
 memakai kernel/shim/ADT/static-init/DTB yang sama; hanya console flag dan trial ID
 berbeda. Root tetap `ufsroot0`, `ufsrw=1 rootrw=1 launchd_unsecure_cache=1`;
 `cpus=1`, timer 27, quiet, watchdog-stop dan probe hardware lain tetap mati.
@@ -155,7 +178,10 @@ untuk menyembunyikan error yang belum diketahui.
 
 ## Temuan /tmp
 
-User menyebut error `/tmp` yang tidak sempat tercapture. Audit read-only terhadap
+**Update:** full log 0087 menangkap `dc_reset: /tmp: Invalid argument` dan
+`dc_reset: /var/run: Invalid argument`; lihat kandidat query atribut data protection
+pada [analisis baru](docs/0087_FULL_LOG_ANALYSIS.md). Bukti awal berikut tetap berlaku.
+User sebelumnya menyebut error `/tmp` yang tidak sempat tercapture. Audit read-only terhadap
 **image host asli** menunjukkan `/tmp -> private/var/tmp`, target root:root mode
 `01777`; `/var -> private/var` juga ada. `/private/tmp` tidak ada, tetapi bukan target
 symlink `/tmp`. [Audit](docs/evidence/host-root-tmp-audit.json). Ini tidak membuktikan
@@ -173,8 +199,10 @@ Tidak ada alasan untuk reflash/mengubah root berdasarkan pesan terpotong itu.
   enable +0x08. Stop jika aktif, barrier/readback; tanpa flag tidak menyentuh MMIO.
   [Audit driver vendor/mainline](docs/evidence/watchdog-source-audit.json). Tidak
   mengubah reset/timeout, PMIC, secure world. Sebab hardware lengkap belum diaudit.
-- `sweetlog=0`: persistent log userdata tidak diperbarui. Jangan menarik log lama
-  sebagai trial baru. Verifikasi tail di luar volume sebelum mengaktifkannya.
+- Baseline 0087 memakai `sweetlog=0`; varian **GUI-log memakai sweetlog=1** sesudah
+  audit recovery membuktikan tail di luar volume dan backup selesai. Cocokkan
+  trial/flush setiap pull; jangan menganggap ring lama hasil trial baru. Audit
+  geometry diulang jika volume/partisi diresize.
 - Keys/touch/USB fisik tetap off. HID/battery registration masih stub. SMP ditunda.
 - HIGH `[0x100000000,0x270000000)`, 5.75 GiB. LOW lama tidak 32-MiB aligned.
   DTB statis `/memory` ukuran nol tidak membuktikan runtime RAM 8/12 GB.

@@ -1,0 +1,258 @@
+LG V60 / timelm — XNU boot trial 0087 GUI
+Sumber: foto 1000313009.jpg sampai 1000313016.jpg (kronologis) dan 1000313017.jpg (logo Apple)
+Transkripsi manual dari teks yang tampak pada foto, bukan dump serial/log asli.
+[TERPOTONG] berarti teks tidak terlihat di tepi foto; [TERTUTUP] berarti terkena cahaya/tertindih.
+Jeda antarfoto tidak berarti tidak ada log lain. Pemenggalan baris panjang disatukan apabila jelas.
+
+===== FOTO 1000313009.jpg — AWAL =====
+[bagian atas teks boot args terpotong]
+debug=0 sweetbeat=5 sweetkeys=0 [TERPOTONG]
+timelm_wdt=stop launchd_unsecure_cache=1 sweetaccel=1 sweetaks[TERPOTONG]
+sweetiolog=- sweetsample=- sweetscan=- sweetfb_noconsole=1 [TERPOTONG]
+_trial=0087-gui-r39984162472
+exec mount
+com.apple.xpc.launchd|1969-12-31 16:00:39.230490 (system) <Not[TERPOTONG]
+entering ondemand mode
+com.apple.xpc.launchd|1969-12-31 16:00:39.231230 (system) <Not[TERPOTONG]
+created
+com.apple.xpc.launchd|1969-12-31 16:00:39.242427 (mount-phase-[TERPOTONG]
+<Notice>: Doing boot task
+failed to get filesystem info
+failed to get filesystem info
+mount: data volume missing, but not required in env: 0
+vnode_create_internal: alias vnode 0xffffffe1671f7a570 is in st[TERPOTONG]
+f change (start)
+vnode_create_internal: alias vnode 0xffffffe1671f7a570 is in st[TERPOTONG]
+f change (end)
+TIMELM: trial=0087-gui-r39984162472 heartbeat=3 cpu0-timer=996[TERPOTONG]
+0-sgi1=1
+exec mount_hfs
+GetMasterBlock: Error 16 opening /dev/ufsroot0
+/dev/ufsroot0 on / (hfs, local, journaled, noatime)
+ERROR: BindFS bindfs_mount: lookup of /private/preboot/AD3C159[TERPOTONG]
+[...]/usr/standalone/firmware failed error: 2
+com.apple.xpc.launchd|1969-12-31 16:00:41.338381 (data-protect[TERPOTONG]
+<Notice>: Doing boot task
+exec seputil
+GetMasterBlock: Error 16 opening /dev/ufsroot0
+/dev/ufsroot0 on / (hfs, local, journaled, noatime)
+ERROR: BindFS bindfs_mount: lookup of /private/preboot/AD3C159[TERPOTONG]
+[...]/usr/standalone/firmware failed error: 2
+com.apple.xpc.launchd|1969-12-31 16:00:41.338381 (data-protect[TERPOTONG]
+<Notice>: Doing boot task
+exec seputil
+init_data_protection: No SEP present on this device
+com.apple.xpc.launchd|1969-12-31 16:00:41.487680 (finish-oblite[TERPOTONG]
+<Notice>: Doing boot task
+exec mobile_obliterator
+[... ]bliterator: In INIT check
+
+===== FOTO 1000313010.jpg =====
+failed to get filesystem info
+failed to get filesystem info
+mount: data volume missing, but not required in env: 0
+ERROR: BindFS bindfs_mount: lookup of /private/var/hardware/P[TERPOTONG]
+[... ]ystem/Library/Pearl/ReferenceFrames failed error: 2
+ERROR: BindFS bindfs_mount: lookup of /private/var/hardware/F[TERPOTONG]
+[... ]Data/System/Library/Caches/com.apple.factorydata failed error[TERPOTONG]
+com.apple.xpc.launchd|1969-12-31 16:00:43.126322 (init-with-d[TERPOTONG]
+<Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:00:43.148435 (MSUEarlyBoo[TERPOTONG]
+<Notice>: Doing boot task
+exec MSUEarlyBootTask
+MSUEarlyBootTask: MSUEarlyBootTask running
+main: Content from the ramdisk will be present at /private/va[TERPOTONG]
+[... ]SoftwareUpdate//ad3c1598e2d5deb63242a14cb3352180fb6df8f32ba[TERPOTONG]
+[... ]-MSUData if it[TERPOTONG]
+MSUEarlyBootTask: I have nothing to do. Goodbye!!
+com.apple.xpc.launchd|1969-12-31 16:00:43.632769 (fips) <Notic[TERPOTONG]
+[... ]ing boot task
+exec cc_fips_test
+About to call the FIPS_POST Function in the corecrypto.dylib
+Tracing: disabled
+FIPSPOST_USER [845457138] fipspost_post:152: [FIPSPOST][Module[TERPOTONG]
+Apple corecrypto Module v13.0 [Apple ARM, User, Software, SL1]
+FIPSPOST_USER [845498196] fipspost_post:160: PASSED: (1 ms) - f[TERPOTONG]
+[... ]ost_post_hmac
+FIPSPOST_USER [852959270] fipspost_post:164: PASSED: (3[TERPOTONG]
+[... ]ost_post_integrity
+[bagian output FIPS duplikat/bertindih pada framebuffer]
+FIPSPOST_USER [852966992] fipspost_post:166: PASSED: (0 ms) - f[TERPOTONG]
+[... ]ost_post_indicator
+FIPSPOST_USER [852970506] fipspost_post:169: PASSED: (0 ms) - f[TERPOTONG]
+[... ]ost_post_aes_ecb
+FIPSPOST_USER [852973941] fipspost_post:170: PASSED: (0 ms) - f[TERPOTONG]
+[... ]ost_post_aes_cbc
+
+===== FOTO 1000313011.jpg — UMD EARLYBOOT =====
+exec usermanagerd
+***** IN UMD_INIT ****
+***** STARTING EARLYBOOT SETUP ****
+UMD_INIT: STARTING EARLYBOOT SETUP
+UMD_INIT: LOADING USER SESSIONS
+UMD_INIT: Device Configuration Type:0
+UMD_INIT: BOOTEDUSER is:501
+UMD_INIT: diskLoadUserSessions, APNSID:, set to 1844674407[TERPOTONG]
+UMD_INIT: Reloaded _gUserSessionTable (
+{
+    MKBUserSessionCreateTimeStamp = "1970-01-01 00:00:4[TERPOTONG]
+    MKBUserSessionDirty = 0;
+    MKBUserSessionDisplayName = mobile;
+    MKBUserSessionFirstName = mobile;
+    MKBUserSessionForeground = 1;
+    MKBUserSessionGroupID = 501;
+    MKBUserSessionID = 501;
+    MKBUserSessionLanguage = "en_US";
+    MKBUserSessionLastName = mobile;
+    MKBUserSessionLibinfoHomeDir = "/var/mobile";
+    MKBUserSessionLoginTimeStamp = "1970-01-01 00:00:44[TERPOTONG]
+    MKBUserSessionLoginUser = 0;
+    MKBUserSessionName = mobile;
+    MKBUserSessionNeedsMount = 1;
+    MKBUserSessionShortName = mobile;
+    MKBUserSessionType = UserSessionOther;
+    MKBUserSessionUUID = "3C5CCBA9-39C5-4E2A-8982-F2B5B70E9D77";
+    MKBUserSessionVolumeFSType = UserVolumeAPFSNative;
+    MKBUserSessionisAdminKey = 1;
+    MKBUserSessionisPrimary = 1;
+}
+)
+UMD_INIT: FOUND NO SYNC BUBBLE UIDS:0
+UMD_INIT: FOUND NO LRU TABLE UIDS:0
+UMD_INIT: FOUND NO VOLUMETYPE, setting up volume type
+UMD_INIT: Set the new volume type to APFSNativeDevice
+UMD_INIT: SAVING SESSION TODISK
+UMD_INIT: SESSION TABLE TO BLOB
+UMD_INIT: NOTHING TO SAVE IN LRU UID LIST
+UMD_INIT: diskSaveUserSessions Success
+UMD_INIT: Read user sessions in _gUserSessionTable (
+
+===== FOTO 1000313012.jpg — UMD SESSION/PERSONA =====
+[beberapa baris user session sama dengan foto sebelumnya, tidak digandakan]
+TIMELM: trial=0087-gui-r39984162472 heartbeat=5 cpu0-timer=1[TERPOTONG]
+[... ]u0-sgi1=1
+UMD_INIT: LOADED USER SESSIONS
+UMD_INIT: failed to read nextsession dict
+UMD_INIT: Unable to Obtained foreground, curFG:502, nextID:-1
+UMD_INIT: Failed to get next session, booting with default id
+Loginwindow UID
+UMD_INIT: BootedUser is:501
+UMD_INIT: Regular mode Setup for user:501: Num Sessions:1, Cur[TERPOTONG]
+[... ]essionID:-1
+UMD_INIT: FAILED to Set Foreground ID + multiuser in commpage
+[... ]ssfully
+UMD_INIT: LOADING PERSONA..
+UMD_INIT: Manifest version: 1
+UMD_INIT: Loaded Persona Generation ID from manifest:1
+UMD_INIT: Adding 1000 entry to persona Table for user:3C5CCBA9-39C5-4E2A-8982-F2B5B70E9D77
+UMD_INIT: Adding 200 entry to persona Table for user:3C5CCBA9-39C5-4E2A-8982-F2B5B70E9D77
+UMD_INIT: Adding 0 entry to persona Table for user:3C5CCBA9-39C5-4E2A-8982-F2B5B70E9D77
+UMD_INIT: Adding 100 entry to persona Table for user:3C5CCBA9-39C5-4E2A-8982-F2B5B70E9D77
+
+===== FOTO 1000313013.jpg — KERNEL PERSONAS =====
+UMD_INIT: Failed to retrieve info for kernel persona 99: No process
+UMD_INIT: PersonaID:99 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 99, Type: 4, UID 67295
+UMD_INIT: Failed to retrieve info for kernel persona 199: No process
+UMD_INIT: PersonaID:199 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 199, Type: 6, UID 967295
+UMD_INIT: Failed to retrieve info for kernel persona 1000: No process
+UMD_INIT: PersonaID:1000 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 1000, Type: 5, UID[TERPOTONG]
+UMD_INIT: Failed to retrieve info for kernel persona 200: No process
+UMD_INIT: PersonaID:200 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 200, Type: 6, UID[TERPOTONG]
+UMD_INIT: Failed to retrieve info for kernel persona 100: No process
+UMD_INIT: PersonaID:100 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 100, Type: 4, UID[TERPOTONG]
+UMD_INIT: setup kernel personas
+UMD_INIT: Failed to notify_register_check com.apple.mobile.use[TERPOTONG]
+[... ]gerd.personageneration_changed: 8
+UMD_INIT: Failed to notify generation changed: Failed to regis[TERPOTONG]
+[... ]or darwin notification token
+UMD_INIT: DONE EARLYBOOT SETUP
+***** DONE EARLYBOOT SETUP ****
+***** DONE UMD_INIT ***
+com.apple.xpc.launchd|1969-12-31 16:00:53.763092 (dirs_cleaner[TERPOTONG]
+<Notice>: Doing boot task
+exec dirs_cleaner
+dc_reset: /tmp: Invalid argument
+dc_reset: /var/run: Invalid argument
+exec xpcroleaccountd
+exec init_featureflags
+
+===== FOTO 1000313014.jpg — EARLYBOOT FINISHED + CACHE LOADER =====
+Time Taken to wait for critical earlyboot entries: [TERPOTONG]
+auearlyboot: -[FudEarlyBoot doFUDEarlyBoot:](): End Early Boo[TERPOTONG]
+auearlyboot: Exiting Early Boot
+exec tzinit
+exec FinishRestoreFromBackup
+exec finish_demo_restore
+exec [TERTUTUP]sstatuscheck
+exec [TERTUTUP]ng_seedctl
+kern.prng.user_reseed_count: (-1) (2) No such file or directo[TERPOTONG]
+failed to load virtual random: (-147) (-536870212)
+exec launchd_cache_loader
+TIMELM: trial=0087-gui-r39984162472 heartbeat=6 cpu0-timer=20[TERPOTONG]
+u0-sgi1=1
+0 Found valid port: 2307 Valid: 1
+1 Found valid port: 0 Valid: 0
+2 Found valid port: 0 Valid: 0
+Using default cache paths
+[System Event] [1073893967] [INFO] [Subsystem: launchd] [Event[TERPOTONG]
+[... ]ect-installed-roots] Doing boot task
+[System Event] [1073897552] [INFO] [Subsystem: launchd] [Event[TERPOTONG]
+[... ]mit-boot-mode] Doing boot task
+[System Event] [1073899811] [INFO] [Subsystem: launchd] [Event[TERPOTONG]
+[... ]tore-datapartition] Doing boot task
+[System Event] [1073901065] [INFO] [Subsystem: launchd] [Event[TERPOTONG]
+[... ]tore-datapartition] optional boot task not present
+[System Event] [1073902295] [INFO] [Subsystem: launchd] [Event[TERPOTONG]
+[... ]nt-phase-2] Doing boot task
+[System Event] [1073903491] [INFO] [Subsystem: launchd] [Event[TERPOTONG]
+[... ]t-with-data-volume] Doing boot task
+[System Event] [1073904702] [INFO] [Subsystem: launchd] [Event[TERPOTONG]
+[... ]EarlyBootTask] Doing boot task
+[System Event] [1073905926] [INFO] [Subsystem: launchd] [Event[TERPOTONG]
+[... ]s] Doing boot task
+[System Event] [1073907100] [INFO] [Subsystem: launchd] [Event[TERPOTONG]
+[... ]bag] Doing boot task
+[System Event] [1073908291] [INFO] [Subsystem: launchd] [Event[TERPOTONG]
+[... ]rmanagerd] Doing boot task
+[System Event] [1073909491] [INFO] [Subsystem: launchd] [Event[TERPOTONG]
+[... ]s_cleaner] Doing boot task
+
+===== FOTO 1000313015.jpg — LAUNCHD BOOT TASKS =====
+[System Event] [1073901065] [INFO] [Subsystem: launchd] [TERPOTONG] optional boot task not present
+[System Event] [1073902295] [INFO] [Subsystem: launchd] [TERPOTONG] Doing boot task
+[System Event] [1073903491] [INFO] [Subsystem: launchd] [TERPOTONG] Doing boot task
+[System Event] [1073904702] [INFO] [Subsystem: launchd] [TERPOTONG] Doing boot task
+[System Event] [1073905926] [INFO] [Subsystem: launchd] [TERPOTONG] Doing boot task
+[System Event] [1073907100] [INFO] [Subsystem: launchd] [TERPOTONG] Doing boot task
+[System Event] [1073908291] [INFO] [Subsystem: launchd] [TERPOTONG] Doing boot task
+[System Event] [1073909491] [INFO] [Subsystem: launchd] [TERPOTONG] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:00:54.162761 <Notice>:
+logging initialized. name: com.apple.xpc.launchd pid: 1
+com.apple.xpc.launchd|1969-12-31 16:00:54.162773 (xpcrolea[TERPOTONG]
+<Notice>: Doing boot task
+[System Event] [1101917987] [INFO] [Subsystem: launchd] [Ev[TERPOTONG]
+[... ]roleaccountd] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:00:54.182162 (init_fea[TERPOTONG]
+<Notice>: Doing boot task
+[System Event] [1101929383] [INFO] [Subsystem: launchd] [Ev[TERPOTONG]
+[... ]_featureflags] Doing boot task
+
+===== FOTO 1000313016.jpg — LATEST CONSOLE LOG =====
+[atas adalah overlap system event 3015]
+Code: /System/Library/xpc/launchd.plist Sig: /S[TERPOTONG]
+[... ]unchd.plist.sig
+Using unsecure cache: /System/Library/xpc/launch[TERPOTONG]
+Trying to send bytes to launchd: 2307 16384
+Sending validated cache to launchd
+Cache sent to launchd successfully
+exec xpcproxy
+exec xpcproxy
+
+===== FOTO 1000313017.jpg — DISPLAY =====
+Logo Apple putih/ungu terang tampil di layar hitam, dengan garis merah horizontal di bagian bawah.
+Tidak ada teks log yang terlihat pada foto ini.

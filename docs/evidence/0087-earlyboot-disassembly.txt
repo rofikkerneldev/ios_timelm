@@ -1,0 +1,103 @@
+Original host image 20H392 binaries, extracted read-only. SHA256 in 0087-host-root-audit.json.
+
+# dirs-cleaner-disassembly.txt; LLVM --macho --disassemble --no-show-raw-insn
+100002ce4:	mov	w20, #32768
+100002ce8:	movk	w20, #16387, lsl #16
+100002cec:	add	x9, sp, #80
+100002cf0:	add	x21, x9, #1088
+100002cf4:	add	x22, x9, #1280
+100002cf8:	mov	w9, w24
+100002cfc:	add	x24, x23, w8, uxtw #3
+100002d00:	sub	x26, x9, w8, uxtw
+100002d04:	ldr	x25, [x24]
+100002d08:	ldr	w8, [sp, #1388]
+100002d0c:	and	w8, w8, #0xfffffffd
+100002d10:	str	w8, [sp, #1388]
+100002d14:	add	x1, sp, #80
+100002d18:	mov	x0, x25
+100002d1c:	bl	0x100003a0c ; symbol stub for: _realpath$DARWIN_EXTSN
+100002d20:	cbz	x0, 0x100002d48
+100002d24:	add	w8, w20, #8
+100002d28:	str	w8, [sp, #1172]
+100002d2c:	add	x0, sp, #80
+100002d30:	mov	x1, x21
+100002d34:	mov	x2, x22
+100002d38:	mov	w3, #24
+100002d3c:	mov	w4, #0
+100002d40:	bl	0x100003964 ; symbol stub for: _getattrlist
+100002d44:	cbz	w0, 0x100002d84
+100002d48:	bl	0x100003910 ; symbol stub for: ___error
+100002d4c:	ldr	w0, [x0]
+100002d50:	cbz	w0, 0x100002dc4
+100002d54:	nop
+100002d58:	ldr	x8, #4800 ; literal pool symbol address: ___stderrp
+100002d5c:	ldr	x23, [x8]
+100002d60:	ldr	x25, [x24]
+100002d64:	bl	0x100003a9c ; symbol stub for: _strerror
+100002d68:	stp	x25, x0, [sp]
+100002d6c:	mov	x0, x23
+100002d70:	adr	x1, #3430 ; literal pool for: "dc_reset: %s: %s\n"
+100002d74:	nop
+100002d78:	bl	0x10000394c ; symbol stub for: _fprintf
+100002d7c:	mov	w28, #1
+100002d80:	b	0x100002fd0
+
+# prng-seedctl-disassembly.txt; LLVM --macho --disassemble --no-show-raw-insn
+100003870:	nop
+100003874:	ldr	x8, #2060 ; literal pool symbol address: _kIOMainPortDefault
+100003878:	ldr	w19, [x8]
+10000387c:	adr	x0, #1646 ; literal pool for: "AppleVirtIOEntropy"
+100003880:	nop
+100003884:	bl	0x100003d08 ; symbol stub for: _IOServiceMatching
+100003888:	mov	x1, x0
+10000388c:	mov	x0, x19
+100003890:	bl	0x100003cfc ; symbol stub for: _IOServiceGetMatchingService
+100003894:	cbz	w0, 0x1000038e0
+100003898:	mov	x20, x0
+10000389c:	str	wzr, [sp, #32]
+1000038a0:	nop
+1000038a4:	ldr	x8, #2020 ; literal pool symbol address: _mach_task_self_
+1000038a8:	ldr	w1, [x8]
+1000038ac:	add	x3, sp, #32
+1000038b0:	mov	w2, #0
+1000038b4:	bl	0x100003d14 ; symbol stub for: _IOServiceOpen
+1000038b8:	mov	x19, x0
+1000038bc:	mov	x0, x20
+1000038c0:	bl	0x100003ce4 ; symbol stub for: _IOObjectRelease
+1000038c4:	cbz	w19, 0x1000038f0
+1000038c8:	str	x19, [sp]
+1000038cc:	adr	x0, #1585 ; literal pool for: "ServiceOpen failed %x\n"
+1000038d0:	nop
+1000038d4:	bl	0x100003d8c ; symbol stub for: _printf
+1000038d8:	mov	w24, #-148
+1000038dc:	b	0x100003944
+1000038e0:	mov	w24, #-147
+1000038e4:	mov	w19, #700
+1000038e8:	movk	w19, #57344, lsl #16
+1000038ec:	b	0x100003944
+1000038f0:	movi.16b	v0, #0
+1000038f4:	stp	q0, q0, [sp, #48]
+1000038f8:	mov	w8, #32
+1000038fc:	str	x8, [sp, #40]
+100003900:	ldr	w0, [sp, #32]
+100003904:	add	x4, sp, #48
+100003908:	add	x5, sp, #40
+10000390c:	mov	w1, #0
+100003910:	mov	x2, #0
+100003914:	mov	x3, #0
+100003918:	bl	0x100003cd8 ; symbol stub for: _IOConnectCallStructMethod
+10000391c:	mov	x19, x0
+100003920:	cbz	w0, 0x1000039e4
+100003924:	mov	x8, x19
+100003928:	str	x8, [sp]
+10000392c:	adr	x0, #1512 ; literal pool for: "CallStructMethod failed %x\n"
+100003930:	nop
+100003934:	bl	0x100003d8c ; symbol stub for: _printf
+100003938:	mov	w24, #-149
+10000393c:	ldr	w0, [sp, #32]
+100003940:	bl	0x100003cf0 ; symbol stub for: _IOServiceClose
+100003944:	stp	x24, x19, [sp]
+100003948:	adr	x0, #1524 ; literal pool for: "failed to load virtual random: (%d) (%d)\n"
+10000394c:	nop
+100003950:	bl	0x100003d8c ; symbol stub for: _printf
+100003954:	mov	w25, #8

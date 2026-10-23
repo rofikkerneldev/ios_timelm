@@ -1,0 +1,160 @@
+{
+  "source_url": "https://pixeldrain.com/u/jt9UtCcm",
+  "name": "LGV60_XNU_trial_0087_GUI_bootlog_transkripsi.txt",
+  "size": 12089,
+  "sha256": "2df3afe6389e086e3fffbbf609b40fe1f7a0e333bdfab46151a83ba065b87af7",
+  "source_kind": "Manual transcription of photos 1000313009..1000313017, cropped/overlapping; not a raw serial/persistent log",
+  "trial_confirmed": "0087-gui-r39984162472",
+  "cmdline_observed": [
+    "timelm_wdt=stop",
+    "launchd_unsecure_cache=1",
+    "sweetaccel=1",
+    "sweetfb_noconsole=1"
+  ],
+  "heartbeat_sequence": [
+    3,
+    5,
+    6
+  ],
+  "timer_counts_complete": false,
+  "findings": {
+    "heartbeat=3": [
+      {
+        "line": 27,
+        "text": "TIMELM: trial=0087-gui-r39984162472 heartbeat=3 cpu0-timer=996[TERPOTONG]"
+      }
+    ],
+    "heartbeat=5": [
+      {
+        "line": 132,
+        "text": "TIMELM: trial=0087-gui-r39984162472 heartbeat=5 cpu0-timer=1[TERPOTONG]"
+      }
+    ],
+    "heartbeat=6": [
+      {
+        "line": 196,
+        "text": "TIMELM: trial=0087-gui-r39984162472 heartbeat=6 cpu0-timer=20[TERPOTONG]"
+      }
+    ],
+    "GetMasterBlock: Error 16": [
+      {
+        "line": 30,
+        "text": "GetMasterBlock: Error 16 opening /dev/ufsroot0"
+      },
+      {
+        "line": 37,
+        "text": "GetMasterBlock: Error 16 opening /dev/ufsroot0"
+      }
+    ],
+    "/dev/ufsroot0 on /": [
+      {
+        "line": 31,
+        "text": "/dev/ufsroot0 on / (hfs, local, journaled, noatime)"
+      },
+      {
+        "line": 38,
+        "text": "/dev/ufsroot0 on / (hfs, local, journaled, noatime)"
+      }
+    ],
+    "mount: data volume missing": [
+      {
+        "line": 22,
+        "text": "mount: data volume missing, but not required in env: 0"
+      },
+      {
+        "line": 53,
+        "text": "mount: data volume missing, but not required in env: 0"
+      }
+    ],
+    "diskSaveUserSessions Success": [
+      {
+        "line": 127,
+        "text": "UMD_INIT: diskSaveUserSessions Success"
+      }
+    ],
+    "DONE EARLYBOOT SETUP": [
+      {
+        "line": 173,
+        "text": "UMD_INIT: DONE EARLYBOOT SETUP"
+      },
+      {
+        "line": 174,
+        "text": "***** DONE EARLYBOOT SETUP ****"
+      }
+    ],
+    "dc_reset:": [
+      {
+        "line": 179,
+        "text": "dc_reset: /tmp: Invalid argument"
+      },
+      {
+        "line": 180,
+        "text": "dc_reset: /var/run: Invalid argument"
+      }
+    ],
+    "kern.prng.user_reseed_count": [
+      {
+        "line": 193,
+        "text": "kern.prng.user_reseed_count: (-1) (2) No such file or directo[TERPOTONG]"
+      }
+    ],
+    "failed to load virtual random": [
+      {
+        "line": 194,
+        "text": "failed to load virtual random: (-147) (-536870212)"
+      }
+    ],
+    "Cache sent to launchd successfully": [
+      {
+        "line": 252,
+        "text": "Cache sent to launchd successfully"
+      }
+    ],
+    "exec xpcproxy": [
+      {
+        "line": 253,
+        "text": "exec xpcproxy"
+      },
+      {
+        "line": 254,
+        "text": "exec xpcproxy"
+      }
+    ]
+  },
+  "not_captured_in_this_transcription": [
+    "IOAcceleratorES publication marker",
+    "SWEET FB swap records",
+    "exec backboardd",
+    "exec SpringBoard",
+    "post-logo heartbeat/timer",
+    "CRASH or panic",
+    "rapportd nxprov_create line reported separately"
+  ],
+  "binary_audit": {
+    "prng_virtual_random": {
+      "matching_class": "AppleVirtIOEntropy",
+      "no_service_branch": "0x1000038e0",
+      "result": -147,
+      "iokit_result_signed": -536870212,
+      "iokit_result_hex": "0xe00002bc",
+      "iokit_result_symbol": "kIOReturnError",
+      "meaning": "Matching service was absent; error code synthesized by prng_seedctl; not proof kernel random generator is absent"
+    },
+    "dirs_cleaner": {
+      "realpath_call": "0x100002d1c",
+      "getattrlist_call": "0x100002d40",
+      "getattrlist_common_mask": "0x40038008",
+      "attributes": [
+        "OBJTYPE",
+        "OWNERID",
+        "GRPID",
+        "ACCESSMASK",
+        "DATA_PROTECT_FLAGS"
+      ],
+      "error_print": "0x100002d78",
+      "conclusion": "Generic dc_reset error path after realpath/getattrlist; unsupported HFS data-protection attribute is a source-based candidate, not runtime-proven without comparative probe"
+    }
+  },
+  "next_priority": "Capture post-cache/first-present liveness and daemon/frame evidence; audit the narrow HFS attribute mismatch separately; no proof root mount or missing data volume caused the logo stall",
+  "hardware_result": "Apple logo/animation and red bar reported; interactive GUI unconfirmed; no final reboot/liveness evidence"
+}
