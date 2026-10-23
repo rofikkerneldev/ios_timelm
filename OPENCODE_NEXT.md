@@ -2,12 +2,22 @@
 
 Checkpoint terbaru 2026-10-23. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
+**Tambahan log 0086 sudah dianalisis:** [analisis dan symbolication](docs/0086_FULL_LOG_ANALYSIS.md).
+Transkripsi sembilan screenshot memastikan SpringBoard PID 26 dan heartbeat/timer
+bergerak di antara foto. PC/LR SpringBoard resolve ke `mach_msg2_trap` /
+`mach_msg2_internal`, serta `workq_kernreturn` / `pthread_wqthread`: bukti jalur
+IPC/workqueue, bukan bukti crash. Tidak ada pesan `/tmp` atau laporan `CRASH` pada
+transkripsi yang terpotong ini. Tetap tes 0087-diag; jangan membangun kernel baru
+hanya karena log lama mengulang IOAcceleratorES -> 0 found.
+
 ## Status: iOS userland berjalan, GUI belum tercapai
 
 UFS baca-tulis sudah menjalankan daemon iOS: `calaccessd`, `com.apple.datamigrator`,
 `cloudd`, `installcoordinationd`, `remotepairingdeviced`, `seld`, `ind`,
 `safetyalertsd` dan backboardd. Tidak reboot. User melihat layar diam sekitar lima
-menit pada `IOAcceleratorES -> 0 found`; heartbeat sesudahnya belum dikonfirmasi.
+menit pada `IOAcceleratorES -> 0 found`. Transkripsi tambahan menunjukkan heartbeat
+masih aktif selama beberapa screenshot; apakah tetap aktif setelah layar terakhir
+diam belum dikonfirmasi.
 [Bukti](docs/evidence/0086-ios-userland-phone-result.txt).
 
 Jangan menyatakan kernel hang hanya dari baris terakhir: trace IOKit lama berhenti

@@ -1,0 +1,195 @@
+LG V60 / XNU SWEET / TIMELM
+Consolidated transcription from screenshots, chronological oldest -> newest.
+Source order: 1000312841.jpg ... 1000312849.jpg.
+NOTE: [cropped] and [repeated] are editorial markers, not literal kernel output.
+NOTE: Recurring IOK messages are collapsed; this is not a byte-for-byte UART dump.
+
+=== 1000312841.jpg (OLDEST) ===
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+SWEET AKS: mobileassetd sel 0 arg0 0 in 0/0 out 0/0 -> [cropped]
+SWEET AKS: mobileassetd sel 7 arg0 0 in 1/0 out 1/0 -> [cropped]
+exec xpcproxy
+exec xpcproxy
+exec nsurlsessiond
+exec fairplayd.H2
+SWEET Sandbox: iconservicesagen op 5
+SWEET AKS: lsd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: lsd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+exec xpcproxy
+[IOK backboardd: IOAcceleratorES -> 0 found]
+exec xpcproxy
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+exec mobileactivationd
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+
+=== 1000312842.jpg ===
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+SWEET AKS: passd sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+[IOK backboardd: IOAcceleratorES -> 0 found]
+exec xpcproxy
+exec xpcproxy
+exec accountsd
+TIMELM: trial=0086-ufs-rw-wdtstop-r39974714520 heartbeat=[cropped] cpu0-timer=79596 cpu0-sgi1=1
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+SWEET AKS: imagent sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: imagent sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+SWEET AKS: imagent sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+SWEET AKS: imagent sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec CloudKeychainProxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+SWEET Sandbox: tccd op 22
+SWEET Sandbox: tccd op 1
+[IOK backboardd: IOAcceleratorES -> 0 found]
+exec bluetoothd
+exec dmd
+exec donotdisturbd
+exec cloudd
+exec symptomsd
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+exec xpcproxy
+exec xpcproxy
+[IOK backboardd: IOAcceleratorES -> 0 found]
+
+=== 1000312843.jpg ===
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> [cropped]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> [cropped]
+[IOK backboardd: IOAcceleratorES -> 0 found]
+exec cloudpaird
+exec magicswitchd
+[IOK backboardd: IOAcceleratorES -> 0 found]
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+SWEET AKS: seserviced sel 0 arg0 0 in 0/0 out 0/0 -> [cropped]
+SWEET AKS: seserviced sel 7 arg0 0 in 1/0 out 1/0 -> [cropped]
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> [cropped]
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+
+=== 1000312844.jpg ===
+TIMELM: trial=0086-ufs-rw-wdtstop-r39974714520 heartbeat=[cropped] cpu0-timer=84630 cpu0-sgi1=1
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAccessoryManager</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec bluetoothd
+exec xpcproxy
+SWEET AKS: sleepd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: sleepd sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+SWEET AKS: sleepd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: sleepd sel 17 arg0 0 in 1/0 out 0/4096 -> [cropped]
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+exec bluetoothuserd
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+exec wcd
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+
+=== 1000312845.jpg ===
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> [cropped]
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+TIMELM: trial=0086-ufs-rw-wdtstop-r39974714520 heartbeat=[cropped] cpu0-timer=86275 cpu0-sgi1=1
+SWEET AKS: CloudKeychainProxy sel 0 arg0 0 in 0/0 out 0/0 -> [cropped]
+SWEET AKS: CloudKeychainProxy sel 7 arg0 0 in 1/0 out 1/0 -> [cropped]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7 [right edge partly cropped]
+exec xpcproxy
+SWEET AKS: securityd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+[IOK backboardd: IOAcceleratorES -> 0 found]
+SWEET AKS: IMDPersistenceAgent sel 0 arg0 0 in 0/0 out 0/0 -> [cropped]
+SWEET AKS: IMDPersistenceAgent sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0 [wrapped]
+SWEET AKS: IMDPersistenceAgent sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0 [wrapped]
+
+=== 1000312846.jpg ===
+exec assistantd
+[IOK backboardd: IOAcceleratorES -> 0 found]
+TIMELM: trial=0086-ufs-rw-wdtstop-r39974714520 heartbeat=[cropped] cpu0-timer=88583 cpu0-sgi1=1
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> [cropped]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> [cropped]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> [cropped]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> [cropped]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> [cropped]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> [cropped]
+exec xpcproxy
+SMP SpringBoard[26] slide 0x6b00000 mh 0x102bc0000
+SMP SpringBoard t0 pc 0x1c9111030 lr 0x1c9122b18 sp [cropped]
+[additional SpringBoard stack/backtrace addresses visible; edge cut]
+SMP SpringBoard t1 pc 0x1c91114f0 lr 0x1d869ac1c sp [cropped]
+exec liveactivitiesd
+exec xpcproxy
+[IOK backboardd: IOAcceleratorES -> 0 found]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7 [right edge cropped]
+[IOK backboardd: IOAcceleratorES -> 0 found]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7 [right edge cropped]
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7 [right edge cropped]
+[IOK backboardd: IOAcceleratorES -> 0 found]
+SWEET AKS: corespeechd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: corespeechd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+[IOK backboardd: IOAcceleratorES -> 0 found]
+
+=== 1000312847.jpg ===
+[IOK backboardd: IOAcceleratorES -> 0 found]
+SWEET AKS: liveactivitiesd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: liveactivitiesd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+[IOK backboardd: IOAcceleratorES -> 0 found]
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+[IOK backboardd: IOAcceleratorES -> 0 found]
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+
+=== 1000312848.jpg ===
+[IOK backboardd: IOAcceleratorES -> 0 found]
+exec xpcproxyd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found [overlapping output]
+exec xpcproxy
+exec xpcproxy
+[IOK backboardd: IOAcceleratorES -> 0 found]
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+SWEET AKS: backboardd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec xpcproxy
+exec xpcproxy
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+[IOK backboardd: IOAcceleratorES -> 0 found]
+SWEET AKS: contextstored sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: identityservicesd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+[IOK backboardd: IOAcceleratorES -> 0 found]
+SWEET AKS: dmd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: dmd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: IMDPersistenceAgent sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0 [wrapped]
+SWEET AKS: CloudKeychainProxy sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: imagent sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: mediaserverd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: securityd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: securityd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: containermanagerd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+[IOK backboardd: IOAcceleratorES -> 0 found]
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+
+=== 1000312849.jpg (NEWEST) ===
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated]
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">AppleHPMDevice</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+SWEET AKS: securityd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+[IOK backboardd: IOAcceleratorES -> 0 found, repeated many times to end of screen]

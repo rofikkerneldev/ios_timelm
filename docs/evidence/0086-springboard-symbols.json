@@ -1,0 +1,52 @@
+{
+  "source": "https://pixeldrain.com/u/eF9sp8hv",
+  "file": "lgv60_xnu_0086_ufs_rw_2841-2849.txt",
+  "sha256": "17a3babc34c9f49671ffd91c8a2de090bd18db102dad6030afc9941a451e0c74",
+  "kind": "Consolidated screenshot transcription, cropped and collapsed repeats; not raw UART/full boot log",
+  "trial": "0086-ufs-rw-wdtstop-r39974714520",
+  "shared_cache_source": "20H392 SystemOS archive used for this root image",
+  "shared_cache_slide": "0x6b00000",
+  "main_binary_header": "0x102bc0000",
+  "symbols": [
+    {
+      "thread": 0,
+      "register": "pc",
+      "runtime": "0x1c9111030",
+      "unslid": "0x1c2611030",
+      "image": "/usr/lib/system/libsystem_kernel.dylib",
+      "symbol": "_mach_msg2_trap + 8"
+    },
+    {
+      "thread": 0,
+      "register": "lr",
+      "runtime": "0x1c9122b18",
+      "unslid": "0x1c2622b18",
+      "image": "/usr/lib/system/libsystem_kernel.dylib",
+      "symbol": "_mach_msg2_internal + 76"
+    },
+    {
+      "thread": 1,
+      "register": "pc",
+      "runtime": "0x1c91114f0",
+      "unslid": "0x1c26114f0",
+      "image": "/usr/lib/system/libsystem_kernel.dylib",
+      "symbol": "___workq_kernreturn + 8"
+    },
+    {
+      "thread": 1,
+      "register": "lr",
+      "runtime": "0x1d869ac1c",
+      "unslid": "0x1d1b9ac1c",
+      "image": "/usr/lib/system/libsystem_pthread.dylib",
+      "symbol": "__pthread_wqthread + 360"
+    }
+  ],
+  "notes": [
+    "SMP is a process-sampler tag, not a crash report or evidence of multiple CPUs.",
+    "First ipsw cache generation warned that some ObjC classes could not be parsed; the reported C function symbols resolved successfully.",
+    "Timer counts advance across snapshots: 79596, 84630, 86275, 88583.",
+    "No CRASH, panic, or /tmp text appears in this cropped transcription; absence does not exclude uncaptured events.",
+    "AppleHPMDevice/IOAccessoryManager misses do not alone identify a GUI blocker.",
+    "Keep 0087 diagnostic test as next step; no new kernel build justified by this log alone."
+  ]
+}
