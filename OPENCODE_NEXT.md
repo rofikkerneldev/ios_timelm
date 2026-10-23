@@ -42,6 +42,27 @@ dan instrumen entry/exit callback tersebut secara terbatas.
 
 ## Status yang sudah selesai
 
+Tambahan bukti dari user (log boot sebelumnya):
+
+```text
+SWEET CPU: cpu=1 self-SGI1 mpidr=0x100 value=0x10011
+SWEET CPU: cpu=1 entered initCPU mpidr=0x100 EL1 IRQs=0
+```
+
+`0x10011` memiliki INTID=0, Aff1=1, TargetList=0x11. Ini konsisten dengan
+regresi encoding 0083; SGI1 untuk MPIDR 0x100 seharusnya `0x01010001`
+(INTID=1, Aff1=1, TargetList=1), yang telah diperbaiki 0085. Jangan mengganti
+kembali encoding baru berdasarkan log lama ini. `IRQs=0` dalam `initCPU`
+sekunder masih sesuai jalur startup yang meng-unmask interrupt setelah kembali;
+perlu bukti interrupt benar-benar diterima sesudahnya.
+
+Potongan log juga memuat registrasi CPU0..CPU6. Quiet adalah `cpus=1` dan tidak
+menjalankan startup CPU1; potongan lama ini harus dibedakan dari hasil trial quiet.
+Tidak ada pesan penyebab panic/backtrace pada potongan yang diberikan. Pesan
+`gPanicBase is still not initialized` melaporkan area panic-log belum tersedia,
+bukan identifikasi penyebab exception. Ambil hasil trial quiet dan marker ID-nya
+sebelum menentukan perubahan kernel berikutnya.
+
 - Analisis awal: [TIMELM_BOOT_ROADMAP.md](docs/TIMELM_BOOT_ROADMAP.md).
 - Perbaikan software 0085 sudah diimplementasikan, di-commit, dan dibuild.
 - Commit kode/kernel: `2c82298cb806c785fbdb600048baf0247f596bec`.
