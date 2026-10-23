@@ -1,0 +1,33 @@
+Source: user-provided UFS read-only trial log, 2026-10-23.
+One representative retry (similar failures repeat through mount attempts 4..7):
+
+SWEET: IOFindBSDRoot: probing the UFS for the root volume
+BSD root: ufsroot0, major 2, minor 0
+bsd_init: vfs_mountroot
+hfs: Initializing the journal (joffset 0x82000 sz 0x800000)...
+jnl: b(2, 0): do_jnl_io: strategy err 0x1e
+jnl: b(2, 0): write_journal_header: error writing the journal header!
+jnl: b(2, 0): journal_create: failed to write journal header.
+hfs: late jnl init: failed to open/create the journal (retval 0).
+hfs_mounthfsplus: hfs_late_journal_init returned (22)
+hfs_mounthfsplus: encountered error (22)
+hfs_mountfs: encountered failure 22
+hfs_mount: hfs_mountfs returned error=22 for device unknown-dev
+cannot mount root, errno = 19
+bsd_init: calling setconf
+mount(7) failed
+TIMELM: trial=0086-ufs-ro-wdtstop-r39974714520 heartbeat=7 cpu0-timer=2929 cpu0-sgi1=1
+
+Source verification against reconstructed xnu-8796.141.3 + HFS:
+- bsd/sys/errno.h: EROFS=30 (0x1e), EINVAL=22, ENODEV=19.
+- bsd/dev/sweet_ufs.c: strategy rejects non-read buffers with EROFS while
+  su.writable is false (ufsrw=0).
+- HFS hfs_late_journal_init can initialize its journal on the root filesystem
+  even when mounted read-only; the non-root read-only shortcut excludes MNT_ROOTFS.
+- journal_create failing to provide a journal yields the later EINVAL path.
+
+Established: UFS reads reach real HFS metadata and the journal path; block writes
+are refused by the read-only profile. Full HFS mount and UFS write completion have
+not succeeded yet. This log alone does not establish filesystem corruption.
+Next controlled trial permits partition-bounded writes and writable root, keeping
+kernel/shim/ADT/CPU/timer/watchdog unchanged. No journal-check bypass or reflash.

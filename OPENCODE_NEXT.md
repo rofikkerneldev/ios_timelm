@@ -17,65 +17,69 @@ sudah tervalidasi.
 
 **Sudah terbukti pada HP:** satu CPU, timer 27, SGI1, BSD initialization, root `md0`,
 devfs, static userspace PID 1, syscall dan timed sleep selama beberapa menit.
-**Belum terbukti:** UFS/HFS root iOS, Apple's launchd, SpringBoard, SMP, driver fisik
-input/network dan stabilitas jangka panjang. PID 1 yang sekarang adalah init kecil
+**UFS reads dan metadata HFS juga sudah tercapai**, tetapi full HFS mount masih
+menunggu journal writable. Belum terbukti: Apple's launchd, SpringBoard, SMP,
+driver fisik input/network dan stabilitas jangka panjang. PID 1 yang sekarang adalah init kecil
 dari `tools/sweet-init.S`, bukan launchd Apple.
 
-## Tes berikutnya: UFS baca-saja dengan kernel dan shim yang sudah diuji
+## Checkpoint storage: UFS membaca HFS; journal ditolak karena read-only
 
-[Download timelm-0086-ufs-ro-c1-wdtstop.img](https://pixeldrain.com/u/fvpL6Dpf).
+Trial `0086-ufs-ro-wdtstop-r39974714520` telah diuji. Log menunjukkan
+`BSD root: ufsroot0, major 2, minor 0`, pembacaan metadata HFS dan percobaan
+inisialisasi journal pada offset `0x82000`, ukuran `0x800000`.
+[Bukti dan pemetaan source](docs/evidence/0086-ufs-ro-phone-result.txt).
+
+Kegagalan pertama adalah `do_jnl_io: strategy err 0x1e`: **EROFS=30**, sesuai
+`ufsrw=0` yang menolak write buffer. Journal gagal dibuat, HFS mengembalikan
+EINVAL=22, lalu loop mount root mencetak errno=19. Ini belum membuktikan volume
+korup. HFS root dapat mencoba journal initialization walau root read-only;
+shortcut journal bersih untuk non-root mengecualikan `MNT_ROOTFS`.
+
+## Tes berikutnya: UFS baca-tulis untuk journal dan launchd iOS
+
+[Download timelm-0086-ufs-rw-c1-wdtstop.img](https://pixeldrain.com/u/G1CYVE4s).
 
 ```bash
-fastboot boot timelm-0086-ufs-ro-c1-wdtstop.img
+fastboot boot timelm-0086-ufs-rw-c1-wdtstop.img
 ```
 
 ```text
-SHA256 a36fe2ef1895b5e64e307e5428ede54d149472f4b18a1635eb9eda521d4a4869
-trial  0086-ufs-ro-wdtstop-r39974714520
+SHA256 9b6582183c7ef6e069d0e49a17b97a32d829090574a9b2cf1c84fd082c5e4dd1
+trial  0086-ufs-rw-wdtstop-r39974714520
 ```
 
-Perbandingan byte membuktikan kernel, shim, ADT, static-init segment dan DTB sama
-persis dengan baseline watchdog-stop yang sudah diuji. Hanya root arguments dan
-trial ID berubah: `rd=ufsroot0 ufsrw=0 rootrw=0`. Tetap `cpus=1`, timer 27,
-`startup_debug=0`, `timelm_wdt=stop`, dan probe keys/touch/USB serta sweetlog mati.
-Penulisan blok userdata ditolak. **Image UFS ini belum diuji pada HP.**
+Kernel, shim, ADT, static-init segment dan DTB identik dengan trial RO. Hanya
+`ufsrw=1 rootrw=1 launchd_unsecure_cache=1` dan trial ID berubah. Tetap satu CPU,
+timer 27, quiet, watchdog-stop, keys/touch/USB probe dan sweetlog mati.
+**Image RW belum diuji di HP.** Boot ini mengizinkan penulisan filesystem/journal
+pada userdata; tidak mem-flash ulang image atau boot partition. Pemeriksaan journal
+dan batas partisi tetap dipertahankan. Keberhasilan write UFS belum terbukti.
 
-Ambil log layar penuh, termasuk trial ID, urutan UFS pertama dan error pertama.
-Marker yang dicari:
+Catat log mulai UFS/journal sampai error pertama atau proses launchd. Target:
 
-```text
-SWEET: IOFindBSDRoot: probing the UFS for the root volume
-SWEET UFS: mapping host PA=...
-SWEET UFS: allocating contiguous DMA memory
-SWEET UFS: taking over the host at ...
-SWEET UFS: host taken over, sending TEST UNIT READY
-SWEET UFS: looking for partition "userdata"
-SWEET UFS: "userdata" on LUN ...
-BSD root: ufsroot0, major ...
-```
+- Journal initialization tidak lagi gagal dengan EROFS.
+- HFS root berhasil mount dan BSD melewati `vfs_mountroot`.
+- `/sbin/launchd` dari volume iOS berhasil exec; ini berbeda dari static init md0.
+- Identifikasi daemon/exception pertama bila userland belum melanjutkan ke UI.
 
-Lalu cari keberhasilan HFS mount dan kelanjutan BSD. Layanan iOS mungkin gagal
-pada root baca-saja; tujuan trial ini membuktikan transport dan filesystem.
-Setelah storage/volume tervalidasi, siapkan UFS baca-tulis dengan kernel/shim sama,
-`ufsrw=1 rootrw=1 launchd_unsecure_cache=1`, untuk mencoba launchd iOS sebenarnya.
-Tidak perlu flash ulang userdata untuk mengganti kernel/boot image.
-
-| Titik gagal | Arah diagnosis |
+| Titik gagal berikutnya | Arah diagnosis |
 |---|---|
-| Mapping/alokasi DMA | MMIO map, contiguous allocation, physical address |
-| Host takeover | HCE/HCS/CAP/list state dan keadaan link dari ABL |
-| Command SCSI | OCS/sense, DMA/cache/SMMU, logical block size dan LUN |
-| GPT/userdata | LUN aktual, capacity, GPT header/CRC/entry/bounds |
-| HFS mount | Header HFS, journal dan kebutuhan recovery; bedakan dari transport |
-| Root ter-mount, exec gagal | errno/exception pertama, dyld/cache/permission |
+| Write SCSI timeout/OCS/sense | Jalur write DMA/cache/SMMU, actual logical block size/LUN |
+| Journal masih EROFS | Pastikan trial ID dan embedded flags RW, jangan memakai image RO lama |
+| Journal/HFS EINVAL setelah write berhasil | Validasi JIB/header/journal, jangan bypass check untuk menyembunyikan error |
+| HFS mount sukses, exec gagal | errno/exception pertama, dyld/cache/permission |
 | launchd berjalan, belum GUI | backboardd/SpringBoard dan IOSurface/IOMFB |
+
+Tidak perlu reflash userdata berdasarkan log RO ini. Jika ada kerusakan nyata,
+buktikan melalui metadata/fsck sebelum memilih perbaikan filesystem.
 
 ## Artifact aktif dan fallback
 
 | Artifact | Lokasi/download | Status |
 |---|---|---|
 | RAM-disk watchdog-stop | [acwZLzob](https://pixeldrain.com/u/acwZLzob), `shim/out/timelm-0086-rd-c1-wdtstop.img` | PID 1 sampai heartbeat 70 dilaporkan user |
-| UFS read-only watchdog-stop | [fvpL6Dpf](https://pixeldrain.com/u/fvpL6Dpf), `shim/out/timelm-0086-ufs-ro-c1-wdtstop.img` | Belum dites di HP |
+| UFS read-only watchdog-stop | [fvpL6Dpf](https://pixeldrain.com/u/fvpL6Dpf) | HFS/journal terbaca; mount gagal EROFS |
+| UFS read-write watchdog-stop | [G1CYVE4s](https://pixeldrain.com/u/G1CYVE4s), `shim/out/timelm-0086-ufs-rw-c1-wdtstop.img` | Trial berikutnya, belum dites |
 | Kernel 0086 | `xnu/out/kernel.development.sweet` | CI sukses dan baseline fisik diuji |
 
 ```text
@@ -92,7 +96,8 @@ Image diinspeksi: 10 segmen kernel, ADT, DTB, provenance dan checksum upload coc
 Upload menggunakan `pd upload`.
 
 Manifest: [RAM-disk](docs/evidence/0086-wdtstop-build.json),
-[UFS RO](docs/evidence/0086-ufs-ro-wdtstop-build.json). File `.img.json` dan
+[UFS RO](docs/evidence/0086-ufs-ro-wdtstop-build.json),
+[UFS RW](docs/evidence/0086-ufs-rw-wdtstop-build.json). File `.img.json` dan
 `.img.sha256` juga berada di `shim/out/`.
 
 ## Perbaikan yang harus dipertahankan
