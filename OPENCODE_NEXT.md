@@ -1,336 +1,153 @@
-# Handoff berikutnya untuk OpenCode — LG V60 / timelm
+# Handoff OpenCode — LG V60 / timelm
 
-Tanggal: 2026-10-23. Mulai dari file ini agar tidak mengulang investigasi sebelumnya.
+Diperbarui 2026-10-23. Mulai dari checkpoint ini; investigasi lama tidak perlu diulang.
 
-## IMAGE AKTIF BERIKUTNYA: 0086 dengan APSS watchdog-stop di shim
+## Checkpoint terbaru: RAM-disk PID 1 bertahan sampai heartbeat 70
 
-**Hasil HP terbaru:** 0086 berhasil mount `md0`, menyelesaikan BSD init, menjalankan
-static **PID 1**, dan mencetak `still alive` sampai heartbeat=4, lalu reboot.
-[Bukti log](docs/evidence/0086-pid1-phone-result.txt). Baseline transisi kernel ke
-userspace sudah terbukti; stabilitas terhadap reset belum. Ini belum Apple launchd.
+User melaporkan image `0086-rd-wdtstop-r39974714520` menjalankan static PID 1 dan
+heartbeat sudah **70 serta terus bertambah**, sekitar 350 detik. Log tertulis
+memperlihatkan heartbeat 1–18, timer IRQ bertambah, dan `SWEET init: still alive`.
+[Bukti](docs/evidence/0086-wdtstop-stable-phone-result.txt).
 
-Kernel, timer/SGI, RAM-disk dan RTC sudah melewati milestone sebelumnya. Prioritas
-sekarang menguji watchdog yang diwariskan bootloader; tidak perlu mengulang build
-kernel atau mengganti userdata. Reset reason belum didapat, sehingga watchdog APSS
-masih hipotesis yang diuji, bukan penyebab yang sudah dipastikan.
+Sebelumnya kernel yang sama tanpa watchdog-stop reset sesudah heartbeat 4.
+Perubahan watchdog APSS memberi bukti praktis kuat terhadap penyebab reset lama.
+Nilai register before/after dan reset reason belum disuplai, sehingga audit sebab
+reset hardware belum lengkap. Jangan mengklaim semua watchdog atau stabilitas SMP
+sudah tervalidasi.
 
-**Uji [timelm-0086-rd-c1-wdtstop.img](https://pixeldrain.com/u/acwZLzob):**
+**Sudah terbukti pada HP:** satu CPU, timer 27, SGI1, BSD initialization, root `md0`,
+devfs, static userspace PID 1, syscall dan timed sleep selama beberapa menit.
+**Belum terbukti:** UFS/HFS root iOS, Apple's launchd, SpringBoard, SMP, driver fisik
+input/network dan stabilitas jangka panjang. PID 1 yang sekarang adalah init kecil
+dari `tools/sweet-init.S`, bukan launchd Apple.
 
-```text
-image SHA256 ca0b941ef2e8535550e10595e78a2fb8dbdc170ae6948ea7fef1248153bff71e
-trial         0086-rd-wdtstop-r39974714520
-kernel        0086, identik dengan image sebelumnya
-```
+## Tes berikutnya: UFS baca-saja dengan kernel dan shim yang sudah diuji
 
-```bash
-fastboot boot timelm-0086-rd-c1-wdtstop.img
-```
-
-Rekam layar shim awal yang ditahan sekitar dua detik. Cari `WDT EN before=...
-after=...`, `WDT status=... bark=...`, `WDT BITE`, dan salah satu:
-
-- `APSS stop confirmed`: bit enable aktif lalu readback menjadi mati.
-- `APSS already disabled`: watchdog ini sudah mati saat shim memeriksanya.
-- `STOP NOT CONFIRMED`: register tidak memberi hasil yang dapat dikonfirmasi.
-
-Lalu biarkan static PID 1 berjalan **minimal 2–5 menit**. Jika bertahan jauh
-melewati durasi reset sebelumnya setelah stop dikonfirmasi, lanjutkan validasi
-stabilitas, lalu siapkan UFS quiet dengan shim yang sama. Jika watchdog sudah mati
-atau reset tetap terjadi, kumpulkan reset reason dan periksa PMIC/firmware/TZ
-watchdog atau jalur exception. Jangan menganggap semua watchdog sudah mati hanya
-karena APSS EN=0.
-
-Source Linux vendor LG `drivers/soc/qcom/watchdog_v2.c` dan mainline
-`drivers/watchdog/qcom-wdt.c` sama-sama memverifikasi base `0x17c10000` dan layout
-KPSS: RESET +0x04, ENABLE +0x08, STATUS +0x0c, BARK +0x10, BITE +0x14. Prosedur stop:
-write 0 ke ENABLE, barrier, readback. Implementasi baru hanya melakukan ini ketika
-boot-arg **`timelm_wdt=stop`** ada dan bit enable aktif. Tidak mengubah PMIC, secure
-world, timeout atau reset register. Image biasa tanpa flag tidak mengakses watchdog.
-[Audit sumber](docs/evidence/watchdog-source-audit.json).
-
-Kode shim: `shim/watchdog.h` dan `shim/loader.c`, commit `90d21f9`. 13 regression
-test lulus, termasuk gate flag dan pemeriksaan hanya register ENABLE yang berubah.
-Shim ARM64 dibuild lokal paralel `JOBS=56`; kernel CI tidak dibuild ulang. Perbandingan
-byte membuktikan kernel/ADT/static init/DTB identik dengan 0086 sebelumnya; yang
-berubah shim dan flag/trial ID. Upload dengan `pd upload`, checksum cocok.
-[Manifest](docs/evidence/0086-wdtstop-build.json). **Varian wdtstop belum diuji di HP.**
-
-## Riwayat 0086: RAM-disk quiet, RTC wait dilewati
-
-[Download timelm-0086-rd-c1.img](https://pixeldrain.com/u/ejaXM7dn).
-[CI 39974714520 sukses](https://github.com/rofikkerneldev/ios_timelm/actions/runs/39974714520),
-commit kernel `beaed0f90ed9fd286ee6ccadb1741dbde6d2b99f`.
-
-```text
-image SHA256 322ccbde46e8b2569aca584a397f51d00c896afe9fd3563a139a125742866f81
-kernel SHA256 aa2a737c5b79f2b5102d47cac5bc7f99faf3a9008d314bfcef1066be862da9a8
-trial         0086-rd-r39974714520
-```
+[Download timelm-0086-ufs-ro-c1-wdtstop.img](https://pixeldrain.com/u/fvpL6Dpf).
 
 ```bash
-fastboot boot timelm-0086-rd-c1.img
+fastboot boot timelm-0086-ufs-ro-c1-wdtstop.img
 ```
-
-Satu CPU, timer 27, `startup_debug=0`, root RAM-disk; userdata tetap tidak perlu
-diflash ulang. [Manifest](docs/evidence/0086-build.json). File lokal:
-`shim/out/timelm-0086-rd-c1.img`; kernel aktif `xnu/out/kernel.development.sweet`
-sekarang adalah **0086**. Source rekonstruksi: `$HOME/work/timelm-0086/verify`.
-Backup 0085: `$HOME/work/timelm-0086/kernel-before0086.sweet`.
-
-86 patch apply, 12 regression test, kompilasi lokal translation unit yang berubah,
-build XNU macOS dan tes SGI setelah build lulus. Seluruh 10 segmen XNU dalam boot
-image, ADT/DTB, commit dan patch digest serta checksum upload telah diverifikasi.
-**Update hasil HP:** 0086 sudah mencapai static PID 1, tetapi reboot sesudah
-heartbeat=4. Lihat bagian teratas untuk varian watchdog-stop berikutnya.
-
-Marker IRQ tetap bertuliskan `TIMELM IRQ FIX 0085` karena perbaikan tersebut
-diwariskan. Bedakan image baru memakai **trial 0086** dan marker `TIMELM RTC 0086`.
-Target berikutnya: melewati `IOKitInitializeTime`, mencapai static PID 1, lalu
-melihat apakah sistem tetap hidup melampaui waktu reset sebelumnya. Jika milestone
-maju tetapi reset tetap periodik, lanjutkan investigasi reset reason/watchdog.
-DTB memiliki `/soc@0/watchdog@17c10000`, compatible `qcom,apss-wdt-sm8250` /
-`qcom,kpss-wdt`, reg `0x17c10000+0x1000`. Ini petunjuk lokasi, bukan izin untuk
-menulis offset yang belum divalidasi terhadap source driver SM8250.
-
-## UPDATE TERBARU: quiet membuktikan timer/SGI bekerja, reboot pada penantian RTC
-
-User telah menguji `trial=0085-rd-quiet-r39968689712` dan mengonfirmasi
-**reboot setelah heartbeat=4**. [Bukti log](docs/evidence/0085-quiet-phone-result.txt).
-SGI1 CPU0 diterima, timer meningkat dari 41 ke 1157, dan empat heartbeat berjalan.
-BSD terakhir mencetak `calling IOKitInitializeTime`; belum terlihat return, mount
-root atau PID 1. Prioritas berpindah dari perbaikan interrupt ke penantian RTC/reset.
-
-`IOKitInitializeTime()` menunggu resource `IORTC` maksimal 30 detik, sedangkan
-port ini belum menyediakan driver tersebut. Dugaan watchdog firmware konsisten
-dengan reset pada durasi tetap, tetapi **belum dibuktikan oleh reset reason**.
-Pesan IOWatchdog stub dan boot-arg `wdt=-1` tidak membuktikan watchdog Qualcomm mati.
-
-Patch 0086 (`0086-timelm-skip-unavailable-rtc-service-wait.patch`) melewati
-penantian IORTC hanya pada konfigurasi SWEET/timelm. Tetap jalankan
-`clock_initialize_calendar()` dengan fallback platform (waktu awal nol). Timer
-monotonik dan heartbeat tidak diubah; watchdog hardware juga belum diubah.
-Ini menghindari menunggu layanan yang tidak ada, bukan bukti reset sudah teratasi.
-
-Build berikutnya cukup **satu image RAM-disk quiet cpus=1**. Marker yang dicari:
 
 ```text
-TIMELM RTC 0086: no IORTC driver, skipping 30s service wait
-TIMELM RTC 0086: calendar initialized with platform fallback
-bsd_init: returned from IOKitInitializeTime
-*** SWEET userspace: init running as PID 1 ***
+SHA256 a36fe2ef1895b5e64e307e5428ede54d149472f4b18a1635eb9eda521d4a4869
+trial  0086-ufs-ro-wdtstop-r39974714520
 ```
 
-Jika setelah 0086 tetap reboot pada durasi yang sama tetapi milestone maju,
-investigasi watchdog/reset reason harus diprioritaskan. Jangan mengubah timer/SGI
-yang sudah terbukti bekerja, dan jangan menganggap volume iOS penyebab reset
-karena trial ini masih menggunakan RAM-disk. UFS tetap menunggu baseline PID 1.
+Perbandingan byte membuktikan kernel, shim, ADT, static-init segment dan DTB sama
+persis dengan baseline watchdog-stop yang sudah diuji. Hanya root arguments dan
+trial ID berubah: `rd=ufsroot0 ufsrw=0 rootrw=0`. Tetap `cpus=1`, timer 27,
+`startup_debug=0`, `timelm_wdt=stop`, dan probe keys/touch/USB serta sweetlog mati.
+Penulisan blok userdata ditolak. **Image UFS ini belum diuji pada HP.**
 
-## Riwayat: reboot dengan verbose startup sebelum image quiet
-
-User melaporkan **ketiga image 0085 awal** mencetak banyak
-`kernel_startup_initialize_upto[7, rank -1]: <alamat>(<alamat>)`, framebuffer lambat,
-lalu reboot sekitar 30 detik. Belum ada foto/alamat terakhir atau panic yang
-teridentifikasi. Source XNU membuktikan baris itu adalah verbose startup tracing:
-subsystem 7 = ZALLOC, rank -1 = `STARTUP_RANK_LAST`, dan alamatnya callback/argumen.
-Kernel CI memiliki 872 callback ZALLOC (803 rank LAST), serta 2182 callback SYSCTL.
-
-Semua image awal memakai `startup_debug=1`. Ini menambah beban console dan menjadi
-variabel pertama yang harus diisolasi. Penyebab reboot **belum dipastikan**;
-kemungkinan watchdog atau exception nyata tetap terbuka.
-
-**Image berikutnya yang harus diuji:**
-[timelm-0085-rd-c1-quiet.img](https://pixeldrain.com/u/bz3c6qFV).
-
-```text
-SHA256 a6b51a316687d4b88aaa470129feaf0fc3ad84d4b616e642282a7a4a0570dc39
-trial  0085-rd-quiet-r39968689712
-```
-
-```bash
-fastboot boot timelm-0085-rd-c1-quiet.img
-```
-
-Kernel tidak dibuild ulang. Perbandingan byte memastikan kernel, ADT, static init,
-shim dan DTB sama dengan image rd awal; hanya `startup_debug=0` dan trial ID yang
-berubah. [Manifest quiet](docs/evidence/0085-quiet-build.json). Default script build
-sekarang `startup_debug=0`; trace BSD dan heartbeat tetap tersedia.
-
-Jika quiet melewati tahap ini, lanjutkan baseline RAM-disk sampai PID 1 dan baru
-buat varian UFS quiet bila diperlukan. Jangan langsung mengulang kedua image UFS
-verbose lama. Jika quiet tetap reboot sekitar durasi yang sama, rekam video layar
-dan periksa reset reason/watchdog Qualcomm yang diwariskan firmware. `wdt=-1`
-dan stub IOWatchdog XNU tidak membuktikan watchdog hardware Qualcomm dinonaktifkan.
-Jika ada alamat callback terakhir yang konsisten, petakan ke simbol kernel CI
-dan instrumen entry/exit callback tersebut secara terbatas.
-
-## Status yang sudah selesai
-
-Tambahan bukti dari user (log boot sebelumnya):
-
-```text
-SWEET CPU: cpu=1 self-SGI1 mpidr=0x100 value=0x10011
-SWEET CPU: cpu=1 entered initCPU mpidr=0x100 EL1 IRQs=0
-```
-
-`0x10011` memiliki INTID=0, Aff1=1, TargetList=0x11. Ini konsisten dengan
-regresi encoding 0083; SGI1 untuk MPIDR 0x100 seharusnya `0x01010001`
-(INTID=1, Aff1=1, TargetList=1), yang telah diperbaiki 0085. Jangan mengganti
-kembali encoding baru berdasarkan log lama ini. `IRQs=0` dalam `initCPU`
-sekunder masih sesuai jalur startup yang meng-unmask interrupt setelah kembali;
-perlu bukti interrupt benar-benar diterima sesudahnya.
-
-Potongan log juga memuat registrasi CPU0..CPU6. Quiet adalah `cpus=1` dan tidak
-menjalankan startup CPU1; potongan lama ini harus dibedakan dari hasil trial quiet.
-Tidak ada pesan penyebab panic/backtrace pada potongan yang diberikan. Pesan
-`gPanicBase is still not initialized` melaporkan area panic-log belum tersedia,
-bukan identifikasi penyebab exception. Ambil hasil trial quiet dan marker ID-nya
-sebelum menentukan perubahan kernel berikutnya.
-
-- Analisis awal: [TIMELM_BOOT_ROADMAP.md](docs/TIMELM_BOOT_ROADMAP.md).
-- Perbaikan software 0085 sudah diimplementasikan, di-commit, dan dibuild.
-- Commit kode/kernel: `2c82298cb806c785fbdb600048baf0247f596bec`.
-- [CI run 39968689712](https://github.com/rofikkerneldev/ios_timelm/actions/runs/39968689712)
-  selesai **success**, termasuk tes SGI dari source kernel setelah build.
-- 85 patch berhasil diterapkan ulang; 12 regression test lulus. Tujuh translation
-  unit kernel juga lulus pemeriksaan kompilasi lokal dengan header hasil CI.
-- Tiga boot image selesai, semua segmen XNU dibandingkan byte demi byte dengan
-  kernel CI, ADT di dalam image cocok dengan DTB, dan checksum upload diverifikasi.
-- Upload dilakukan menggunakan `pd upload`, sesuai permintaan user.
-- **Image awal sudah dilaporkan reboot oleh user; quiet belum diuji. Belum ada bukti PID 1, launchd, atau SpringBoard pada 0085.**
-- Userdata iOS sudah diflash sebelumnya. Tidak ada flash/boot HP pada sesi ini.
-
-## Download dan file lokal
-
-[Album seluruh boot image](https://pixeldrain.com/l/BMRkvoVC).
-
-| Urutan | File | Pixeldrain | Tujuan |
-|---|---|---|---|
-| 1 | `timelm-0085-rd-c1.img` | [Ko5ZLimb](https://pixeldrain.com/u/Ko5ZLimb) | RAM-disk static init, membuktikan timer dan PID 1 |
-| 2 | `timelm-0085-ufs-ro-c1.img` | [Hif51ceZ](https://pixeldrain.com/u/Hif51ceZ) | Diagnosis UFS/HFS dengan penulisan blok ditolak |
-| 3 | `timelm-0085-ufs-rw-c1.img` | [vopqD6dy](https://pixeldrain.com/u/vopqD6dy) | Mencoba root iOS dan launchd; userdata writable |
-
-Semua image: **16,941,056 byte**, HIGH RAM `[0x100000000, 0x270000000)`, **cpus=1**,
-virtual timer **27**, serta `sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=0`.
-HIGH window berukuran **5.75 GiB**, bukan 3.7 GiB.
-
-```text
-84988b681c3aace7b0d2447643e3da242b64467501455377e828a054a4e16467  timelm-0085-rd-c1.img
-3c2fbd4d9de94b95c4a396145aa637b4e95d0a3725ea38ea0ed7a91da3e9d5d6  timelm-0085-ufs-ro-c1.img
-5a55078cad4e7eb40e3f50b5576142cc1f3a0ca54a04c133bde383d713c6e803  timelm-0085-ufs-rw-c1.img
-```
-
-Lokasi di server:
-
-- Repo: `/home/rofikkernel/xnu/ios-timelm`.
-- Image dan manifest: `shim/out/timelm-0085-*.img`, `.img.json`, `.img.sha256`.
-- Kernel: `xnu/out/kernel.development.sweet`, SHA-256
-  `fed41d3b653d6def101a6477891d9c3e99dde45f306c1b3b98e4dbe56ee63e14`.
-- Provenance CI: `xnu/out/build-provenance.json`.
-- [Ringkasan artifact dan link](docs/evidence/0085-builds.json).
-- Source hasil rekonstruksi: `/home/rofikkernel/work/timelm-0085/verify`.
-- Backup kernel sebelum 0085: `/home/rofikkernel/work/timelm-0085/kernel-before0085.sweet`.
-- Log build image dan upload: `/home/rofikkernel/work/timelm-0085/`.
-- Panduan lebih lengkap: [TIMELM_0085_TEST.md](docs/TIMELM_0085_TEST.md).
-
-Manifest menunjukkan `source_dirty=true` karena panduan tes Markdown sedang
-ditulis saat packaging. Patch digest telah dicocokkan dengan artifact CI; kode
-kernel/shim yang dibuild sesuai commit di atas.
-
-## Mengapa build ini dibuat
-
-DTB LG V60 memiliki virtual timer PPI 11, yaitu INTID **27**, sedangkan port lama
-menggunakan **19**. Ini kandidat utama penyebab sleep/timeout tidak bangun, termasuk
-`IOSleep(1)` pada SMP dan penantian RTC sesudah BSD buffer initialization.
-Konflik konfigurasi terkonfirmasi; sebab hang di HP masih memerlukan tes fisik.
-
-Patch 0083 juga salah mengubah INTID SGI dari shift 24 ke shift 4. Perbaikan 0085
-mengembalikan encoding yang benar, menghapus write group-enable GICR yang tidak
-valid, memakai release/acquire untuk stage flags, dan mensyaratkan SGI1 benar-benar
-diterima sebelum CPU diumumkan siap. Kegagalan CPU tidak lagi dipublikasikan sebagai
-sukses semua CPU. Penghitungan interrupt tidak mencetak console dari handler IRQ.
-
-0085 menambahkan counter timer/SGI1 pada heartbeat, trial ID, marker keluar dari
-penantian RTC, trace sebelum mapping/alokasi UFS, dan scroll console per delapan
-baris untuk mengurangi penyalinan framebuffer. Default build sekarang HIGH/cpus=1,
-ADT selalu dibuat baru, dan command line terlalu panjang ditolak.
-
-## Prioritas selanjutnya: tes HP, lalu perbaiki berdasarkan milestone
-
-Jalankan di komputer yang terhubung dengan HP dalam fastboot:
-
-```bash
-fastboot boot timelm-0085-rd-c1.img
-```
-
-Tunggu **minimal 90 detik**. Rekam layar penuh, terutama trial ID dan baris terakhir.
+Ambil log layar penuh, termasuk trial ID, urutan UFS pertama dan error pertama.
 Marker yang dicari:
 
 ```text
-TIMELM IRQ FIX 0085: trial=0085-rd-r39968689712 timer=27 CNTFRQ=...
-SWEET CPU: cpu=0 ... SGI1 received=... timer-irqs=...
-bsd_init: returned from IOKitInitializeTime
-TIMELM: trial=0085-rd-r39968689712 heartbeat=... cpu0-timer=... cpu0-sgi1=...
-*** SWEET userspace: init running as PID 1 ***
-SWEET init: still alive
+SWEET: IOFindBSDRoot: probing the UFS for the root volume
+SWEET UFS: mapping host PA=...
+SWEET UFS: allocating contiguous DMA memory
+SWEET UFS: taking over the host at ...
+SWEET UFS: host taken over, sending TEST UNIT READY
+SWEET UFS: looking for partition "userdata"
+SWEET UFS: "userdata" on LUN ...
+BSD root: ufsroot0, major ...
 ```
 
-Jumlah timer harus bertambah dan pesan alive muncul kira-kira setiap lima detik.
-Static init ini membuktikan transisi ke userspace, **bukan Apple's launchd**.
-Setelah rd sukses, uji `ufs-ro`; setelah transport/filesystem tervalidasi, uji
-`ufs-rw` untuk iOS userland. Detail urutan ada di panduan tes.
+Lalu cari keberhasilan HFS mount dan kelanjutan BSD. Layanan iOS mungkin gagal
+pada root baca-saja; tujuan trial ini membuktikan transport dan filesystem.
+Setelah storage/volume tervalidasi, siapkan UFS baca-tulis dengan kernel/shim sama,
+`ufsrw=1 rootrw=1 launchd_unsecure_cache=1`, untuk mencoba launchd iOS sebenarnya.
+Tidak perlu flash ulang userdata untuk mengganti kernel/boot image.
 
-| Hasil terbaru | Tindakan OpenCode berikutnya |
+| Titik gagal | Arah diagnosis |
 |---|---|
-| Berhenti pada CPU wait / panic SGI | Periksa SGI1, DAIF, ICC_SRE/PMR/IGRPEN1, affinity GICR dan pending bits |
-| Berhenti di `IOKitInitializeTime`, timer tidak bertambah | Periksa routing timer runtime, CNTV_CTL/CVAL, CNTFRQ dan penantian scheduler |
-| rd berjalan, ufs-ro gagal sebelum SCSI | Periksa HCE/HCS/CAP, takeover host, alokasi DMA, SMMU firmware |
-| Command SCSI gagal | Temukan LUN dan ukuran blok aktual; periksa OCS/sense/doorbell/DMA |
-| UFS membaca, GPT/userdata tidak ditemukan | Validasi LUN, GPT CRC/entry/bounds dan kapasitas aktual |
-| HFS mount gagal | Periksa HFS header/journal; pisahkan kerusakan FS dari kegagalan transport |
-| HFS ter-mount, launchd gagal | Cari errno/exception pertama pada exec, dyld/shared cache dan permission |
-| launchd stabil, GUI belum tampil | Periksa backboardd/SpringBoard, IOSurface/IOMFB dan geometri display |
+| Mapping/alokasi DMA | MMIO map, contiguous allocation, physical address |
+| Host takeover | HCE/HCS/CAP/list state dan keadaan link dari ABL |
+| Command SCSI | OCS/sense, DMA/cache/SMMU, logical block size dan LUN |
+| GPT/userdata | LUN aktual, capacity, GPT header/CRC/entry/bounds |
+| HFS mount | Header HFS, journal dan kebutuhan recovery; bedakan dari transport |
+| Root ter-mount, exec gagal | errno/exception pertama, dyld/cache/permission |
+| launchd berjalan, belum GUI | backboardd/SpringBoard dan IOSurface/IOMFB |
 
-Kumpulkan hash image, trial ID, command line, lama menunggu, milestone terakhir,
-error pertama dan foto/video sebelum mengubah kernel berikutnya. Jika tidak ada
-hasil HP baru, lanjutkan pekerjaan host yang relevan dan jelaskan batas buktinya;
-jangan menyimpulkan boot sukses dari keberhasilan CI saja.
+## Artifact aktif dan fallback
 
-## Batas dan pekerjaan yang sengaja menunggu bukti HP
+| Artifact | Lokasi/download | Status |
+|---|---|---|
+| RAM-disk watchdog-stop | [acwZLzob](https://pixeldrain.com/u/acwZLzob), `shim/out/timelm-0086-rd-c1-wdtstop.img` | PID 1 sampai heartbeat 70 dilaporkan user |
+| UFS read-only watchdog-stop | [fvpL6Dpf](https://pixeldrain.com/u/fvpL6Dpf), `shim/out/timelm-0086-ufs-ro-c1-wdtstop.img` | Belum dites di HP |
+| Kernel 0086 | `xnu/out/kernel.development.sweet` | CI sukses dan baseline fisik diuji |
 
-- Jangan memakai image 0083/0084 sebagai image perbaikan saat ini. Riwayat log lama
-  ada di `docs/evidence/`; urutan layar lama bisa wrap dan kehilangan baris awal.
-- `sweetlog=0`: log persisten di userdata tidak diperbarui oleh image ini. Hasil
-  `sweet-log-pull` yang lama tidak membuktikan trial 0085.
-- Pertahankan userdata yang sudah diflash. Reflash hanya jika ada bukti korupsi
-  atau perubahan root yang memang diperlukan. `fastboot boot` image ufs-rw tetap
-  memungkinkan kernel/iOS menulis userdata meskipun boot partition tidak diflash.
-- Driver UFS masih mengasumsikan LUN0/4K dan link dari ABL. SMMU, DMA di atas 4 GiB,
-  GPT CRC dan geometri storage perlu divalidasi bila fase UFS gagal.
-- Touch/keys/USB fisik belum diport lengkap ke V60. Jangan mengaktifkannya hanya
-  karena HID stub terdaftar. SMP 2/4/8 CPU dilakukan sesudah baseline satu CPU stabil.
-- LOW base tidak 32-MiB aligned dan ditolak packer sekarang. Klaim lama bahwa LOW
-  crash pasti akibat bank boundary belum terbukti. DTB statis `/memory` berukuran
-  nol; gunakan runtime map untuk memvalidasi RAM board 12 GB maupun stock 8 GB.
-
-## Build selanjutnya bila dibutuhkan
-
-Server Debian 12 tanpa GUI. Simpan build di `$HOME/work/`, hindari `/tmp` sesuai
-preferensi user. User mengizinkan paralelisme sampai `-j56` pada server. Full XNU
-proyek ini memakai CI macOS/Xcode; shim Linux menerima `JOBS=56` dan memiliki tujuh
-translation unit independen. Git push lewat SSH tersedia; `gh` lokal belum login.
-GitHub connector dapat membaca job log dan mendownload artifact bila tersedia.
-
-```bash
-cd /home/rofikkernel/xnu/ios-timelm
-TMPDIR="$HOME/work/timelm-0085/tmp" XNU_SOURCE="$HOME/work/timelm-0085/verify" \
-  python3 tools/test_timelm_boot.py -v
-python3 tools/validate-repo.py
-# Setelah edit patch: rekonstruksi ulang source dengan tools/verify-patches.sh.
-# Build kernel melalui workflow xnu.yml, ambil artifact dari commit/run yang tepat.
-JOBS=56 PROFILE=rd TRIAL=NEXT-rd-test1 tools/build-boot.sh high timelm-NEXT-rd-c1.img
-pd upload shim/out/timelm-NEXT-rd-c1.img
+```text
+RAM-disk SHA256 ca0b941ef2e8535550e10595e78a2fb8dbdc170ae6948ea7fef1248153bff71e
+Kernel SHA256   aa2a737c5b79f2b5102d47cac5bc7f99faf3a9008d314bfcef1066be862da9a8
+Kernel commit   beaed0f90ed9fd286ee6ccadb1741dbde6d2b99f
+Shim code       90d21f99042ec2f9354c84f0aba0b2c20a4de313
 ```
 
-Periksa checksum artifact serta commit/patch digest sebelum mengganti kernel.
-Jangan mengambil release `latest` tanpa memastikan provenance-nya. Setiap output
-boot image harus lolos `tools/inspect_boot.py` dan disertai manifest/checksum.
+[CI 39974714520](https://github.com/rofikkerneldev/ios_timelm/actions/runs/39974714520)
+berhasil. 86 patch apply; 13 regression test termasuk encoder SGI aktual dan gate/
+register watchdog lulus. Kernel dibuild di macOS CI, shim lokal sampai `JOBS=56`.
+Image diinspeksi: 10 segmen kernel, ADT, DTB, provenance dan checksum upload cocok.
+Upload menggunakan `pd upload`.
+
+Manifest: [RAM-disk](docs/evidence/0086-wdtstop-build.json),
+[UFS RO](docs/evidence/0086-ufs-ro-wdtstop-build.json). File `.img.json` dan
+`.img.sha256` juga berada di `shim/out/`.
+
+## Perbaikan yang harus dipertahankan
+
+- **0085:** virtual timer 27 dari DTB timelm, bukan 19 warisan SWEET. Encoding SGI
+  benar: CPU0 SGI1 `0x01000001`, CPU1 `0x01010001`. Stage flags release/acquire;
+  sukses startup mensyaratkan SGI1 diterima, kegagalan tidak dipublikasikan sukses.
+- **0086:** lewati penantian 30 detik terhadap resource `IORTC` yang drivernya belum
+  ada. Tetap jalankan `clock_initialize_calendar()` memakai fallback platform.
+- **Quiet:** `startup_debug=0`. Verbose lama mencetak 872 callback ZALLOC dan
+  ribuan callback lain sehingga framebuffer lambat. `[7, rank -1]` adalah trace
+  startup ZALLOC/rank LAST, bukan diagnosis panic.
+- **Watchdog:** boot-arg `timelm_wdt=stop` mengaktifkan handoff shim di
+  `shim/watchdog.h` dan `shim/loader.c`. Base APSS `0x17c10000`, EN +0x08.
+  Jika enable aktif, write 0, barrier, baca kembali. Tidak mengubah reset/timeout,
+  PMIC atau secure-world registers. Tanpa flag, shim tidak mengakses watchdog.
+  [Audit driver vendor LG dan mainline](docs/evidence/watchdog-source-audit.json).
+- Marker IRQ tetap bertuliskan `TIMELM IRQ FIX 0085`, walau kernel kini 0086.
+  Identifikasi trial dari ID, hash dan marker RTC 0086.
+
+## Batas penting saat melanjutkan
+
+- Pertahankan `cpus=1` sampai root iOS terbukti; SMP bukan prasyarat percobaan ini.
+- Userdata dilaporkan sudah berisi root iOS. Validasi lewat pembacaan, bukan reflash
+  berulang. Root builder lama melaporkan volume HFS 16 GiB yang sehat; isi aktual
+  di HP belum dibandingkan kembali.
+- Driver UFS masih mengasumsikan LUN0 dan blok 4096 byte. MMIO cocok tidak menjamin
+  DMA/SMMU benar; DTB mengiklankan stream UFS 0xe0/0x4e0. UFS memakai bounce buffer
+  fisik contiguous dan dapat dialokasikan di atas 4 GiB.
+- `sweetlog=0` berarti log persisten userdata tidak diperbarui. Jangan membaca log
+  lama sebagai hasil trial baru. Verifikasi area tail di luar filesystem sebelum
+  mengaktifkan logging ke disk.
+- HID/battery yang terdaftar masih stub. Probe keys/touch/USB fisik mati untuk
+  menghindari hardware SWEET yang belum diport. Jangan mengaktifkannya bersamaan
+  dengan eksperimen storage.
+- HIGH adalah `[0x100000000,0x270000000)`, 5.75 GiB. LOW base lama tidak 32-MiB
+  aligned dan kini ditolak packer. DTB statis `/memory` berukuran nol; jangan
+  menyimpulkan runtime RAM 8/12 GB hanya dari file itu.
+
+## Workspace dan build berikutnya
+
+Repo `/home/rofikkernel/xnu/ios-timelm`, server Debian 12 tanpa GUI. Gunakan
+`$HOME/work/` dan hindari `/tmp`, sesuai preferensi user. Git push SSH tersedia;
+`gh` lokal belum login. GitHub connector dapat membaca log/download artifact.
+Source XNU lengkap rekonstruksi: `$HOME/work/timelm-0086/verify`. Header/compile
+context lama: `$HOME/work/timelm-0085/buildtree`. Backup kernel di folder build.
+
+Untuk image berikutnya, mulai dari command line manifest aktif dan **pertahankan
+`timelm_wdt=stop` secara eksplisit**. Default umum script tidak menambahkan flag
+ini; menyalin default saja bisa mengembalikan reset lama. Pasang kernel CI dari
+commit/run tepat, cocokkan patch digest dan checksum, lalu inspect semua payload.
+Tidak perlu build ulang kernel apabila hanya root mode yang berubah.
+
+Baca [roadmap analisis lengkap](docs/TIMELM_BOOT_ROADMAP.md) bila diperlukan.
+Riwayat bukti tersimpan di `docs/evidence/`: 0085 quiet reboot pada RTC,
+0086 mencapai PID 1 tetapi reset, lalu watchdog-stop bertahan sampai heartbeat 70.
+Checkpoint ini menjadi acuan terbaru; klaim "belum dites" pada dokumen historis
+merujuk waktu dokumen tersebut dibuat.

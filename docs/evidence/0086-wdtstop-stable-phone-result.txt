@@ -1,0 +1,24 @@
+Source: user-provided phone log and follow-up statement, 2026-10-23.
+Relevant excerpt; omitted intermediate heartbeats and successful BSD setup:
+
+bsd_init: done
+load_init_program: attempting to load /sbin/launchd
+*** SWEET userspace: init running as PID 1 ***
+TIMELM: trial=0086-rd-wdtstop-r39974714520 heartbeat=2 cpu0-timer=480 cpu0-sgi1=1
+SWEET init: still alive
+TIMELM: trial=0086-rd-wdtstop-r39974714520 heartbeat=18 cpu0-timer=5481 cpu0-sgi1=1
+SWEET init: still alive
+
+The supplied transcript covers heartbeat 1..18. Heartbeat 1's timer value is partly unreadable.
+User follow-up: "hearthbeat sudah sampai 70 sekarang dan terus berlanjut".
+
+Confirmed by supplied log: BSD completion, md0 root, static PID 1, repeated timed
+syscalls, growing timer IRQ counter, SGI1 received. User reports continued progress
+through heartbeat 70, approximately 350 seconds at the configured five-second interval.
+The previous baseline without watchdog-stop reset after heartbeat 4.
+
+Interpretation: strong practical evidence that the APSS watchdog handoff addresses
+the short reset seen in earlier tests. Register before/after values and reset reason
+have not been supplied, so this is not a complete hardware reset-cause audit.
+Not yet established: UFS access, HFS/iOS root mount, Apple launchd, SpringBoard,
+multi-CPU stability or long-term uptime under load.
