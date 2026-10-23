@@ -72,7 +72,41 @@ jobs:
         env:
           # keep going after errors so one run reports every compile failure
           MAKEFLAGS: ${{ inputs.keep_going == 'false' && '' || '-k' }}
-        run: bash build.sh
+          # same key the publish workflow uses: lets a failed build drop its
+          # log on pixeldrain, where it can be read without a GitHub login
+          PD_AUTH: 64e8a6ac-6e73-4dab-8bc0-d5e4dabade82
+        run: |
+          set -o pipefail
+          rc=0
+          bash build.sh 2>&1 | tee build.log || rc=${PIPESTATUS[0]}
+          echo "build.sh exit=$rc"
+          if [ "$rc" -ne 0 ]; then
+            echo "### build failed (exit $rc)" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            grep -E "error:|fatal error:|Error [0-9]+" build.log | head -80 >> "$GITHUB_STEP_SUMMARY" || true
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            # The job log needs a GitHub login, the annotation API does not:
+            # publish the compile errors as annotations of this commit.
+            i=0
+            while IFS= read -r line; do
+              i=$((i + 1))
+              [ "$i" -gt 12 ] && break
+              line=${line//'%'/'%25'}
+              line=${line//$'\r'/'%0D'}
+              printf '::notice title=build error %d::%s\n' "$i" "$line"
+            done < <(grep -E "error:|fatal error:" build.log | head -12 || true)
+            # ... and the whole log on pixeldrain, for the full context.
+            if [ -s build.log ]; then
+              id=$(curl -sS -u ":$PD_AUTH" -T build.log \
+                "https://pixeldrain.com/api/file/build-${GITHUB_RUN_ID}.log" \
+                | jq -r '.id // empty' || true)
+              if [ -n "$id" ]; then
+                printf '::notice title=build log::https://pixeldrain.com/u/%s\n' "$id"
+                echo "- full build log: https://pixeldrain.com/u/$id" >> "$GITHUB_STEP_SUMMARY"
+              fi
+            fi
+          fi
+          exit $rc
 
       - name: Package build tree for local compiles
         if: always()
