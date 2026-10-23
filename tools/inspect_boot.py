@@ -109,6 +109,13 @@ def main():
         if dtb != args.dtb.read_bytes():
             raise ValueError('embedded Android DTB differs from expected DTB')
         info, nodes = payload_info(payload, kernel)
+        if 'timelm_wdt=stop' in info['cmdline'].split():
+            hardware = dtcheck.parse_dtb(args.dtb)
+            _, watchdog = dtcheck.find(hardware, lambda p, props:
+                b'qcom,kpss-wdt' in props.get('compatible', b'').split(b'\0'))
+            if watchdog is None or dtcheck.cells64(watchdog.get('reg', b'')) != [0x17c10000, 0x1000]:
+                raise ValueError('watchdog-stop profile requires the SM8250 APSS watchdog DTB region')
+            info['watchdog_action'] = 'shim stops APSS watchdog if enabled; runtime result unverified'
         if args.trial and 'timelm_trial=' + args.trial not in info['cmdline'].split():
             raise ValueError('embedded trial ID differs')
         if dtcheck.check_nodes(dtcheck.parse_dtb(args.dtb), nodes):

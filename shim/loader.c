@@ -11,6 +11,7 @@
 #include "console.h"
 #include "fdt.h"
 #include "loader.h"
+#include "watchdog.h"
 
 #define BOOT_LINE_LENGTH	608
 #define PAGE_16K		0x4000UL
@@ -79,6 +80,27 @@ static int magic_ok(const char *m)
 
 typedef void (*xnu_entry_t)(uint64_t boot_args_pa);
 
+static void
+watchdog_handoff(const char *command)
+{
+	if (!timelm_wdt_requested(command, BOOT_LINE_LENGTH))
+		return;
+	struct timelm_wdt_state state = {0};
+	int result = timelm_wdt_stop((volatile uint32_t *)TIMELM_WDT_BASE, &state);
+	con_hex2("WDT EN", "before=", state.before, "after=", state.after);
+	con_hex2("WDT", "status=", state.status, "bark=", state.bark);
+	con_hex("WDT BITE", state.bite);
+	con_str("WDT", result ? "STOP NOT CONFIRMED" :
+	    (state.before & 1U) ? "APSS stop confirmed" : "APSS already disabled");
+	/* Keep the diagnostic on screen briefly; film this screen if reset persists. */
+	uint64_t frequency, start, now;
+	__asm__ volatile("mrs %0, cntfrq_el0" : "=r"(frequency));
+	__asm__ volatile("mrs %0, cntpct_el0" : "=r"(start));
+	do {
+		__asm__ volatile("mrs %0, cntpct_el0" : "=r"(now));
+	} while (now - start < frequency * 2);
+}
+
 const char *loader_boot(uintptr_t dtb)
 {
 	uint64_t rd_start, rd_end;
@@ -102,6 +124,7 @@ const char *loader_boot(uintptr_t dtb)
 	/* The payload must not overlap where the kernel goes. */
 	if (rd_end > p->phys_base && rd_start < p->phys_base + p->mem_size)
 		return "ramdisk overlaps kernel memory";
+	watchdog_handoff(p->cmdline);
 
 	for (uint32_t i = 0; i < p->nsegs; i++) {
 		const struct payload_seg *s = &p->segs[i];

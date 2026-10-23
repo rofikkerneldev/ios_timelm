@@ -119,5 +119,42 @@ class SGITests(unittest.TestCase):
             subprocess.run([str(binary)], check=True)
 
 
+class WatchdogTests(unittest.TestCase):
+    def test_opt_in_gate_and_exact_register_write(self):
+        program = r'''
+        #include <assert.h>
+        #include <string.h>
+        #include "watchdog.h"
+        int main(void) {
+            assert(!timelm_wdt_requested("cpus=1", 7));
+            assert(!timelm_wdt_requested("x_timelm_wdt=stop", 17));
+            assert(!timelm_wdt_requested("timelm_wdt=stopmore", 19));
+            assert(!timelm_wdt_requested("timelm_wdt=stop", 5));
+            assert(timelm_wdt_requested("timelm_wdt=stop", 15));
+            assert(timelm_wdt_requested("cpus=1\ttimelm_wdt=stop rd=md0", 29));
+            uint32_t regs[8] = {0x1234, 0x5678, 3, 0x456, 0x789, 0xabc, 0xdef, 0xabc};
+            uint32_t saved[8];
+            memcpy(saved, regs, sizeof(regs));
+            struct timelm_wdt_state s = {0};
+            assert(timelm_wdt_stop(regs, &s) == 0);
+            assert(s.before == 3 && s.after == 0);
+            assert(s.status == 0x456 && s.bark == 0x789 && s.bite == 0xabc);
+            for (unsigned i = 0; i < 8; ++i)
+                assert(regs[i] == (i == 2 ? 0 : saved[i]));
+            assert(timelm_wdt_stop(regs, &s) == 0 && s.before == 0 && s.after == 0);
+            regs[2] = UINT32_MAX;
+            assert(timelm_wdt_stop(regs, &s) == -1 && regs[2] == UINT32_MAX);
+            return 0;
+        }
+        '''
+        with tempfile.TemporaryDirectory() as directory:
+            source, binary = Path(directory) / 'wdt.c', Path(directory) / 'wdt'
+            source.write_text(program)
+            shim = Path(__file__).resolve().parent.parent / 'shim'
+            subprocess.run([os.environ.get('CC', 'cc'), '-std=c11', '-Wall', '-Wextra', '-Werror',
+                            '-I', str(shim), str(source), '-o', str(binary)], check=True)
+            subprocess.run([str(binary)], check=True)
+
+
 if __name__ == '__main__':
     unittest.main()
