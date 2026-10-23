@@ -156,5 +156,36 @@ class WatchdogTests(unittest.TestCase):
             subprocess.run([str(binary)], check=True)
 
 
+class DisplayTests(unittest.TestCase):
+    @unittest.skipUnless(os.environ.get('XNU_SOURCE'), 'set XNU_SOURCE for actual framebuffer geometry')
+    def test_actual_geometry_matches_iphone_canvas_on_taller_v60(self):
+        source = (Path(os.environ['XNU_SOURCE']) / 'iokit/Kernel/arm/SweetFramebuffer.cpp').read_text()
+        start = source.index('\tfLogicalW = fWidth;')
+        end = source.index('\n\tfLock =', start)
+        expression = source[start:end]
+        program = '#include <stdint.h>\n#include <assert.h>\n'
+        program += '#define SWEET_FB_LOGICAL_W 1125\n#define SWEET_FB_LOGICAL_H 2436\n'
+        program += '''static void check(uint32_t fWidth, uint32_t fHeight, int native,
+                uint32_t wantW, uint32_t wantH, int32_t wantX, int32_t wantY) {
+            uint32_t fLogicalW, fLogicalH;
+            int32_t fOffX, fOffY;
+        ''' + expression + '''
+            assert(fLogicalW == wantW && fLogicalH == wantH);
+            assert(fOffX == wantX && fOffY == wantY);
+        }
+        int main(void) {
+            check(1080, 2460, 0, 1125, 2436, 22, -12);
+            check(1080, 2400, 0, 1125, 2436, 22, 18);
+            check(1080, 2460, 1, 1080, 2460, 0, 0);
+            return 0;
+        }
+        '''
+        with tempfile.TemporaryDirectory() as directory:
+            src, binary = Path(directory) / 'geometry.c', Path(directory) / 'geometry'
+            src.write_text(program)
+            subprocess.run([os.environ.get('CC', 'cc'), '-Wall', '-Wextra', '-Werror', str(src), '-o', str(binary)], check=True)
+            subprocess.run([str(binary)], check=True)
+
+
 if __name__ == '__main__':
     unittest.main()

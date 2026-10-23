@@ -2,6 +2,35 @@
 
 Diperbarui 2026-10-23. Mulai dari checkpoint ini; investigasi lama tidak perlu diulang.
 
+## UPDATE TERBARU: iOS launchd/daemons dan backboardd sudah berjalan
+
+Trial UFS-RW mencapai `exec calaccessd`, `com.apple.datamigrator`, `cloudd`,
+`installcoordinationd`, `remotepairingdeviced` dan backboardd. Tidak reboot, tetapi
+layar diam sekitar lima menit dengan `IOAcceleratorES -> 0 found` berulang.
+[Bukti](docs/evidence/0086-ios-userland-phone-result.txt). UFS/HFS root writable
+dan userland iOS sekarang terbukti; SpringBoard/GUI belum. Heartbeat setelah
+layar diam belum dikonfirmasi, jadi jangan menyatakan kernel deadlock dari layar.
+
+Patch 0087 menambahkan layanan kompatibilitas **IOAcceleratorES kosong**, berdasarkan
+[patch Topaz 0138](https://github.com/MakrSas/ios-topaz/blob/topaz/xnu/patches/0138-topaz-empty-ioacceleratores.patch).
+Tanpa Metal properties/user client; bukan driver GPU. `sweetaccel=0` menonaktifkan
+layanan untuk perbandingan. Log AKS dibatasi `sweetakslog` (default 64, max 1024)
+tanpa mengubah hasil selector, termasuk unsupported securityd selector 10.
+Canvas sekarang konsisten dengan ADT/iPhone X 1125x2436, termasuk panel V60 yang
+lebih tinggi; physical scanout tetap 1080x2460. `sweetfb_native=1` adalah opt-out.
+
+Profil diagnostik berikutnya mematikan matching spam (`sweetiolog=-`) dan sampler/
+heap scan (`sweetsample=- sweetscan=-`), membatasi AKS, menurunkan copy framebuffer
+ke 5 Hz, serta tetap memperlihatkan heartbeat/console. Profil GUI alternatif
+`sweetfb_noconsole=1` akan menyembunyikan console setelah frame pertama; jangan
+mengartikan console berhenti pada profil itu sebagai hang.
+
+Pesan `/tmp` belum tercapture. [Audit read-only image host](docs/evidence/host-root-tmp-audit.json)
+menemukan `/tmp -> private/var/tmp`, target root:root `01777` (benar). Ini bukan
+audit live filesystem HP. Jangan reflash/mengubah root tanpa teks error/path/errno
+yang tepat. Jika perlu akses recovery, lakukan pemeriksaan metadata pada filesystem
+yang tidak sedang dipakai XNU. Jangan mengubah cache/journal secara spekulatif.
+
 ## Checkpoint terbaru: RAM-disk PID 1 bertahan sampai heartbeat 70
 
 User melaporkan image `0086-rd-wdtstop-r39974714520` menjalankan static PID 1 dan

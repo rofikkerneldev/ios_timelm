@@ -1,0 +1,87 @@
+{
+  "source": "/home/rofikkernel/work/ios16-root.img",
+  "note": "Read-only audit of original host image, not current on-phone filesystem",
+  "paths": {
+    "tmp": {
+      "id": 306382,
+      "kind": "file",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o120777",
+      "symlink": "private/var/tmp"
+    },
+    "var": {
+      "id": 293104,
+      "kind": "file",
+      "uid": 0,
+      "gid": 80,
+      "mode": "0o120777",
+      "symlink": "private/var"
+    },
+    "private": {
+      "id": 20,
+      "kind": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o40755",
+      "symlink": null
+    },
+    "private/var": {
+      "id": 296763,
+      "kind": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o40755",
+      "symlink": null
+    },
+    "private/tmp": null,
+    "private/var/tmp": {
+      "id": 306375,
+      "kind": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o41777",
+      "symlink": null
+    },
+    "private/var/mobile": {
+      "id": 306291,
+      "kind": "directory",
+      "uid": 501,
+      "gid": 501,
+      "mode": "0o40711",
+      "symlink": null
+    },
+    "private/var/db": {
+      "id": 306322,
+      "kind": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o40755",
+      "symlink": null
+    },
+    "private/var/log": {
+      "id": 306362,
+      "kind": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o40755",
+      "symlink": null
+    },
+    "private/var/run": {
+      "id": 306371,
+      "kind": "directory",
+      "uid": 0,
+      "gid": 1,
+      "mode": "0o40775",
+      "symlink": null
+    },
+    "private/var/preferences": {
+      "id": 296764,
+      "kind": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o40755",
+      "symlink": null
+    }
+  }
+}

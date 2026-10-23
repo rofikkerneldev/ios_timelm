@@ -1,0 +1,39 @@
+Source: user-provided writable UFS iOS boot log and follow-up, 2026-10-23.
+Representative excerpt; repeated matching/AKS messages omitted:
+
+exec calaccessd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+exec com.apple.datamigrator
+SWEET AKS: securityd sel 10 arg0 0 in 2/32 out 1/40 -> 0xe00002c7
+exec cloudd
+exec installcoordinationd
+exec remotepairingdeviced
+exec seld
+SWEET AKS: biomed sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec ind
+exec safetyalertsd
+IOK backboardd: matching <dict ID="0"><key>IOProviderClass</key><string ID="1">IOAcceleratorES</string><key>IOServiceNotificationUser</key><true/></dict> -> 0 found
+
+User reports no reboot, screen appears stationary at the matching message for
+approximately five minutes. Continued heartbeat activity was not explicitly
+confirmed. A prior /tmp error was mentioned but its exact text/errno was not captured.
+
+Established: actual iOS userspace daemons and backboardd execute from the writable
+UFS root; IOAcceleratorES matching finds no service. No SpringBoard/UI frame is shown.
+Not established: kernel deadlock, exact /tmp failure, or missing accelerator service
+as the sole GUI blocker.
+
+Source findings:
+- IOKit matching trace stops after 400 lines per boot.
+- AppleKeyStore logs every client call without a cap in 0086.
+- Existing process sampler starts at 90 seconds and reads user memory while holding
+  task_lock; the next diagnostic profile disables this intrusive sampler.
+- Original host root audit: /tmp -> private/var/tmp, target root:root mode 01777.
+  The host audit does not establish current on-phone contents/permissions.
+
+0087 adapts only the empty IOAcceleratorES compatibility-service idea from:
+https://github.com/MakrSas/ios-topaz/blob/topaz/xnu/patches/0138-topaz-empty-ioacceleratores.patch
+Upstream patch header commit: 3c6b666d548c464608619f0843378404745a5d56.
+No GPU MMIO, firmware, Metal plugin or accelerator user client is imported.
+Also bounds AKS logging without changing return codes, and aligns the reported
+canvas with the existing ADT/iPhone-X identity (1125x2436), centering on 1080x2460.
