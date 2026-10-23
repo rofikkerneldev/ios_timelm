@@ -1,0 +1,141 @@
+{
+  "captured_utc": "2026-10-23T18:03:17.409715+00:00",
+  "partition_bytes": 34359738368,
+  "hfs_volume_bytes": 17179869184,
+  "tail_start": 34355539968,
+  "size": 4198400,
+  "sha256": "46b5d95fb957438375a9a87718485549a90c56e058c3b2e5a586cb7af6c58043",
+  "magic": "SWEETLOG",
+  "version": 1,
+  "ring_size": 4194304,
+  "total_console_bytes": 47097,
+  "flush_sequence": 5,
+  "decoded_console_path": "/home/rofikkernel/work/timelm-0087-gui-log-result/console.txt",
+  "decoded_console_sha256": "ae1cd642f5d6514997eb52f5d9c80ebbe028c9dc22e07ef3022d4fcc4181d8da",
+  "decoded_line_count": 810,
+  "trial": "0087-gui-log-r39984162472",
+  "source": "Read directly from on-device userdata tail over forwarded recovery ADB; raw console ring, not screenshot transcription",
+  "heartbeat": [
+    {
+      "heartbeat": 1,
+      "timer": 275,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 2,
+      "timer": 4961,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 3,
+      "timer": 8342,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 4,
+      "timer": 14131,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 5,
+      "timer": 16217,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 6,
+      "timer": 19793,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 7,
+      "timer": 28564,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 8,
+      "timer": 58057,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 9,
+      "timer": 68719,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 10,
+      "timer": 82060,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 11,
+      "timer": 93577,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 12,
+      "timer": 103391,
+      "sgi1": 1
+    },
+    {
+      "heartbeat": 13,
+      "timer": 115978,
+      "sgi1": 1
+    }
+  ],
+  "swaps": [
+    {
+      "swap": 2,
+      "layer": 0,
+      "surface": 2
+    },
+    {
+      "swap": 3,
+      "layer": 0,
+      "surface": 3
+    },
+    {
+      "swap": 4,
+      "layer": 0,
+      "surface": 2
+    },
+    {
+      "swap": 5,
+      "layer": 0,
+      "surface": 3
+    },
+    {
+      "swap": 6,
+      "layer": 0,
+      "surface": 3
+    }
+  ],
+  "selected_exec_counts": {
+    "SpringBoard": 1,
+    "backboardd": 1,
+    "lsd": 1,
+    "com.apple.datamigrator": 1,
+    "driverkitd": 1,
+    "ReportCrash": 1
+  },
+  "crash_lines": [
+    "CRASH driverkitd[67] sig 9 code 0x0 sub 0x0 slide 0x29014000 mh 0x102be4000",
+    "CRASH driverkitd pc 0x1eb625d98 lr 0x1aa1b83a4 sp 0x16d219200 fp 0x16d219270 far 0x102e10000",
+    "CRASH driverkitd bt 0x1aa1ad12c 0x1aa19e514 0x102c826b4 0x102ccd37c 0x102cce81c 0x102c0c31c 0x102c5d00c 0x102c7497c 0x102c8acf8 0x102c864a8",
+    "CRASH driverkitd reason ns 1 code 0x7: (none)"
+  ],
+  "driverkitd_exit_decode": {
+    "signal": 9,
+    "reason_namespace": 1,
+    "reason_namespace_symbol": "OS_REASON_JETSAM",
+    "reason_code": 7,
+    "reason_code_symbol": "JETSAM_REASON_MEMORY_PERPROCESSLIMIT",
+    "primary_sources": [
+      "bsd/sys/reason.h:88",
+      "bsd/sys/kern_memorystatus.h:290"
+    ]
+  },
+  "uncommitted_ring_suffix_bytes": 0,
+  "reported_phone_wait": "User reports five minutes at logo, then recovery",
+  "captured_state_limit": "Last persisted heartbeat is 13 and header sequence is 5. Does not establish liveness for all five minutes or distinguish kernel/console/UFS logger stall.",
+  "recovery_followup": "Additional crash-report directory query did not complete; subsequent adb get-state, shell id, and header read all timed out after 12 seconds. No conclusion about directory contents or storage health."
+}

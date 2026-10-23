@@ -1,6 +1,7 @@
 # 0087-GUI-log: capture sesudah logo melalui ring persisten
 
-2026-10-23. Kernel tetap 0087 dari CI 39984162472. **Image baru belum diuji HP.**
+2026-10-23. Kernel tetap 0087 dari CI 39984162472. **Sudah diuji HP dan ring log
+berhasil diambil:** [hasil/roadmap terbaru](0087_PERSISTENT_LOG_ANALYSIS.md).
 Ini trial logging, bukan klaim perbaikan penyebab logo berhenti.
 
 Download: [timelm-0087-ufs-rw-c1-wdtstop-gui-log.img](https://pixeldrain.com/u/GnxdmsDC)
@@ -67,7 +68,7 @@ Scratch auditor ada di `$HOME/work/timelm-0087-full-log/live_hfs_readonly.py`;
 recovery tidak menyediakan driver HFS untuk mount langsung. Tidak ada mount atau
 perubahan filesystem selama audit.
 
-## Tes HP berikutnya dan pembacaan log
+## Prosedur tes dan pembacaan log (tes pertama sudah selesai)
 
 Di komputer yang terhubung fastboot ke HP:
 

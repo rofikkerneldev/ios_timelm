@@ -1,0 +1,810 @@
+Darwin Kernel Version 22.6.0: Mon Aug 14 05:06:07 UTC 2023; runner:xnu-8796.141.3
+pmap_startup() init/release time: 40236 microsec
+pmap_startup() delayed init/release of 0 pages
+vm_page_bootstrap: 372960 free pages, 3872 wired pages, (up to 0 of which are delayed free)
+VM boostrap: 97 maps, 204 entries and 512 holes available
+Maximum number of VM swap files: 100
+zone_meta               : 0xfffffe10001cc000 - 0xfffffe1009314000 (145M)
+ipc_kernel_map          : 0xfffffe1009314000 - 0xfffffe100d314000 (64M)
+ipc_kernel_copy_map     : 0xfffffe100d314000 - 0xfffffe100db14000 (8M)
+gIOKitPageableFixed3    : 0xfffffe100db14000 - 0xfffffe1013b14000 (96M)
+gIOKitPageableFixed0    : 0xfffffe1013b14000 - 0xfffffe1019b14000 (96M)
+gIOKitPageableFixed1    : 0xfffffe1019b14000 - 0xfffffe101fb14000 (96M)
+bsd_pageable            : 0xfffffe101fb14000 - 0xfffffe1023e1c000 (67M)
+gIOKitPageableFixed2    : 0xfffffe1023e1c000 - 0xfffffe1029e1c000 (96M)
+zones                   : 0xfffffe1029e1c000 - 0xfffffe3029e1c000 (128G)
+compressor              : 0xfffffe3029e1c000 - 0xfffffe3baa2c4000 (46G)
+bufferhdr               : 0xfffffe3baa2c4000 - 0xfffffe3baa684000 (3840K)
+mb                      : 0xfffffe3baa684000 - 0xfffffe3bb0684000 (96M)
+io_submap               : 0xfffffe3bb0684000 - 0xfffffe3bb0e84000 (8M)
+kmem_ptr_range          : 0xfffffe3bb0e84000 - 0xfffffe50c4244000 (84G)
+kmem_data_range         : 0xfffffe50c4244000 - 0xfffffe8f48890000 (250G)
+kmem_sprayqtn_range     : 0xfffffe8f48890000 - 0xfffffe8fff614000 (2925M)
+kmem_ptr_range_meta     : 0xfffffe8fff614000 - 0xfffffe8fffdfc000 (7M)
+kmem_large_ranges[1]    : 0 - 0 (0B)
+kmem_large_ranges[2]    : 0 - 0 (0B)
+kmem_large_ranges[3]    : 0 - 0 (0B)
+kmem_large_ranges[4]    : 0xfffffe8f5f640800 - 0xfffffe8fff614000 (2559M)
+kmem_large_ranges[5]    : 0xfffffe5894b0d800 - 0xfffffe8f48890000 (218G)
+"vm_compressor_mode" is 4
+zone_init: pgzalloc  0xfffffe1029e1c000:0xfffffe102cbd0000 (45M) [1462 slots]
+zone_init: map VM    0xfffffe102cbd0000:0xfffffe14f91c0000 (19G)
+zone_init: map RO    0xfffffe14f91c0000:0xfffffe1692910000 (6G)
+zone_init: map GEN0  0xfffffe1692910000:0xfffffe1b5ef00000 (19G)
+zone_init: map GEN1  0xfffffe1b5ef00000:0xfffffe202b4f0000 (19G)
+zone_init: map GEN2  0xfffffe202b4f0000:0xfffffe24f7ae0000 (19G)
+zone_init: map GEN3  0xfffffe24f7ae0000:0xfffffe29c40d4000 (19G)
+zone_init: map DATA  0xfffffe29c40d4000:0xfffffe3029e1c000 (25G)
+zone_init: metadata  0xfffffe10001dc000:0xfffffe10081dc000 (128M)
+zone_init: metabits  0xfffffe10081dc000:0xfffffe1009304000 (17M)
+zone_init: extra     0:0 (0B)
+VM bootstrap done: 85 maps, 165 entries and 503 holes left
+Long logs support configured: size: 16384
+Log queues configured: slot count: 8, per-slot size: 32768, total size: 262144
+Firehose configured: 16 chunks, 8 io pages
+OSLog stream configured: stream: 8192 bytes, cache: 2112 bytes
+OSLog stream verification: 0
+standard timeslicing quantum is 10000 us
+standard background quantum is 2500 us
+mig_table_max_displ = 54 mach_kobj_count = 374
+debug_log_init: Error!! gPanicBase is still not initialized
+debug_log_init: Error!! gPanicBase is still not initialized
+kdp_core zlib memory 0x8000
+Serial requested, consistent debug disabled or debug boot arg not present, configuring debugging over serial
+iBoot version: timelm-shim
+"name" not a kext
+"AAPL,phandle" not a kext
+"RAMDisk" not a kext
+SWEET AMFI: built-in interface registered (XML entitlements)
+calling mpo_policy_init for vnguard
+Security policy loaded: Guarded vnode policy (vnguard)
+SWEET: trust caches unavailable (Image4/AMFI not installed)
+keepsyms boot arg specified; keeping linkedit segment for symbols.
+No POST boot-arg set.
+SWEET: starting device-tree platform expert
+SWEET: platform expert registered
+SWEET FB: AppleCLCD 1080x2460 stride 4320 at 0x9c000000, default surface 1, presented as 1125x2436
+TIMELM GUI 0087: IOAcceleratorES compatibility service published (no GPU)
+SWEET AKS: AppleKeyStore registered (no passcode, unlocked)
+SWEET WDT: IOWatchdog registered (accepts check-ins, never fires)
+SWEET SURF: IOCoreSurfaceRoot registered
+SWEET CPU: requested=1 selected=1 (limit=8)
+SWEET CPU: cpu=0 mpidr=0x0 SGI1 received=1 timer-irqs=43
+Copyright (c) 1982, 1986, 1989, 1991, 1993
+	The Regents of the University of California. All rights reserved.
+
+MAC Framework successfully initialized
+using 7489 buffer headers and 5792 cluster IO buffer headers
+ktriage_register_subsystem_strings: set subsystem 8 strings
+calling mpo_policy_init for SWEET AMFI
+Security policy loaded: SWEET built-in Mobile File Integrity (SWEET AMFI)
+SWEET AMFI: platform binary policy registered (0)
+calling mpo_policy_init for Sandbox
+Security policy loaded: SWEET permissive sandbox stand-in (Sandbox)
+SWEET Sandbox: permissive policy registered (0)
+SWEET HFS: hfs-627.100.6 registered
+mcache: 1 CPU(s), 64 bytes CPU cache line size
+mbinit: done [96 MB total pool size, (64/32) split]
+dlil_init: Waiting for all the create dlil kernel threads to get scheduled at least once.
+SWEET CPU: 1/1 CPUs initialized
+dlil_init: All the created dlil kernel threads have been scheduled at least once. Proceeding.
+ifnet_attach: All kernel threads created for interface lo0 have been scheduled at least once. Proceeding.
+ifnet_attach: Waiting for all kernel threads created for interface gif0 to get scheduled at least once.
+ifnet_attach: All kernel threads created for interface gif0 have been scheduled at least once. Proceeding.
+skip attaching fsw to lo0 using legacy TX modelifnet_attach: Waiting for all kernel threads created for interface stf0 to get scheduled at least once.
+ifnet_attach: All kernel threads created for interface stf0 have been scheduled at least once. Proceeding.
+TIMELM: trial=0087-gui-log-r39984162472 heartbeat=1 cpu0-timer=275 cpu0-sgi1=1
+SWEET HID: buttons registered (test every 0 s)
+SWEET HID: touch registered
+SWEET BATTERY: static fallback, 100% 4200mV external=1 charging=0
+Added memory device md0/rmd0 (01000000/12000000) at FFFFFE00084C8000 for 0000000000008000
+SWEET: IOFindBSDRoot: probing the UFS for the root volume
+SWEET UFS: mapping host PA=0x1d84000 size=0x3000
+SWEET UFS: allocating contiguous DMA memory
+SWEET UFS: taking over the host at 0xfffffe3bb0684000
+SWEET UFS: host taken over, sending TEST UNIT READY
+SWEET UFS: looking for partition "userdata"
+SWEET UFS: "userdata" on LUN 0: first block 0x67a628, 32768 MiB, read-write, DMA at 0x104b80000
+SWEET KEYS: disabled (sweetkeys=0)
+SWEET TOUCH: disabled (sweettouch=0)
+BSD root: ufsroot0, major 2, minor 0
+jnl: b(2, 0): replay_journal: from: 7809024 to: 1927680 (joffset 0x82000)
+SWEET LOG: console log to the last 4100 KiB of the partition (block 0xe7a227)
+jnl: b(2, 0): journal replay done.
+hfs: Removed 2 orphaned / unlinked files and 0 directories 
+hfs: mounted iOSRoot on device b(2, 0)
+SWEET: root volume is not authenticated (error 25); continuing unsealed
+VM Swap Subsystem is ON
+No POST boot-arg set.
+load_init_program: attempting to load /usr/appleinternal/sbin/launchd.development
+load_init_program: attempting to load /sbin/launchd
+exec launchd
+shared_region: 0xaff961697aca9133 [1(launchd)] check_np(0x16b7e3bd0) vm_shared_region_start_address() failed
+SWEET Sandbox: launchd op 2
+Darwin Ignition Sequence Version 1.0.0: Tue Jul  2 20:41:23 PDT 2024; root:libignition-51~1974/libignition_core/RELEASE_ARM64
+libignition: 1: arguments           :
+libignition: 1:   ignition level    : 0x1
+libignition: 1:   force dylib root  : 0x0
+libignition: 1:   halt after stage  : n/a
+libignition: 1: ignition blob not available
+libignition: 1: configuration         :
+libignition: 1:   program             : launchd
+libignition: 1:   os environment      : n/a
+libignition: 1:   rd                  : ufsroot0
+libignition: 1:   arp0                : n/a
+libignition: 1:   rp                  : n/a
+libignition: 1:   pivot src           : n/a
+libignition: 1:   root ramdisk        : 0x0
+libignition: 1:   restore             : 0x0
+libignition: 1:   root device info    : 0x0
+libignition: 1:   can haz debugger    : 0x1
+libignition: 1:   rootfs mount flags  : 0x480d000
+libignition: 1:   ecid                : 0x0
+libignition: 1:   hardware target     : d22ap
+libignition: 1:   initproc            : 0x1
+libignition: 1:   single user         : 0x0
+libignition: 1:   userspace reboot    : 0x0
+libignition: 1:   secure boot level   : 0x0
+libignition: 1:   os version          : n/a
+libignition: 1: parameters          :
+libignition: 1:   version           : 0x1
+libignition: 1:   argc              : 0x1
+libignition: 1:   log fd            : 0xffffffffffffffff
+libignition: 1:   platform          : 0x2
+libignition: 1: boot spec           :
+libignition: 1:   name              : local
+libignition: 1:   stage count       : 0x7
+libignition: 1:        hello: commence primary ignition
+libignition: 1:        hello: hello from launchd.1
+libignition: 1:      preboot: ignition level insufficient: actual = 1, required >= 2
+libignition: 1: cryptex1 sniff: ignition level insufficient: actual = 1, required >= 2
+libignition: 1:        graft: ignition level insufficient: actual = 1, required >= 3
+libignition: 1: select os cryptex path: ignition level insufficient: actual = 1, required >= 3
+libignition: 1:  dylib_cache: discovering shared library cache
+libignition: 1:  dylib_cache: finding shared cache on system volume: ignition level = 1, search root fd = 4, subpath = System/Library/Caches/com.apple.dyld/
+libignition: 1:  dylib_cache: opened shared cache directory: /System/Library/Caches/com.apple.dyld
+libignition: 1:      goodbye: ignition sequence complete
+shared_region: 0xaff961697aca9133 [1(launchd)] check_np(0x16b7e3160) vm_shared_region_start_address() failed
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbac53:'dyld_shared_cache_arm64'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbab43:'dyld_shared_cache_arm64.01'): not in trust cache
+TIMELM: trial=0087-gui-log-r39984162472 heartbeat=2 cpu0-timer=4961 cpu0-sgi1=1
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbaa33:'dyld_shared_cache_arm64.02'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbba923:'dyld_shared_cache_arm64.03'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbba813:'dyld_shared_cache_arm64.04'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbba703:'dyld_shared_cache_arm64.05'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbba5f3:'dyld_shared_cache_arm64.06'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbba4e3:'dyld_shared_cache_arm64.07'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbba3d3:'dyld_shared_cache_arm64.08'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb7953:'dyld_shared_cache_arm64.09'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbb6f3:'dyld_shared_cache_arm64.10'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbb5e3:'dyld_shared_cache_arm64.11'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbb4d3:'dyld_shared_cache_arm64.12'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbb3c3:'dyld_shared_cache_arm64.13'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbb2b3:'dyld_shared_cache_arm64.14'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbb1a3:'dyld_shared_cache_arm64.15'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbb093:'dyld_shared_cache_arm64.16'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbaf83:'dyld_shared_cache_arm64.17'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbbae73:'dyld_shared_cache_arm64.18'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb83f3:'dyld_shared_cache_arm64.19'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb82e3:'dyld_shared_cache_arm64.20'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb81d3:'dyld_shared_cache_arm64.21'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb80c3:'dyld_shared_cache_arm64.22'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb7fb3:'dyld_shared_cache_arm64.23'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb7ea3:'dyld_shared_cache_arm64.24'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb7d93:'dyld_shared_cache_arm64.25'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb7c83:'dyld_shared_cache_arm64.26'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb7b73:'dyld_shared_cache_arm64.27.dylddata'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb7a63:'dyld_shared_cache_arm64.28.dyldlinkedit'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb8fa3:'dyld_shared_cache_arm64.29'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb8e93:'dyld_shared_cache_arm64.30'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb8d83:'dyld_shared_cache_arm64.31'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb8c73:'dyld_shared_cache_arm64.32'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb8b63:'dyld_shared_cache_arm64.33'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb8a53:'dyld_shared_cache_arm64.34'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb8943:'dyld_shared_cache_arm64.35'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb8833:'dyld_shared_cache_arm64.36'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb8613:'dyld_shared_cache_arm64.37'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb8503:'dyld_shared_cache_arm64.38'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbb90b3:'dyld_shared_cache_arm64.39'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbc11c3:'dyld_shared_cache_arm64.40'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbc1c63:'dyld_shared_cache_arm64.41.dylddata'): not in trust cache
+shared_region: 0xaff961697aca9133 [1(launchd)] map(0xaff96177dfbc1b53:'dyld_shared_cache_arm64.42.dyldlinkedit'): not in trust cache
+SWEET Sandbox: launchd op 4
+SWEET NET: launchd lo0 add address 127.0.0.1
+skip attaching fsw to lo0 using legacy TX modelcom.apple.xpc.launchd|1969-12-31 16:01:10.034236 <Notice>: hello
+com.apple.xpc.launchd|1969-12-31 16:01:10.040039 <Error>: Could not opt into 50 MB Jetsam high watermark: 22: Invalid argument
+com.apple.xpc.launchd|1969-12-31 16:01:10.040553 <Notice>: Darwin Bootstrapper Version 7.0.0: Thu Feb  1 20:33:09 PST 2024; root:libxpc_executables-2462.140.4.702.1~1/launchd/RELEASE_ARM64
+com.apple.xpc.launchd|1969-12-31 16:01:10.040668 <Notice>: boot-args = debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress rd=ufsroot0 ufsrw=1 rootrw=1 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin wdt=-1 sweetfb_hz=5 startup_debug=0 sweeTIMELM: trial=0087-gui-log-r39984162472 heartbeat=3 cpu0-timer=8342 cpu0-sgi1=1
+tbeat=5 sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=1 timelm_wdt=stop launchd_unsecure_cache=1 sweetaccel=1 sweetakslog=32 sweetiolog=- sweetsample=- sweetscan=- sweetfb_noconsole=1 ufslogsecs=10 timelm_trial=0087-gui-log-r39984162472
+exec mount
+com.apple.xpc.launchd|1969-12-31 16:01:10.046915 (system) <Notice>: entering ondemand mode
+com.apple.xpc.launchd|1969-12-31 16:01:10.047651 (system) <Notice>: created
+com.apple.xpc.launchd|1969-12-31 16:01:10.060536 (mount-phase-1) <Notice>: Doing boot task
+failed to get filesystem info
+failed to get filesystem info
+mount: data volume missing, but not required in env: 0
+vnode_create_internal: alias vnode 0xfffffe24f7a0bef0 is in state of change (start)
+vnode_create_internal: alias vnode 0xfffffe24f7a0bef0 is in state of change (end)
+exec mount_hfs
+GetMasterBlock: Error 16 opening /dev/ufsroot0
+/dev/ufsroot0 on / (hfs, local, journaled, noatime)
+ERROR: BindFS bindfs_mount: lookup of /private/preboot/AD3C1598E2D5DEB63242A14CB3352180FB6DF8F32BAF51897A8DF7B89AB39830E37D8698BC24ABE4D073E7C4FF71CD1E/usr/standalone/firmware failed error: 2
+com.apple.xpc.launchd|1969-12-31 16:01:12.154609 (data-protection) <Notice>: Doing boot task
+exec seputil
+init_data_protection: No SEP present on this device
+com.apple.xpc.launchd|1969-12-31 16:01:12.304914 (finish-obliteration) <Notice>: Doing boot task
+exec mobile_obliterator
+Obliterator: In INIT check
+Wed Dec 31 16:01:12 1969: checkOblitNVRAMkey: IORegistryEntryFromPath failed [gF: 0x0000000000000000]
+Obliterator: No obliteration needed, continue booting, returning 0
+com.apple.xpc.launchd|1969-12-31 16:01:12.764693 (detect-installed-roots) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:12.765522 <Notice>: No cookie from system volume
+com.apple.xpc.launchd|1969-12-31 16:01:12.765644 <Notice>: No cookie: /private/preboot/AD3C1598E2D5DEB63242A14CB3352180FB6DF8F32BAF51897A8DF7B89AB39830E37D8698BC24ABE4D073E7C4FF71CD1E/.roots-installed
+com.apple.xpc.launchd|1969-12-31 16:01:12.765683 (commit-boot-mode) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:12.765717 <Notice>: boot-mode committed: (null)
+com.apple.xpc.launchd|1969-12-31 16:01:12.765750 (restore-datapartition) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:13.151416 (restore-datapartition) <Notice>: optional boot task not present
+com.apple.xpc.launchd|1969-12-31 16:01:13.151459 (mount-phase-2) <Notice>: Doing boot task
+exec mount
+failed to get filesystem info
+failed to get filesystem info
+mount: data volume missing, but not required in env: 0
+ERROR: BindFS bindfs_mount: lookup of /private/var/hardware/Pearl/System/Library/Pearl/ReferenceFrames failed error: 2
+ERROR: BindFS bindfs_mount: lookup of /private/var/hardware/FactoryData/System/Library/Caches/com.apple.factorydata failed error: 2
+com.apple.xpc.launchd|1969-12-31 16:01:13.943258 (init-with-data-volume) <Notice>: Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:14.002433 (MSUEarlyBootTask) <Notice>: Doing boot task
+exec MSUEarlyBootTask
+MSUEarlyBootTask: MSUEarlyBootTask running
+main: Content from the ramdisk will be present at /private/var/MobileSoftwareUpdate//ad3c1598e2d5deb63242a14cb3352180fb6df8f32baf51897a8df7b89ab39830e37d8698bc24abe4d073e7c4ff71cd1e-MSUData if it exists
+MSUEarlyBootTask: I have nothing to do. Goodbye!!
+com.apple.xpc.launchd|1969-12-31 16:01:14.833996 (fips) <Notice>: Doing boot task
+exec cc_fips_test
+About to call the FIPS_POST function in the corecrypto.dylib
+Tracing: disabled
+FIPSPOST_USER [1437137282] fipspost_post:152: [FIPSPOST][Module-ID] Apple corecrypto Module v13.0 [Apple ARM, User, Software, SL1]
+FIPSPOST_USER [1444557324] fipspost_post:160: PASSED: (1 ms) - fipspost_post_hmac
+FIPSPOST_USER [1444635100] fipspost_post:164: PASSED: (3 ms) - fipspost_post_integrity
+FIPSPOST_USER [1444642836] fipspost_post:168: PASSED: (0 ms) - fipspost_post_indicator
+FIPSPOST_USER [1444646373] fipspost_post:169: PASSED: (0 ms) - fipspost_post_aesTIMELM: trial=0087-gui-log-r39984162472 heartbeat=4 cpu0-timer=14131 cpu0-sgi1=1
+_ecb
+FIPSPOST_USER [1452033770] fipspost_post:170: PASSED: (0 ms) - fipspost_post_aes_cbc
+FIPSPOST_USER [1452343092] fipspost_post:171: PASSED: (15 ms) - fipspost_post_rsa_sig
+FIPSPOST_USER [1452892302] fipspost_post:172: PASSED: (28 ms) - fipspost_post_ecdsa
+FIPSPOST_USER [1460296709] fipspost_post:173: PASSED: (1 ms) - fipspost_post_ecdh
+FIPSPOST_USER [1460300419] fipspost_post:174: PASSED: (0 ms) - fipspost_post_aes_ccm
+FIPSPOST_USER [1460304125] fipspost_post:175: PASSED: (0 ms) - fipspost_post_aes_cmac
+FIPSPOST_USER [1460309738] fipspost_post:176: PASSED: (0 ms) - fipspost_post_hkdf
+FIPSPOST_USER [1468441642] fipspost_post:177: PASSED: (39 ms) - fipspost_post_pbkdf
+FIPSPOST_USER [1468446628] fipspost_post:178: PASSED: (0 ms) - fipspost_post_drbg_hmac
+FIPSPOST_USER [1468451208] fipspost_post:180: PASSED: (0 ms) - fipspost_post_kdf_ctr
+FIPSPOST_USER [1468454732] fipspost_post:181: PASSED: (0 ms) - fipspost_post_aes_gcm
+FIPSPOST_USER [1475836867] fipspost_post:182: PASSED: (0 ms) - fipspost_post_aes_xts
+FIPSPOST_USER [1475841760] fipspost_post:183: PASSED: (0 ms) - fipspost_post_tdes_ecb
+FIPSPOST_USER [1475845518] fipspost_post:184: PASSED: (0 ms) - fipspost_post_drbg_ctr
+FIPSPOST_USER [1476955986] fipspost_post:186: PASSED: (57 ms) - fipspost_post_ffdh
+FIPSPOST_USER [1484961016] fipspost_post:187: PASSED: (32 ms) - fipspost_post_rsa_enc_dec
+FIPSPOST_USER [1484964673] fipspost_post:206: all tests PASSED (2491 ms)
+Returned from calling the FIPS_POST function in the corecrypto.dylib: result = true
+com.apple.xpc.launchd|1969-12-31 16:01:17.343552 (keybag) <Notice>: Doing boot task
+exec keybagd
+****** IN MKB_INIT ****
+SWEET AKS: keybagd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: keybagd sel 14 arg0 0 in 0/0 out 1/0 -> 0x0
+SWEET AKS: keybagd sel 14 arg0 0 in 0/0 out 1/0 -> 0x0
+MKB_INIT: mount is with NO CPROTECT:0x1480d000 on  (/private/var/)
+MKB_INIT: mount point (/private/var/) does not support Data Protection
+MKB_INIT: System Keybag loaded
+MKB_INIT: Could not get options entry from the device tree
+Unable to set /private/var//tmp to class D!****** DONE MKB_INIT ****
+com.apple.xpc.launchd|1969-12-31 16:01:18.191481 (usermanagerd) <Notice>: Doing boot task
+exec usermanagerd
+****** IN UMD_INIT ****
+****** STARTING EARLYBOOT SETUP ****
+UMD_INIT: STARTING EARLYBOOT SETUP
+UMD_INIT: LOADING USER SESSIONS
+UMD_INIT: Device Configuration Type:0
+UMD_INIT: BOOTEDUSER is:501
+UMD_INIT: diskLoadUserSessions, APNSID:, set to 18446744073709551615
+UMD_INIT: Reloaded _gUserSessionTable (
+        {
+        MKBUserSessionCreateTimeStamp = "1970-01-01 00:00:44 +0000";
+        MKBUserSessionDirty = 0;
+        MKBUserSessionDisplayName = mobile;
+        MKBUserSessionFirstName = mobile;
+        MKBUserSessionForeground = 1;
+        MKBUserSessionGroupID = 501;
+        MKBUserSessionID = 501;
+        MKBUserSessionLanguage = "en_US";
+        MKBUserSessionLastName = mobile;
+        MKBUserSessionLibinfoHomeDir = "/var/mobile";
+        MKBUserSessionLoginTimeStamp = "1970-01-01 00:00:44 +0000";
+        MKBUserSessionLoginUser = 0;
+        MKBUserSessionName = mobile;
+        MKBUserSessionNeedsMount = 1;
+        MKBUserSessionShortName = mobile;
+        MKBUserSessionType = UserSessionOther;
+        MKBUserSessionUUID = "3C5CCBA9-39C5-4E2A-8982-F2B5B70E9D77";
+        MKBUserSessionVolumeFSType = UserVolumeAPFSNative;
+        MKBUserSessionisAdminKey = 1;
+        MKBUserSessionisPrimary = 1;
+    }
+)
+UMD_INIT: FOUND NO SYNC BUBBLE UIDS:0
+UMD_INIT: FOUND NO LRU TABLE UIDS:0
+UMD_INIT: FOUND NO VOLUMETYPE, setting up volume type
+UMD_INIT: Set the new volume type to APFSNativeDevice
+UMD_INIT: SAVING SESSION TODISK
+UMD_INIT: SESSION TABLE TO BLOB
+TIMELM: trial=0087-gui-log-r39984162472 heartbeat=5 cpu0-timer=16217 cpu0-sgi1=1
+UMD_INIT: NOTHING TO SAVE IN LRU UID LIST
+UMD_INIT: diskSaveUserSessions Success
+UMD_INIT: Read user sessions in _gUserSessionTable (
+        {
+        MKBUserSessionCreateTimeStamp = "1970-01-01 00:00:44 +0000";
+        MKBUserSessionDirty = 0;
+        MKBUserSessionDisplayName = mobile;
+        MKBUserSessionFirstName = mobile;
+        MKBUserSessionForeground = 1;
+        MKBUserSessionGroupID = 501;
+        MKBUserSessionID = 501;
+        MKBUserSessionLanguage = "en_US";
+        MKBUserSessionLastName = mobile;
+        MKBUserSessionLibinfoHomeDir = "/var/mobile";
+        MKBUserSessionLoginTimeStamp = "1970-01-01 00:00:44 +0000";
+        MKBUserSessionLoginUser = 0;
+        MKBUserSessionName = mobile;
+        MKBUserSessionNeedsMount = 1;
+        MKBUserSessionShortName = mobile;
+        MKBUserSessionType = UserSessionOther;
+        MKBUserSessionUUID = "3C5CCBA9-39C5-4E2A-8982-F2B5B70E9D77";
+        MKBUserSessionVolumeFSType = UserVolumeAPFSNative;
+        MKBUserSessionisAdminKey = 1;
+        MKBUserSessionisPrimary = 1;
+    }
+)
+UMD_INIT: LOADED USER SESSIONS
+UMD_INIT: failed to read nextsession dict
+UMD_INIT: Unable to Obtained foreground, curFG:502, nextID:-1
+UMD_INIT: Failed to get next session, booting with default id to be Loginwindow UID
+UMD_INIT: BootedUser is:501
+UMD_INIT: Regular mode Setup for user:501: Num Sessions:1, CurrentsessionID:-1
+UMD_INIT: FAILED to Set Foreground ID + multiuser in commpage successfully
+UMD_INIT: LOADING PERSONA..
+UMD_INIT: Manifest version: 1
+UMD_INIT: Loaded Persona Generation ID from manifest:1
+UMD_INIT: Adding 1000 entry to persona Table for user:3C5CCBA9-39C5-4E2A-8982-F2B5B70E9D77
+UMD_INIT: Adding 200 entry to persona Table for user:3C5CCBA9-39C5-4E2A-8982-F2B5B70E9D77
+UMD_INIT: Adding 0 entry to persona Table for user:3C5CCBA9-39C5-4E2A-8982-F2B5B70E9D77
+UMD_INIT: Adding 100 entry to persona Table for user:3C5CCBA9-39C5-4E2A-8982-F2B5B70E9D77
+UMD_INIT: Adding 99 entry to persona Table for user:FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
+UMD_INIT: Adding 199 entry to persona Table for user:FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF
+UMD_INIT: Loaded persona manifest
+UMD_INIT: Failed to retrieve info for kernel persona 99: No such process
+UMD_INIT: PersonaID:99 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 99, Type: 4, UID: 4294967295
+UMD_INIT: Failed to retrieve info for kernel persona 199: No such process
+UMD_INIT: PersonaID:199 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 199, Type: 6, UID: 4294967295
+UMD_INIT: Failed to retrieve info for kernel persona 1000: No such process
+UMD_INIT: PersonaID:1000 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 1000, Type: 5, UID: 501
+UMD_INIT: Failed to retrieve info for kernel persona 200: No such process
+UMD_INIT: PersonaID:200 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 200, Type: 6, UID: 501
+UMD_INIT: Failed to retrieve info for kernel persona 100: No such process
+UMD_INIT: PersonaID:100 not loaded, loading..
+UMD_INIT: Allocated kernel persona with ID: 100, Type: 4, UID: 501
+UMD_INIT: setup kernel personas
+UMD_INIT: Failed to notify_register_check com.apple.mobile.usermanagerd.personageneration_changed: 8
+UMD_INIT: Failed to notify generation changed: Failed to register for darwin notification token
+UMD_INIT: DONE EARLYBOOT SETUP
+****** DONE EARLYBOOT SETUP ****
+****** DONE UMD_INIT ****
+com.apple.xpc.launchd|1969-12-31 16:01:24.573009 (dirs_cleaner) <Notice>: Doing boot task
+exec dirs_cleaner
+dc_reset: /tmp: Invalid argument
+dc_reset: /var/run: Invalid argument
+exec xpcroleaccountd
+exec init_featureflags
+[System Event] [1636293313] [INFO] [Subsystem: launchd] [Event: mount-phase-1] Doing boot task
+[System Event] [1636298630] [INFO] [Subsystem: launchd] [Event: data-protection] Doing boot task
+exec auearlyboot
+TIMELM: trial=0087-gui-log-r39984162472 heartbeat=6 cpu0-timer=19793 cpu0-sgi1=1
+auearlyboot: -[FudEarlyBoot doFUDEarlyBoot:](): Starting Early Boot
+auearlyboot: -[AppleFirmwareUpdateController getEarlyBootListInternal:]: Pending critical earlyBoot entries (
+)
+[System Event] [1647611672] [INFO] [Subsystem: launchd] [Event: finish-obliteration] Doing boot task
+[System Event] [1647613248] [INFO] [Subsystem: launchd] [Event: detect-installed-roots] Doing boot task
+[System Event] [1647616705] [INFO] [Subsystem: launchd] [Event: commit-boot-mode] Doing boot task
+[System Event] [1647619047] [INFO] [Subsystem: launchd] [Event: restore-datapartition] Doing boot task
+[System Event] [1647620353] [INFO] [Subsystem: launchd] [Event: restore-datapartition] optional boot task not present
+[System Event] [1647621646] [INFO] [Subsystem: launchd] [Event: mount-phase-2] Doing boot task
+[System Event] [1647622895] [INFO] [Subsystem: launchd] [Event: init-with-data-volume] Doing boot task
+[System Event] [1647624177] [INFO] [Subsystem: launchd] [Event: MSUEarlyBootTask] Doing boot task
+[System Event] [1647625453] [INFO] [Subsystem: launchd] [Event: fips] Doing boot task
+[System Event] [1647626730] [INFO] [Subsystem: launchd] [Event: keybag] Doing boot task
+[System Event] [1647627999] [INFO] [Subsystem: launchd] [Event: usermanagerd] Doing boot task
+[System Event] [1647629283] [INFO] [Subsystem: launchd] [Event: dirs_cleaner] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:24.973018 <Notice>: launchd logging initialized. name: com.apple.xpc.launchd pid: 1
+com.apple.xpc.launchd|1969-12-31 16:01:24.973030 (xpcroleaccountd) <Notice>: Doing boot task
+[System Event] [1675298287] [INFO] [Subsystem: launchd] [Event: xpcroleaccountd] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:24.993112 (init_featureflags) <Notice>: Doing boot task
+[System Event] [1682689822] [INFO] [Subsystem: launchd] [Event: init_featureflags] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:25.311282 (auearlyboot) <Notice>: Doing boot task
+[System Event] [1682698371] [INFO] [Subsystem: launchd] [Event: auearlyboot] Doing boot task
+auearlyboot: No Early Boot Accessories
+auearlyboot: -[FudEarlyBoot calculateTimeTakenForEarlyBootEntries] Time Taken to wait for critical earlyBoot entries: 0.000000 sec
+auearlyboot: -[FudEarlyBoot doFUDEarlyBoot:](): End Early Boot
+auearlyboot: Exitng Early Boot
+com.apple.xpc.launchd|1969-12-31 16:01:28.027103 (tzinit) <Notice>: Doing boot task
+[System Event] [1690134218] [INFO] [Subsystem: launchd] [Event: tzinit] Doing boot task
+exec tzinit
+com.apple.xpc.launchd|1969-12-31 16:01:28.427601 (finish-restore) <Notice>: Doing boot task
+[System Event] [1697822932] [INFO] [Subsystem: launchd] [Event: finish-restore] Doing boot task
+exec FinishRestoreFromBackup
+com.apple.xpc.launchd|1969-12-31 16:01:28.440077 (finish-demo-restore) <Notice>: Doing boot task
+[System Event] [1698062024] [INFO] [Subsystem: launchd] [Event: finish-demo-restore] Doing boot task
+exec finish_demo_restore
+exec sysstatuscheck
+exec prng_seedctl
+kern.prng.user_reseed_count: (-1) (2) No such file or directory
+failed to load virtual random: (-147) (-536870212)
+exec launchd_cache_loader
+0 Found valid port: 2819 Valid: 1
+com.apple.xpc.launchd|1969-12-31 16:01:28.571607 (sysstatuscheck) <Notice>: Doing boot task
+[System Event] [1715818108] [INFO] [Subsystem: launchd] [Event: sysstatuscheck] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:28.673492 (prng_seedctl) <Notice>: Doing boot task
+[System Event] [1715826947] [INFO] [Subsystem: launchd] [Event: prng_seedctl] Doing boot task
+1 Found valid port: 0 Valid: 0
+2 Found valid port: 0 Valid: 0
+Using default cache paths
+Code: /System/Library/xpc/launchd.plist Sig: /System/Library/xpc/launchd.plist.sig
+Using unsecure cache: /System/Library/xpc/launchd.plist
+Trying to send bytes to launchd: 2819 16384
+Sending validated cache to launchd
+Cache sent to launchd successfully
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec SpringBoard
+TIMELM: trial=0087-gui-log-r39984162472 heartbeat=7 cpu0-timer=28564 cpu0-sgi1=1
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec notifyd
+exec usermanagerd
+exec bluetoothd
+exec fseventsd
+exec IOMFB_FDR_Loader
+exec mtmergeprops
+exec mediaserverd
+exec configd
+exec remoted
+exec UserEventAgent
+exec logd
+exec amfid
+exec DumpPanic
+exec watchdogd
+exec keybagd
+exec nfcd
+exec backboardd
+exec sleepd
+exec AppleCredentialManagerDaemon
+exec ptpd
+exec fairplayd.H2
+SWEET Sandbox: logd privilege 1002 denied
+exec xpcproxy
+exec cfprefsd
+hfs: set hardlink bit on vol=iOSRoot cnid=321594 inoid=71909506
+hfs: set hardlink bit on vol=iOSRoot cnid=321594 inoid=71909506
+hfs: set hardlink bit on vol=iOSRoot cnid=321594 inoid=71909506
+hfs: set hardlink bit on vol=iOSRoot cnid=321594 inoid=71909506
+hfs: set hardlink bit on vol=iOSRoot cnid=321594 inoid=71909506
+hfs: set hardlink bit on vol=iOSRoot cnid=321594 inoid=71909506
+exec xpcproxy
+exec runningboardd
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec MobileGestaltHelper
+SWEET AKS: backboardd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: backboardd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+|backboardd| objc[56]: Class _GCHapticEvent is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1ae20) and /System/Library/HIDPlugins/ServicePlugins/DualShock4HIDServicePlugin.|backboardd| ck4HIDServicePlugin (0x100f3ebc0). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCHapticMotor is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1ae70) and /System/Library/HIDPlugins/ServicePlugins/DualShock4HIDServicePlugin.p|backboardd| k4HIDServicePlugin (0x100f3ec10). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCGamepadHIDServicePlugin is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1aec0) and /System/Library/HIDPlugins/ServicePlugins/DualShock4HIDSer|backboardd| gin/DualShock4HIDServicePlugin (0x100f3ecb0). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCGamepadHIDServicePlugin is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1aec0) and /System/Library/HIDPlugins/ServicePlugins/GenericGamepadHI|backboardd| .plugin/GenericGamepadHIDServicePlugin (0x100f62a88). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCHapticMotor is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1ae70) and /System/Library/HIDPlugins/ServicePlugins/GenericGamepadHIDServicePlug|backboardd| ricGamepadHIDServicePlugin (0x100f62ad8). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class _GCHapticEvent is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1ae20) and /System/Library/HIDPlugins/ServicePlugins/GenericGamepadHIDServicePlu|backboardd| ericGamepadHIDServicePlugin (0x100f62b78). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCGamepadHIDServicePlugin is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1aec0) and /System/Library/HIDPlugins/ServicePlugins/JoyConHIDService|backboardd| JoyConHIDServicePlugin (0x100f92ba0). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCHapticMotor is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1ae70) and /System/Library/HIDPlugins/ServicePlugins/JoyConHIDServicePlugin.plugi|backboardd| vicePlugin (0x100f92bf0). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class _GCHapticEvent is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1ae20) and /System/Library/HIDPlugins/ServicePlugins/JoyConHIDServicePlugin.plug|backboardd| rvicePlugin (0x100f92c40). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class _GCHapticEvent is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1ae20) and /System/Library/HIDPlugins/ServicePlugins/LunaHIDServicePlugin.plugin|backboardd| ePlugin (0x100fae628). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCHapticMotor is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1ae70) and /System/Library/HIDPlugins/ServicePlugins/LunaHIDServicePlugin.plugin/|backboardd| Plugin (0x100fae678). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCGamepadHIDServicePlugin is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1aec0) and /System/Library/HIDPlugins/ServicePlugins/LunaHIDServicePl|backboardd| naHIDServicePlugin (0x100fae718). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class _GCHapticEvent is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1ae20) and /System/Library/HIDPlugins/ServicePlugins/XboxOneHIDServicePlugin.plu|backboardd| ServicePlugin (0x100fce780). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCHapticMotor is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1ae70) and /System/Library/HIDPlugins/ServicePlugins/XboxOneHIDServicePlugin.plug|backboardd| ervicePlugin (0x100fce7d0). One of the two will be used. Which one is undefined.
+|backboardd| objc[56]: Class GCGamepadHIDServicePlugin is implemented in both /System/Library/HIDPlugins/ServicePlugins/DualSenseHIDServicePlugin.plugin/DualSenseHIDServicePlugin (0x100f1aec0) and /System/Library/HIDPlugins/ServicePlugins/XboxOneHIDServic|backboardd| /XboxOneHIDServicePlugin (0x100fce870). One of the two will be used. Which one is undefined.
+SWEET HID: SweetHIDTouch open by IOHIDEventServiceUserClient -> 1
+SWEET HID: SweetHIDButtons open by IOHIDEventServiceUserClient -> 1
+TIMELM: trial=0087-gui-log-r39984162472 heartbeat=8 cpu0-timer=58057 cpu0-sgi1=1
+exec xpcproxy
+exec lsd
+exec powerd
+exec containermanagerd
+exec mobiletimerd
+exec ACCHWComponentAuthService
+exec sharingd
+SWEET Sandbox: containermanager op 16
+SWEET Sandbox: containermanager op 15
+SWEET AKS: containermanagerd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: containermanagerd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec rapportd
+exec imagent
+exec thermalmonitord
+exec xpcproxy
+exec xpcproxy
+SWEET AKS: powerd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: powerd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec xpcproxy
+exec chronod
+exec com.apple.datamigrator
+exec xpcproxy
+exec biomed
+exec dasd
+SWEET AKS: powerd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: powerd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+hfs: set hardlink bit on vol=iOSRoot cnid=321594 inoid=71909506
+hfs: set hardlink bit on vol=iOSRoot cnid=321594 inoid=71909506
+SWEET AKS: powerd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: powerd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec lockdownd
+exec driverkitd
+exec locationd
+SWEET AKS: keybagd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+exec identityservicesd
+exec distnoted
+exec logd_helper
+exec timed
+exec triald
+exec PowerUIAgent
+exec contextstored
+exec apfs_iosd
+exec passd
+CRASH driverkitd[67] sig 9 code 0x0 sub 0x0 slide 0x29014000 mh 0x102be4000
+CRASH driverkitd pc 0x1eb625d98 lr 0x1aa1b83a4 sp 0x16d219200 fp 0x16d219270 far 0x102e10000
+CRASH driverkitd bt 0x1aa1ad12c 0x1aa19e514 0x102c826b4 0x102ccd37c 0x102cce81c 0x102c0c31c 0x102c5d00c 0x102c7497c 0x102c8acf8 0x102c864a8
+CRASH driverkitd reason ns 1 code 0x7: (none)
+exec xpcproxy
+exec ReportCrash
+SWEET WDT: watchdogd sel 0 in 0/0 out 1/0 -> ok
+SWEET AKS: ReportCrash sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: ReportCrash sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: ReportCrash sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+TIMELM: trial=0087-gui-log-r39984162472 heartbeat=9 cpu0-timer=68719 cpu0-sgi1=1
+exec xpcproxy
+exec aggregated
+SWEET FB: MobileGestaltHelper sel 8 in 0/0 out 2/0 -> 0x0
+SWEET FB: MobileGestaltHelper sel 28 in 0/0 out 1/0 -> 0x0
+SWEET FB: backboardd sel 57 in 0/0 out 1/0 -> 0x0
+SWEET FB: backboardd sel 15 in 2/0 out 1/0 -> 0x0
+SWEET FB: backboardd sel 22 in 1/0 out 0/0 -> 0x0
+SWEET FB: backboardd sel 29 in 0/0 out 0/8 -> 0x0
+SWEET FB: backboardd sel 33 in 1/0 out 0/0 -> 0x0
+SWEET FB: backboardd sel 79 in 2/0 out 0/1580 -> 0x0
+SWEET FB: backboardd sel 74 in 1/0 out 1/64 -> 0x0
+exec audioclocksyncd
+exec xpcproxy
+exec apsd
+exec xpcproxy
+exec analyticsd
+SWEET Sandbox: cfprefsd op 12
+SWEET Sandbox: distnoted op 28
+exec xpcproxy
+exec coreduetd
+exec xpcproxy
+exec xpcproxy
+SWEET AKS: coreduetd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec xpcproxy
+exec mobileassetd
+exec awdd
+exec securityd
+SWEET AKS: securityd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: securityd sel 14 arg0 0 in 0/0 out 1/0 -> 0x0
+exec xpcproxy
+exec mobileactivationd
+exec xpcproxy
+SWEET AKS: mediaserverd sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: mediaserverd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+SWEET AKS: coreduetd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: coreduetd sel 17 arg0 0 in 1/0 out 0/4096 -> 0x0
+exec findmydeviced
+exec xpcproxy
+exec iconservicesagent
+exec xpcproxy
+exec xpcproxy
+exec dmd
+exec bluetoothd
+SWEET AKS: securityd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: securityd sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+exec xpcproxy
+exec CloudKeychainProxy
+exec xpcproxy
+exec syncdefaultsd
+SWEET AKS: CloudKeychainProxy sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: CloudKeychainProxy sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+SWEET AKS: triald sel 0 arg0 0 in 0/0 out 0/0 -> 0x0
+SWEET AKS: triald sel 7 arg0 0 in 1/0 out 1/0 -> 0x0
+TIMELM GUI 0087: AKS call log limit reached (32), results unchanged
+TIMELM: trial=0087-gui-log-r39984162472 heartbeat=10 cpu0-timer=82060 cpu0-sgi1=1
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec nehelper
+exec nsurlsessiond
+exec fairplayd.H2
+exec nanoregistryd
+SWEET FB: display on
+SWEET FB: backboardd sel 12 in 1/0 out 0/0 -> 0x0
+SWEET FB: backboardd sel 79 in 2/0 out 0/40 -> 0x0
+SWEET FB: backboardd sel 6 in 3/0 out 0/0 -> 0x0
+SWEET FB: backboardd sel 27 in 0/0 out 0/3084 -> 0x0
+SWEET FB: backboardd sel 17 in 0/3084 out 0/0 -> 0x0
+SWEET FB: backboardd sel 84 in 0/4 out 0/0 -> 0x0
+SWEET FB: backboardd sel 50 in 2/0 out 0/0 -> 0x0
+SWEET SURF: backboardd sel 13
+SWEET FB: backboardd sel 68 in 1/8 out 0/0 -> 0x0
+SWEET SURF: backboardd create id 2 1125x2436 fmt 0x42475241 bpe 4 bpr 4608 planes 0 size 11239424 keys 11 -> 0x0
+SWEET SURF: backboardd sel 9
+SWEET SURF: backboardd sel 27
+SWEET SURF: backboardd sel 5
+SWEET SURF: backboardd trap 2
+SWEET SURF: backboardd trap 3
+SWEET FB: backboardd sel 4 in 0/0 out 1/0 -> 0x0
+SWEET FB: backboardd sel 68 in 1/8 out 0/0 -> 0x0
+SWEET FB: backboardd sel 5 in 0/1132 out 0/0 -> 0x0
+SWEET FB: backboardd sel 3 in 2/0 out 1/0 -> 0x0
+SWEET SURF: backboardd sel 34
+SWEET FB: backboardd sel 55 in 1/72 out 0/0 -> 0x0
+SWEET FB: swap 2 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+SWEET SURF: backboardd create id 3 1125x2436 fmt 0x42475241 bpe 4 bpr 4608 planes 0 size 11239424 keys 11 -> 0x0
+SWEET FB: swap 3 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+exec xpcproxy
+exec xpcproxy
+exec liveactivitiesd
+SWEET FB: thermalmonitord sel 78 in 2/1788 out 0/0 -> 0x0
+SWEET FB: swap 4 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+exec tccd
+SWEET Sandbox: tccd op 22
+SWEET Sandbox: tccd op 1
+SWEET Sandbox: iconservicesagen op 5
+SWEET FB: swap 5 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+TIMELM: trial=0087-gui-log-r39984162472 heartbeat=11 cpu0-timer=93577 cpu0-sgi1=1
+exec xpcproxy
+exec donotdisturbd
+ifnet_attach: Waiting for all kernel threads created for interface utun0 to get scheduled at least once.
+ifnet_attach: All kernel threads created for interface utun0 have been scheduled at least once. Proceeding.
+_dlil_attach_flowswitch_nexus: not attaching flowswitch to utun0
+SWEET Sandbox: rapportd privilege 12000 denied
+exec xpcproxy
+SWEET FB: swap 6 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436
+exec xpcproxy
+exec xpcproxy
+exec corespeechd
+exec xpcproxy
+exec mDNSResponder
+exec accountsd
+exec CAReportingService
+exec xpcproxy
+exec IMDPersistenceAgent
+exec xpcproxy
+exec seserviced
+exec xpcproxy
+exec bluetoothd
+TIMELM: trial=0087-gui-log-r39984162472 heartbeat=12 cpu0-timer=103391 cpu0-sgi1=1
+exec xpcproxy
+exec cloudd
+exec xpcproxy
+[System Event] [2242800737] [INFO] [Subsystem: launchd] [Event: launchd_cache_loader] Doing boot task
+com.apple.xpc.launchd|1969-12-31 16:01:29.718267 <Notice>: launchd UUID: 5C15DB07-B3BC-3DF3-B62F-3E498B993B8E
+exec xpcproxy
+exec coreauthd
+exec fairplayd.H2
+com.apple.xpc.launchd|1969-12-31 16:01:29.718279 (boot) <Notice>: Early boot complete. Continuing system boot.
+[System Event] [2251708751] [INFO] [Subsystem: launchd] [Event: boot] Early boot complete. Continuing system boot.
+exec xpcproxy
+exec fmfd
+SWEET NET: configd lo0 add address 127.0.0.1
+SWEET NET: configd route add 127.0.0.0 gw 127.0.0.1 ifindex 0 flags 0x901
+SWEET NET: configd route add 224.0.0.0 gw 0.0.0.0 ifindex 0 flags 0x901
+TIMELM: trial=0087-gui-log-r39984162472 heartbeat=13 cpu0-timer=115978 cpu0-sgi1=1
+SWEET Sandbox: containermanager op 7
+exec wcd
+exec xpcproxy
+exec xpcproxy
+exec siriactionsd
+exec xpcproxy
+exec CircleJoinRequested
+exec navd
+exec misd
+exec xpcproxy
+exec profiled
+exec xpcproxy
+exec installcoordinationd
+exec xpcproxy
+exec contactsd
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec xpcproxy
+exec appleaccountd
+exec adprivacyd
+exec mapspushd
+exec calaccessd

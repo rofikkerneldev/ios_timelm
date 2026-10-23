@@ -2,7 +2,31 @@
 
 Checkpoint terbaru 2026-10-23. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
-**Image tes terbaru: 0087-GUI-log — belum diuji HP.**
+**Hasil terbaru — ring log 0087-GUI-log sudah diambil:**
+[analisis utama dan roadmap 0088](docs/0087_PERSISTENT_LOG_ANALYSIS.md),
+[console decoded](docs/evidence/0087-gui-log-console.txt),
+[metadata snapshot](docs/evidence/0087-gui-log-pull.json).
+Marker IOAcceleratorES published; exec SpringBoard/backboardd masing-masing satu,
+backboardd membuat surfaces 2/3 dan mengirim swap 2–6. Heartbeat terakhir yang
+tersimpan **13**, timer **115978**; header hanya **flush 5**, total **47097** byte.
+User sudah menunggu lima menit. Jangan menganggap snapshot ini merekam seluruh
+lima menit atau menyimpulkan kernel hang; bedakan worker UFS/logger/console yang
+berhenti dari kernel/scheduler. Tidak ada suffix ring tambahan di luar snapshot.
+
+Driverkitd[67] mendapat SIGKILL dengan namespace JETSAM, reason per-process memory
+limit (7), lalu heartbeat/swap berlanjut. Tidak ada crash SpringBoard/backboardd
+atau laporan kernel panic pada snapshot. Asal garis merah belum dipastikan:
+shim memang clear RED, dan copy full-canvas menyisakan margin 12 px atas/bawah.
+
+**Langkah berikutnya: 0088 diagnostik independen, belum dibuild.** Counter heartbeat
+harus naik sebelum printf; amati counter copy-completed dan fase/errno UFS/logger.
+Header liveness tetap di-flush walau ring console tidak bertambah; siapkan status
+framebuffer yang tetap terbaca bila storage gagal. Detail dan batas lock/observer
+ada pada roadmap analisis utama. Jangan menambah GPU/SMP, reflash root atau
+menonaktifkan jetsam hanya dari log ini. Query crash-report tambahan terhenti
+karena ADB kemudian timeout, termasuk get-state; tidak membuktikan filesystem rusak.
+
+**Image terbaru yang sudah diuji: 0087-GUI-log.**
 [Download GnxdmsDC](https://pixeldrain.com/u/GnxdmsDC),
 [langkah tes/pull log](docs/0087_RECOVERY_LOG_TRIAL.md),
 [manifest](docs/evidence/0087-gui-log-build.json).
@@ -10,7 +34,7 @@ Trial `0087-gui-log-r39984162472`, SHA256
 `e1dfb191b5988c8985510db70f1b03bea30dad27b53b0819bc849a3f9fae8e59`.
 Kernel/shim/ADT/DTB/static init dan payload di luar command-line buffer identik
 0087-GUI; hanya sweetlog=1, flush 10 detik eksplisit dan trial baru. Capture boot
-sesudah logo, lalu user kembali ke recovery untuk agent mengambil ring log.
+sesudah logo sudah diambil; lihat hasil di atas. Image ini menjadi fallback logging.
 
 **ADB recovery berhasil diaudit read-only:** server `127.0.0.1:15037`, gunakan
 `/home/rofikkernel/alpha/out/host/linux-x86/bin/adb -H 127.0.0.1 -P 15037`.
@@ -39,11 +63,9 @@ berasal dari pencarian `AppleVirtIOEntropy` yang tidak menemukan service; bukan
 bukti seluruh PRNG kernel gagal. Pesan `rapportd ... nxprov_create: 1` sebelumnya
 adalah EPERM Skywalk, tetapi tidak terdapat pada transkripsi baru ini.
 
-**Langkah agent berikutnya:** tes image log di atas lalu pull/decode ring lewat
-recovery; verifikasi header/flush/trial. Kriteria geometry sudah dipenuhi untuk HP
-ini. Bila capture tetap gagal, 0088 dibatasi instrumentasi status/counter present
-yang tetap terbaca setelah frame, lalu probe atribut HFS. Kernel belum dibangun
-ulang karena belum ada perubahan source yang ditentukan dari bukti runtime.
+Capture pertama sudah selesai dan terverifikasi. Lanjutkan instrumentasi 0088
+untuk gap liveness/logger pada hasil baru, lalu probe atribut HFS. Kriteria
+geometry untuk tail sudah dipenuhi pada HP ini; ulangi jika layout berubah.
 
 **Referensi display Topaz sudah dibandingkan:**
 [analisis source dan roadmap display](docs/TOPAZ_DISPLAY_COMPARISON.md).

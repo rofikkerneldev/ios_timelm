@@ -12,9 +12,11 @@ overlap/duplikasi dan jeda antarfoto. Dimulai saat mount task sudah berjalan;
 Foto terakhir dideskripsikan logo putih/ungu di latar hitam dan garis merah bawah.
 
 **Update recovery:** audit live sudah memastikan volume HFSX 16 GiB pada userdata
-32 GiB dan membackup tail log di luar volume. **Varian 0087-GUI-log sudah dibangun
-dan diupload, belum diuji HP**; kernel dan payload selain command line identik.
-[Audit, download dan instruksi capture](0087_RECOVERY_LOG_TRIAL.md).
+32 GiB dan membackup tail log di luar volume. **Varian 0087-GUI-log sudah diuji dan
+ring berhasil diambil**: [analisis paling baru](0087_PERSISTENT_LOG_ANALYSIS.md).
+Marker service, exec SpringBoard/backboardd dan swap sudah tercapture; yang belum
+jelas adalah liveness sesudah flush 5/heartbeat 13. Kernel dan payload selain
+command line identik. [Audit dan prosedur capture](0087_RECOVERY_LOG_TRIAL.md).
 
 ## Kesimpulan dan prioritas
 
@@ -136,7 +138,7 @@ konsisten dengan jam dekat Unix epoch dan perbedaan zona waktu. Ini sesuai
 fallback kalender tanpa RTC valid, bukan tanggal firmware. Belum ada kaitan yang
 terbukti dengan layar logo; audit clock setelah observasi boot utama tersedia.
 
-## Roadmap konkret untuk agent berikutnya
+## Roadmap saat transkripsi (capture langkah 1 sekarang selesai)
 
 1. **Tes 0087-GUI-log, lalu pull log sesudah cache.** Audit geometry, backup tail
    dan repack sudah selesai tanpa kernel build baru; ikuti

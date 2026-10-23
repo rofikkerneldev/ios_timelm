@@ -1,5 +1,8 @@
 # 0087 GUI: logo berhenti, bar merah dan Nexus EPERM
 
+**Hasil paling baru:** [analisis ring log langsung dari recovery](0087_PERSISTENT_LOG_ANALYSIS.md).
+Dokumen di bawah menyimpan penelusuran dari laporan parsial sebelumnya.
+
 2026-10-23. **Update: transkripsi foto sudah diterima dan dianalisis di
 [0087_FULL_LOG_ANALYSIS.md](0087_FULL_LOG_ANALYSIS.md).** Dokumen ini menyimpan
 laporan parsial sebelumnya dan penelusuran Nexus; status pending di bawah adalah
