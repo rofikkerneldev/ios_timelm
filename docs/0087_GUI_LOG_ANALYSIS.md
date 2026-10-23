@@ -49,6 +49,37 @@ bahwa penolakan rapportd merupakan dependensi yang menghentikan SpringBoard.
 Jangan bypass privilege, mengubah daemon, atau mematikan Skywalk hanya untuk
 menghilangkan baris terakhir yang terlihat.
 
+## Tambahan laporan diag: transkripsi belum pasti
+
+User kemudian melaporkan:
+
+```text
+di diag ada failed to load virtual random dan tmo
+
+ada juga muncul pu0-sgil-1
+```
+
+Saat ditanya progres heartbeat/timer, user menjawab:
+
+```text
+tidak lagi melihatnya mungkin ada sebelum animasi tapi saya akan kirim full log sebentar lagi
+```
+
+Belum ada teks verbatim/errno/path dari pesan pertama. Pencarian source kernel
+0087 tidak menemukan frasa `failed to load virtual random` atau token `tmo` yang
+cocok. Jangan menyimpulkan kegagalan RNG, NVRAM, ramdisk, `/tmp` atau timeout dari
+ejaan parsial tersebut. Ini tetap observasi yang memerlukan full log.
+
+`pu0-sgil-1` mungkin pembacaan `cpu0-sgi1=1`, tetapi identitas baris belum dipastikan.
+Pada source 0087, `bsd/dev/sweet_ufs.c` mencetak `sweet_cpu_irq_count(0, 0)` sebagai
+counter SGI1 pada heartbeat. `osfmk/arm64/cpu.c:966` menaikkan counter hanya untuk
+interrupt yang ditangani; startup `SweetCPU.cpp` memeriksa penerimaan self-SGI.
+Jika cocok, angka 1 berarti satu SGI1 telah ditangani CPU0, bukan kode kegagalan.
+Dengan `cpus=1`, counter ini tidak wajib bertambah terus. Progres timer/heartbeat
+lebih berguna untuk liveness. User tidak lagi melihat heartbeat sesudah animasi;
+itu belum membuktikan counter/thread heartbeat berhenti karena gambar dapat
+menimpa teks, termasuk pada diag yang console-nya tidak dimute.
+
 ## Hubungan dengan present dan console
 
 Pada `AppleCLCD::present()` source 0087, `sweetfb_noconsole=1` mengatur

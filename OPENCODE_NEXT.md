@@ -9,6 +9,12 @@ errno 1 = EPERM pada jalur jaringan Skywalk; PID 82 adalah rapportd. Belum ada
 bukti hubungan kausal dengan UI berhenti. Prioritas berikutnya membaca full log,
 menentukan liveness/swap dan perilaku console sebelum build/perubahan baru.
 
+Tambahan diag: user membaca kira-kira `failed to load virtual random`, `tmo`, dan
+`pu0-sgil-1`; belum ada teks lengkap. Heartbeat tidak lagi terlihat, mungkin ada
+sebelum animasi. Jangan menganggap heartbeat berhenti atau RNG/ramdisk/tmp rusak.
+Jika baris terakhir adalah `cpu0-sgi1=1`, ini counter satu SGI1 ditangani, bukan
+error, dan tidak wajib terus bertambah pada cpus=1. Full log masih akan dikirim.
+
 **Laporan HP terbaru — 0087-diag:** user mengonfirmasi image
 `timelm-0087-ufs-rw-c1-wdtstop-diag.img`; logo Apple terlihat, sekitar lima baris
 `exec xpcproxy`, dan bar merah di bawah. User masih menunggu progres boot.

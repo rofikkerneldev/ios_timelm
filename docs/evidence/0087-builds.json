@@ -36,7 +36,14 @@
           "Approximately five exec xpcproxy lines",
           "Red bar below, cause unknown"
         ],
-        "interactive_gui_confirmed": false
+        "interactive_gui_confirmed": false,
+        "additional_unverified_transcription": [
+          "failed to load virtual random",
+          "tmo",
+          "pu0-sgil-1"
+        ],
+        "heartbeat_visibility": "User no longer sees it, possibly visible before animation; actual counter progression/stall unconfirmed.",
+        "full_log_status": "User will send full log shortly; exact text not yet available."
       }
     },
     {
