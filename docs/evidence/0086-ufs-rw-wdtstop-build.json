@@ -18,7 +18,17 @@
   "patches_sha256": "cbba56ab75f6d3433dd3e41940b36914637e430aae06066c5c97e56d68bfb795",
   "download_url": "https://pixeldrain.com/u/G1CYVE4s",
   "uploaded_sha256": "9b6582183c7ef6e069d0e49a17b97a32d829090574a9b2cf1c84fd082c5e4dd1",
-  "hardware_tested": false,
+  "hardware_tested": true,
   "kernel_ci_run": 39974714520,
-  "comparison": "Kernel/shim/ADT/static init/DTB identical to UFS-RO watchdog-stop trial. Changed ufsrw/rootrw to 1, added launchd_unsecure_cache=1, changed trial ID."
+  "comparison": "Kernel/shim/ADT/static init/DTB identical to UFS-RO watchdog-stop trial. Changed ufsrw/rootrw to 1, added launchd_unsecure_cache=1, changed trial ID.",
+  "phone_result": {
+    "ios_daemons_exec_observed": true,
+    "backboardd_exec_observed": true,
+    "IOAcceleratorES_matches": 0,
+    "gui_observed": false,
+    "reset_reported": false,
+    "stationary_screen_report_minutes": 5,
+    "heartbeat_progress_after_screen_stops_confirmed": false,
+    "tmp_error_reported_exact_text_missing": true
+  }
 }
