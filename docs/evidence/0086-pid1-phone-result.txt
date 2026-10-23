@@ -1,0 +1,53 @@
+Source: user-provided 0086 log in this conversation, 2026-10-23.
+Relevant excerpt (other successful initialization lines omitted):
+
+bsd_init: calling socketinit
+bsd_init: calling domaininit
+bsd_init: calling skywalk_init
+Skywalk: running self-tests
+Skywalk: sk_copy64_8 ... PASSED
+Skywalk: memcmp mask ... PASSED
+bsd_init: calling memorystatus_init
+bsd_init: calling sysctl_mib_init
+bsd_init: calling bsd_autoconf
+bsd_autoconf: calling kminit
+bsd_init: calling loopattach
+bsd_init: calling ether_family_init
+bsd_init: calling net_init_run
+bsd_init: calling inittodr
+bsd_init: calling setconf
+Added memory device md0/rmd0 (01000000/12000000) at FFFFFE00084C800
+0 for 0000000000008000
+BSD root: md0, major 1, minor 0
+bsd_init: vfs_mountroot
+bsd_init: calling VFS_ROOT
+bsd_init: calling devfs_kernel_mount
+bsd_init: calling siginit
+bsd_init: calling bsd_utaskbootstrap
+TIMELM: trial=0086-rd-r39974714520 heartbeat=1 cpu0-timer=207 cpu0-
+sgi1=1
+bsd_init: calling mountroot_post_hook
+bsd_init: done
+Serial keyboard started
+vm_free_delayed_pages: initialized 0 free pages
+No POST boot-arg set.
+bsd_init: bsd_do_post - doneload_init_program: attempting to load /
+usr/appleinternal/sbin/launchd.development
+VM Swap Subsystem is ON
+load_init_program: attempting to load /sbin/launchd
+
+*** SWEET userspace: init running as PID 1 ***
+TIMELM: trial=0086-rd-r39974714520 heartbeat=2 cpu0-timer=481 cpu0-
+sgi1=1
+SWEET init: still alive
+TIMELM: trial=0086-rd-r39974714520 heartbeat=3 cpu0-timer=824 cpu0-
+sgi1=1
+SWEET init: still alive
+TIMELM: trial=0086-rd-r39974714520 heartbeat=4 cpu0-timer=1121 cpu0
+-sgi1=1
+SWEET init: still alive
+
+User reports: "after that reboot".
+Confirmed: RAM-disk root mount, devfs, full BSD init, static userspace PID 1,
+successful syscalls/timed sleeps, growing timer IRQ counter and received SGI1.
+Not established: actual Apple launchd, UFS/iOS root, sustained uptime or reset cause.

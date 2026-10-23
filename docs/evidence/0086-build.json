@@ -19,5 +19,11 @@
   "uploaded_sha256": "322ccbde46e8b2569aca584a397f51d00c896afe9fd3563a139a125742866f81",
   "ci_run": 39974714520,
   "ci_conclusion": "success",
-  "hardware_tested": false
+  "hardware_tested": true,
+  "phone_result": {
+    "static_pid1_observed": true,
+    "timer_and_sgi1_observed": true,
+    "reset_after_heartbeat": 4,
+    "stable_long_term": false
+  }
 }

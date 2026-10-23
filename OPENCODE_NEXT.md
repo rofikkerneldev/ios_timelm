@@ -2,7 +2,60 @@
 
 Tanggal: 2026-10-23. Mulai dari file ini agar tidak mengulang investigasi sebelumnya.
 
-## IMAGE AKTIF BERIKUTNYA: 0086 RAM-disk quiet, RTC wait dilewati
+## IMAGE AKTIF BERIKUTNYA: 0086 dengan APSS watchdog-stop di shim
+
+**Hasil HP terbaru:** 0086 berhasil mount `md0`, menyelesaikan BSD init, menjalankan
+static **PID 1**, dan mencetak `still alive` sampai heartbeat=4, lalu reboot.
+[Bukti log](docs/evidence/0086-pid1-phone-result.txt). Baseline transisi kernel ke
+userspace sudah terbukti; stabilitas terhadap reset belum. Ini belum Apple launchd.
+
+Kernel, timer/SGI, RAM-disk dan RTC sudah melewati milestone sebelumnya. Prioritas
+sekarang menguji watchdog yang diwariskan bootloader; tidak perlu mengulang build
+kernel atau mengganti userdata. Reset reason belum didapat, sehingga watchdog APSS
+masih hipotesis yang diuji, bukan penyebab yang sudah dipastikan.
+
+**Uji [timelm-0086-rd-c1-wdtstop.img](https://pixeldrain.com/u/acwZLzob):**
+
+```text
+image SHA256 ca0b941ef2e8535550e10595e78a2fb8dbdc170ae6948ea7fef1248153bff71e
+trial         0086-rd-wdtstop-r39974714520
+kernel        0086, identik dengan image sebelumnya
+```
+
+```bash
+fastboot boot timelm-0086-rd-c1-wdtstop.img
+```
+
+Rekam layar shim awal yang ditahan sekitar dua detik. Cari `WDT EN before=...
+after=...`, `WDT status=... bark=...`, `WDT BITE`, dan salah satu:
+
+- `APSS stop confirmed`: bit enable aktif lalu readback menjadi mati.
+- `APSS already disabled`: watchdog ini sudah mati saat shim memeriksanya.
+- `STOP NOT CONFIRMED`: register tidak memberi hasil yang dapat dikonfirmasi.
+
+Lalu biarkan static PID 1 berjalan **minimal 2–5 menit**. Jika bertahan jauh
+melewati durasi reset sebelumnya setelah stop dikonfirmasi, lanjutkan validasi
+stabilitas, lalu siapkan UFS quiet dengan shim yang sama. Jika watchdog sudah mati
+atau reset tetap terjadi, kumpulkan reset reason dan periksa PMIC/firmware/TZ
+watchdog atau jalur exception. Jangan menganggap semua watchdog sudah mati hanya
+karena APSS EN=0.
+
+Source Linux vendor LG `drivers/soc/qcom/watchdog_v2.c` dan mainline
+`drivers/watchdog/qcom-wdt.c` sama-sama memverifikasi base `0x17c10000` dan layout
+KPSS: RESET +0x04, ENABLE +0x08, STATUS +0x0c, BARK +0x10, BITE +0x14. Prosedur stop:
+write 0 ke ENABLE, barrier, readback. Implementasi baru hanya melakukan ini ketika
+boot-arg **`timelm_wdt=stop`** ada dan bit enable aktif. Tidak mengubah PMIC, secure
+world, timeout atau reset register. Image biasa tanpa flag tidak mengakses watchdog.
+[Audit sumber](docs/evidence/watchdog-source-audit.json).
+
+Kode shim: `shim/watchdog.h` dan `shim/loader.c`, commit `90d21f9`. 13 regression
+test lulus, termasuk gate flag dan pemeriksaan hanya register ENABLE yang berubah.
+Shim ARM64 dibuild lokal paralel `JOBS=56`; kernel CI tidak dibuild ulang. Perbandingan
+byte membuktikan kernel/ADT/static init/DTB identik dengan 0086 sebelumnya; yang
+berubah shim dan flag/trial ID. Upload dengan `pd upload`, checksum cocok.
+[Manifest](docs/evidence/0086-wdtstop-build.json). **Varian wdtstop belum diuji di HP.**
+
+## Riwayat 0086: RAM-disk quiet, RTC wait dilewati
 
 [Download timelm-0086-rd-c1.img](https://pixeldrain.com/u/ejaXM7dn).
 [CI 39974714520 sukses](https://github.com/rofikkerneldev/ios_timelm/actions/runs/39974714520),
@@ -27,7 +80,8 @@ Backup 0085: `$HOME/work/timelm-0086/kernel-before0086.sweet`.
 86 patch apply, 12 regression test, kompilasi lokal translation unit yang berubah,
 build XNU macOS dan tes SGI setelah build lulus. Seluruh 10 segmen XNU dalam boot
 image, ADT/DTB, commit dan patch digest serta checksum upload telah diverifikasi.
-**0086 belum diuji pada HP.** Tidak ada klaim reboot atau boot userland sudah selesai.
+**Update hasil HP:** 0086 sudah mencapai static PID 1, tetapi reboot sesudah
+heartbeat=4. Lihat bagian teratas untuk varian watchdog-stop berikutnya.
 
 Marker IRQ tetap bertuliskan `TIMELM IRQ FIX 0085` karena perbaikan tersebut
 diwariskan. Bedakan image baru memakai **trial 0086** dan marker `TIMELM RTC 0086`.

@@ -1,0 +1,16 @@
+{
+  "source_sha256": {
+    "/home/rofikkernel/alpha/kernel/lge/sm8250/drivers/soc/qcom/watchdog_v2.c": "26bda78d7c93423e1798a700ec78760d3fc021607489f29857b1663f34d37641",
+    "/home/rofikkernel/alpha/kernel/lge/sm8250-mainline/drivers/watchdog/qcom-wdt.c": "ab8137061a93d2c5f11bc34558c71b94edb3f3e76fccaa38485250434f009423"
+  },
+  "dtb_node": "/soc@0/watchdog@17c10000",
+  "base": "0x17c10000",
+  "register_offsets": {
+    "reset": "0x04",
+    "enable": "0x08",
+    "status": "0x0c",
+    "bark": "0x10",
+    "bite": "0x14"
+  },
+  "stop_procedure": "If ENABLE bit 0 is set, write 0 to ENABLE, issue barrier, read back ENABLE. No RESET or timeout register writes."
+}
