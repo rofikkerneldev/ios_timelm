@@ -1,0 +1,28 @@
+Source: user-provided quiet boot log in this conversation, 2026-10-23.
+Relevant excerpt (omitted unrelated registration messages):
+
+SWEET CPU: requested=1 selected=1 (limit=8)
+cpu_start() cpu: 0
+SWEET CPU: cpu=0 self-SGI1 mpidr=0x0 value=0x1000001
+SWEET CPU: cpu=0 entered initCPU mpidr=0x0 EL1 IRQs=1
+SWEET CPU: cpu=0 mpidr=0x0 SGI1 received=1 timer-irqs=41
+bsd_init: calling bsd_bufferinit
+using 7489 buffer headers and 5792 cluster IO buffer headers
+bsd_init: calling IOKitInitializeTime
+SWEET CPU: 1/1 CPUs initialized
+TIMELM: trial=0085-rd-quiet-r39968689712 heartbeat=1 cpu0-timer=261
+cpu0-sgi1=1
+TIMELM: trial=0085-rd-quiet-r39968689712 heartbeat=2 cpu0-timer=589
+cpu0-sgi1=1
+TIMELM: trial=0085-rd-quiet-r39968689712 heartbeat=3 cpu0-timer=873
+cpu0-sgi1=1
+TIMELM: trial=0085-rd-quiet-r39968689712 heartbeat=4 cpu0-timer=1157
+cpu0-sgi1=1
+
+Follow-up confirmation from user: "Reboot setelah heartbeat=4".
+Earlier estimate: approximately 30 seconds from boot to reboot, slow framebuffer.
+
+Confirmed: correct CPU0 SGI1 encoding, received SGI1, growing timer IRQ counter,
+four timed heartbeat wakeups, BSD reaching IOKitInitializeTime.
+Not observed: return from IOKitInitializeTime, root mount, static PID 1, launchd.
+Reset reason and panic/backtrace have not been captured.

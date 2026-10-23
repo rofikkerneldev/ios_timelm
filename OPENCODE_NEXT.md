@@ -2,7 +2,40 @@
 
 Tanggal: 2026-10-23. Mulai dari file ini agar tidak mengulang investigasi sebelumnya.
 
-## UPDATE TERBARU: reboot setelah sekitar 30 detik, uji image quiet dahulu
+## UPDATE TERBARU: quiet membuktikan timer/SGI bekerja, reboot pada penantian RTC
+
+User telah menguji `trial=0085-rd-quiet-r39968689712` dan mengonfirmasi
+**reboot setelah heartbeat=4**. [Bukti log](docs/evidence/0085-quiet-phone-result.txt).
+SGI1 CPU0 diterima, timer meningkat dari 41 ke 1157, dan empat heartbeat berjalan.
+BSD terakhir mencetak `calling IOKitInitializeTime`; belum terlihat return, mount
+root atau PID 1. Prioritas berpindah dari perbaikan interrupt ke penantian RTC/reset.
+
+`IOKitInitializeTime()` menunggu resource `IORTC` maksimal 30 detik, sedangkan
+port ini belum menyediakan driver tersebut. Dugaan watchdog firmware konsisten
+dengan reset pada durasi tetap, tetapi **belum dibuktikan oleh reset reason**.
+Pesan IOWatchdog stub dan boot-arg `wdt=-1` tidak membuktikan watchdog Qualcomm mati.
+
+Patch 0086 (`0086-timelm-skip-unavailable-rtc-service-wait.patch`) melewati
+penantian IORTC hanya pada konfigurasi SWEET/timelm. Tetap jalankan
+`clock_initialize_calendar()` dengan fallback platform (waktu awal nol). Timer
+monotonik dan heartbeat tidak diubah; watchdog hardware juga belum diubah.
+Ini menghindari menunggu layanan yang tidak ada, bukan bukti reset sudah teratasi.
+
+Build berikutnya cukup **satu image RAM-disk quiet cpus=1**. Marker yang dicari:
+
+```text
+TIMELM RTC 0086: no IORTC driver, skipping 30s service wait
+TIMELM RTC 0086: calendar initialized with platform fallback
+bsd_init: returned from IOKitInitializeTime
+*** SWEET userspace: init running as PID 1 ***
+```
+
+Jika setelah 0086 tetap reboot pada durasi yang sama tetapi milestone maju,
+investigasi watchdog/reset reason harus diprioritaskan. Jangan mengubah timer/SGI
+yang sudah terbukti bekerja, dan jangan menganggap volume iOS penyebab reset
+karena trial ini masih menggunakan RAM-disk. UFS tetap menunggu baseline PID 1.
+
+## Riwayat: reboot dengan verbose startup sebelum image quiet
 
 User melaporkan **ketiga image 0085 awal** mencetak banyak
 `kernel_startup_initialize_upto[7, rank -1]: <alamat>(<alamat>)`, framebuffer lambat,
