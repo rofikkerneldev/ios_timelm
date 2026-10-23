@@ -2,12 +2,19 @@ User report received 2026-10-23, after the 0087 test recommendation:
 
 "logo apple terlihat dengan tulisan exec xpcproxy ada sekitar 5"
 
+Follow-up user clarification:
+"muncul pada timelm-0087-ufs-rw-c1-wdtstop-diag.img dan ada bar merah dibawah,
+tapi dari penjelasan topaz bisa sampai 4 menit saya coba menunggu dulu"
+
 Confirmed from this report only:
+- The user identifies the image by filename as 0087-diag.
 - An Apple logo is visible.
 - User sees approximately five occurrences/lines of "exec xpcproxy".
+- A red bar is visible below; its origin is not established.
+- The user is continuing to wait; the final boot result is pending.
 
 Pending clarification:
-- Exact image/trial: 0087-diag, 0087-gui, or another image.
+- Runtime trial marker/hash not supplied; profile identity is by user filename.
 - Elapsed time, whether the screen changes, and whether a reboot occurs.
 - Heartbeat/timer progression and SWEET FB: swap lines.
 - Service publication/canvas markers and any actual crash/exit/error message.
@@ -24,5 +31,5 @@ Interpretation bounded by source:
   not establish a successful frame copy or a hang. Diag is preferable for
   confirming heartbeat and swap evidence.
 
-No build or runtime configuration change is justified by these two observations
+No build or runtime configuration change is justified by these observations
 alone. Keep the existing images as the comparison baseline.

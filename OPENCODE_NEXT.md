@@ -2,11 +2,13 @@
 
 Checkpoint terbaru 2026-10-23. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
-**Laporan HP terbaru:** logo Apple terlihat dan ada sekitar lima baris
-`exec xpcproxy`. [Catatan hasil sementara](docs/evidence/apple-logo-phone-report.txt).
-Profil/trial, durasi, heartbeat/swap dan reboot belum dikonfirmasi. Jangan menandai
-GUI berhasil atau crash loop dari informasi ini; pesan `exec` sendiri bukan error.
-Prioritaskan identifikasi image dan progres boot sebelum memilih perubahan baru.
+**Laporan HP terbaru — 0087-diag:** user mengonfirmasi image
+`timelm-0087-ufs-rw-c1-wdtstop-diag.img`; logo Apple terlihat, sekitar lima baris
+`exec xpcproxy`, dan bar merah di bawah. User masih menunggu progres boot.
+[Catatan hasil sementara](docs/evidence/apple-logo-phone-report.txt).
+Durasi akhir, heartbeat/swap dan reboot belum dikonfirmasi. Asal bar merah belum
+diidentifikasi. Jangan menandai GUI interaktif berhasil atau crash loop dari
+informasi ini; pesan `exec` sendiri bukan error.
 
 **Referensi display Topaz sudah dibandingkan:**
 [analisis source dan roadmap display](docs/TOPAZ_DISPLAY_COMPARISON.md).
@@ -26,7 +28,7 @@ IPC/workqueue, bukan bukti crash. Tidak ada pesan `/tmp` atau laporan `CRASH` pa
 transkripsi yang terpotong ini. Tetap tes 0087-diag; jangan membangun kernel baru
 hanya karena log lama mengulang IOAcceleratorES -> 0 found.
 
-## Status: iOS userland berjalan, GUI belum tercapai
+## Status: iOS userland berjalan, GUI interaktif belum terkonfirmasi
 
 UFS baca-tulis sudah menjalankan daemon iOS: `calaccessd`, `com.apple.datamigrator`,
 `cloudd`, `installcoordinationd`, `remotepairingdeviced`, `seld`, `ind`,
@@ -77,8 +79,8 @@ kernel      42b9033b867b5b02ff8eb2beab03a983a781f6a3c6f129c4380c9132332823c0
 trials      0087-diag-r39984162472 / 0087-gui-r39984162472
 ```
 
-**Hasil per profil 0087 belum terkonfirmasi.** Laporan logo terbaru belum menyertakan
-trial ID/profil. Keduanya mengizinkan filesystem writes pada userdata,
+**0087-diag sudah diuji sebagian:** logo Apple terlihat; hasil setelah menunggu
+masih pending. Profil GUI belum dilaporkan diuji. Keduanya mengizinkan filesystem writes pada userdata,
 memakai kernel/shim/ADT/static-init/DTB yang sama; hanya console flag dan trial ID
 berbeda. Root tetap `ufsroot0`, `ufsrw=1 rootrw=1 launchd_unsecure_cache=1`;
 `cpus=1`, timer 27, quiet, watchdog-stop dan probe hardware lain tetap mati.

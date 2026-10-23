@@ -3,7 +3,7 @@
   "ci_conclusion": "success",
   "kernel_commit": "4ec36d14f2fc301d61d59443c2807c3146de7c7f",
   "album": "https://pixeldrain.com/l/rTmgiJB6",
-  "hardware_tested": false,
+  "hardware_tested": true,
   "profiles_comparison": "Identical kernel/shim/ADT/DTB/static init; only console-muting flag and trial ID differ.",
   "images": [
     {
@@ -26,7 +26,18 @@
       "patches_sha256": "afc0be50f55ee580b68b6bfde6945711c77b83d05e47c4b29200955df94a78b6",
       "download_url": "https://pixeldrain.com/u/2LJ48oCg",
       "uploaded_sha256": "7c5f15501bbec6932f3f0f74a9d39c31935ffbb6cf2172e4f97a82a2f0936623",
-      "hardware_tested": false
+      "hardware_tested": true,
+      "phone_result": {
+        "status": "partial, awaiting final user result",
+        "identity_method": "user filename; runtime marker/hash not supplied",
+        "evidence": "apple-logo-phone-report.txt",
+        "observations": [
+          "Apple logo visible",
+          "Approximately five exec xpcproxy lines",
+          "Red bar below, cause unknown"
+        ],
+        "interactive_gui_confirmed": false
+      }
     },
     {
       "payload_sha256": "26621d5449d30562c77b26d663b4a99661cb05e20c56d1907ce1499bbca0ff9b",
@@ -50,5 +61,6 @@
       "uploaded_sha256": "53a8e4f5faff615877e035ba5608c6183c5a8a7b4d15d84f0e965dae9af8ad1c",
       "hardware_tested": false
     }
-  ]
+  ],
+  "hardware_test_scope": "User-identified diag image only: Apple logo, about five exec xpcproxy lines and red bar below. User still waiting; interactive GUI, heartbeat/swap and final liveness/reboot result unconfirmed. GUI profile not tested."
 }

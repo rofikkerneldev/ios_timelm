@@ -3,7 +3,10 @@
 Audit 2026-10-23. Referensi Topaz dipin pada commit
 [`e4772911e116ab4ab6c4ac1f38e6106fefe8b483`](https://github.com/MakrSas/ios-topaz/tree/e4772911e116ab4ab6c4ac1f38e6106fefe8b483).
 Baseline timelm: kernel 0087, source commit `4ec36d1`, CI `39984162472`.
-**0087 belum diuji pada HP.** Perbandingan source ini tidak menghasilkan image baru.
+Update HP: user mengonfirmasi **0087-diag menampilkan logo Apple**, beberapa baris
+`exec xpcproxy` dan bar merah; hasil setelah menunggu masih pending. GUI interaktif
+belum terkonfirmasi. [Laporan](evidence/apple-logo-phone-report.txt).
+Perbandingan source ini tidak menghasilkan image baru.
 
 ## Kesimpulan untuk langkah sekarang
 
