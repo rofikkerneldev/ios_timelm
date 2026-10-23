@@ -2,6 +2,44 @@
 
 Tanggal: 2026-10-23. Mulai dari file ini agar tidak mengulang investigasi sebelumnya.
 
+## UPDATE TERBARU: reboot setelah sekitar 30 detik, uji image quiet dahulu
+
+User melaporkan **ketiga image 0085 awal** mencetak banyak
+`kernel_startup_initialize_upto[7, rank -1]: <alamat>(<alamat>)`, framebuffer lambat,
+lalu reboot sekitar 30 detik. Belum ada foto/alamat terakhir atau panic yang
+teridentifikasi. Source XNU membuktikan baris itu adalah verbose startup tracing:
+subsystem 7 = ZALLOC, rank -1 = `STARTUP_RANK_LAST`, dan alamatnya callback/argumen.
+Kernel CI memiliki 872 callback ZALLOC (803 rank LAST), serta 2182 callback SYSCTL.
+
+Semua image awal memakai `startup_debug=1`. Ini menambah beban console dan menjadi
+variabel pertama yang harus diisolasi. Penyebab reboot **belum dipastikan**;
+kemungkinan watchdog atau exception nyata tetap terbuka.
+
+**Image berikutnya yang harus diuji:**
+[timelm-0085-rd-c1-quiet.img](https://pixeldrain.com/u/bz3c6qFV).
+
+```text
+SHA256 a6b51a316687d4b88aaa470129feaf0fc3ad84d4b616e642282a7a4a0570dc39
+trial  0085-rd-quiet-r39968689712
+```
+
+```bash
+fastboot boot timelm-0085-rd-c1-quiet.img
+```
+
+Kernel tidak dibuild ulang. Perbandingan byte memastikan kernel, ADT, static init,
+shim dan DTB sama dengan image rd awal; hanya `startup_debug=0` dan trial ID yang
+berubah. [Manifest quiet](docs/evidence/0085-quiet-build.json). Default script build
+sekarang `startup_debug=0`; trace BSD dan heartbeat tetap tersedia.
+
+Jika quiet melewati tahap ini, lanjutkan baseline RAM-disk sampai PID 1 dan baru
+buat varian UFS quiet bila diperlukan. Jangan langsung mengulang kedua image UFS
+verbose lama. Jika quiet tetap reboot sekitar durasi yang sama, rekam video layar
+dan periksa reset reason/watchdog Qualcomm yang diwariskan firmware. `wdt=-1`
+dan stub IOWatchdog XNU tidak membuktikan watchdog hardware Qualcomm dinonaktifkan.
+Jika ada alamat callback terakhir yang konsisten, petakan ke simbol kernel CI
+dan instrumen entry/exit callback tersebut secara terbatas.
+
 ## Status yang sudah selesai
 
 - Analisis awal: [TIMELM_BOOT_ROADMAP.md](docs/TIMELM_BOOT_ROADMAP.md).
@@ -14,7 +52,7 @@ Tanggal: 2026-10-23. Mulai dari file ini agar tidak mengulang investigasi sebelu
 - Tiga boot image selesai, semua segmen XNU dibandingkan byte demi byte dengan
   kernel CI, ADT di dalam image cocok dengan DTB, dan checksum upload diverifikasi.
 - Upload dilakukan menggunakan `pd upload`, sesuai permintaan user.
-- **Belum diuji pada HP. Belum ada bukti PID 1, launchd, atau SpringBoard pada 0085.**
+- **Image awal sudah dilaporkan reboot oleh user; quiet belum diuji. Belum ada bukti PID 1, launchd, atau SpringBoard pada 0085.**
 - Userdata iOS sudah diflash sebelumnya. Tidak ada flash/boot HP pada sesi ini.
 
 ## Download dan file lokal

@@ -3,6 +3,12 @@
 This build implements the first software stage of
 [the boot roadmap](TIMELM_BOOT_ROADMAP.md). Physical confirmation remains pending.
 
+Update: the user reports all three original images reboot after approximately
+30 seconds while printing verbose ZALLOC startup callbacks. Test the
+[quiet RAM-disk image](https://pixeldrain.com/u/bz3c6qFV) first. Its kernel,
+ADT, static init, shim and DTB match the original rd image; only startup verbosity
+and trial ID changed. See the latest section of [OPENCODE_NEXT.md](../OPENCODE_NEXT.md).
+
 Changes:
 
 - Virtual timer INTID 27, matching the supplied SM8250 DTB; physical timer 30

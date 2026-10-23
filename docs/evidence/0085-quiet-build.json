@@ -1,0 +1,22 @@
+{
+  "payload_sha256": "d915cca93c709051d71e5ff1e99747d62279bc3b5173f0d55425346bea347e7b",
+  "adt_sha256": "0df22e0788df7b22afca0b300db208398ef058915540407fe608aac236dc80fb",
+  "virtual_timer_intid": 27,
+  "cmdline": "debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress rd=md0 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin wdt=-1 sweetfb_hz=30 startup_debug=0 sweetbeat=5 sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=0 timelm_trial=0085-rd-quiet-r39968689712",
+  "phys_base": "0x100000000",
+  "mem_size": "0x170000000",
+  "kernel_segments_verified": 10,
+  "image": "timelm-0085-rd-c1-quiet.img",
+  "image_size": 16941056,
+  "image_sha256": "a6b51a316687d4b88aaa470129feaf0fc3ad84d4b616e642282a7a4a0570dc39",
+  "kernel_sha256": "fed41d3b653d6def101a6477891d9c3e99dde45f306c1b3b98e4dbe56ee63e14",
+  "dtb_sha256": "ba67ec4dcde5288135133c39b7703b049502aa296cced431807c41104fbb68a4",
+  "shim_sha256": "6b03072167c7fb7feb97b8b6d5d621cc7bfceb2868490a058544b10448fcc75a",
+  "source_commit": "16b133fd5d2a961ce4d42d3ed309bbe6df1b750b",
+  "source_dirty": true,
+  "patches_sha256": "795f9dd1543f2a731f52ab98a7dbb734c62579df8d650e158516517f23654699",
+  "download_url": "https://pixeldrain.com/u/bz3c6qFV",
+  "uploaded_sha256": "a6b51a316687d4b88aaa470129feaf0fc3ad84d4b616e642282a7a4a0570dc39",
+  "hardware_tested": false,
+  "comparison": "Only startup_debug=1 to 0 and trial ID differ from original rd payload; kernel, ADT, static init, shim and DTB are identical."
+}

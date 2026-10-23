@@ -34,7 +34,7 @@ case "$PROFILE" in
     ufs-rw) ROOT_ARGS='rd=ufsroot0 ufsrw=1 rootrw=1 launchd_unsecure_cache=1' ;;
     *) echo 'PROFILE must be rd, ufs-ro, or ufs-rw' >&2; exit 1 ;;
 esac
-CMDLINE="${CMDLINE:-debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress $ROOT_ARGS unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin wdt=-1 sweetfb_hz=30 startup_debug=1 sweetbeat=5 sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=0}"
+CMDLINE="${CMDLINE:-debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress $ROOT_ARGS unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin wdt=-1 sweetfb_hz=30 startup_debug=0 sweetbeat=5 sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=0}"
 CMDLINE="$CMDLINE timelm_trial=$TRIAL"
 python3 tools/mkpayload.py "$KERNEL" "$ADT" "$BUILD/payload.bin" \
     --ramdisk "$BUILD/sweet-init" --cmdline "$CMDLINE"
