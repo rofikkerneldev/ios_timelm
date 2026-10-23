@@ -6,9 +6,18 @@ CC=aarch64-linux-gnu-gcc
 OBJCOPY=aarch64-linux-gnu-objcopy
 CFLAGS="-O2 -ffreestanding -nostdlib -fno-pic -mgeneral-regs-only -mstrict-align -fno-stack-protector -Wall -Wextra"
 mkdir -p out
+JOBS="${JOBS:-56}"
+[[ "$JOBS" =~ ^[1-9][0-9]*$ ]] || { echo 'JOBS must be positive' >&2; exit 1; }
+pids=()
 for f in start.S shim.c console.c mmu.c fdt.c loader.c ufs.c; do
-	$CC $CFLAGS -c $f -o out/${f%.*}.o
+	$CC $CFLAGS -c "$f" -o "out/${f%.*}.o" &
+	pids+=("$!")
+	if [ "${#pids[@]}" -ge "$JOBS" ]; then
+		for pid in "${pids[@]}"; do wait "$pid"; done
+		pids=()
+	fi
 done
+for pid in "${pids[@]}"; do wait "$pid"; done
 # The image runs wherever ABL puts it with no relocation pass: only the
 # header's image_size (start.o, linked at 0) may be an absolute address.
 abs=$(aarch64-linux-gnu-readelf -r out/shim.o out/console.o out/mmu.o out/fdt.o out/loader.o out/ufs.o | grep -c ABS64 || true)

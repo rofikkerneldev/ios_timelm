@@ -41,6 +41,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Validate boot tools
+        run: |
+          python3 tools/validate-repo.py
+          python3 tools/test_timelm_boot.py -v
+
       - name: Fetch build script
         run: |
           git init -q dxb
@@ -108,6 +113,11 @@ jobs:
           fi
           exit $rc
 
+      - name: Test the patched kernel SGI encoder
+        env:
+          XNU_SOURCE: ${{ github.workspace }}/dxb/xnu
+        run: python3 tools/test_timelm_boot.py -v
+
       - name: Package build tree for local compiles
         if: always()
         run: |
@@ -149,6 +159,16 @@ jobs:
           cp -R dxb/fakeroot/System/Library/Kernels/. out/ 2>/dev/null || true
           ls -la out
           (cd out && shasum -a 256 kernel.* > SHA256SUMS) || true
+          python3 - <<'PY'
+          import hashlib, json, os
+          from pathlib import Path
+          patches = sorted(Path('xnu/patches').glob('*.patch'))
+          digest = hashlib.sha256(b''.join(p.name.encode() + b'\0' + p.read_bytes() for p in patches)).hexdigest()
+          Path('out/build-provenance.json').write_text(json.dumps({
+              'commit': os.environ['GITHUB_SHA'], 'run_id': os.environ['GITHUB_RUN_ID'],
+              'patches_sha256': digest, 'machine_config': os.environ['MACHINE_CONFIG']
+          }, indent=2) + '\n')
+          PY
 
       - uses: actions/upload-artifact@v4
         if: always()

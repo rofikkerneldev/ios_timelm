@@ -1,0 +1,119 @@
+Source: OpenCode session ses_e9d99dae7ffe0T1tI1Es5EHisP; message msg_16532e9c2001gHDAhvEDzVkLqz; sequence 4420
+User-pasted evidence; not a fresh hardware capture.
+
+log ufs high
+arm_cpu_init(): cpu 1 online
+SWEET CPU: cpu=1 entered initCPU mpidr=0x100 EL1 IRQs=0
+
+Scheduler: Default of clutch
+Setting scheduler priority decay band limit 18
+standard timeslicing quantum is 10000 us
+standard background quantum is 2500 us
+mig_table_max_displ = 54 mach_kobj_count = 374
+BANK subsystem is initialized
+IPC_PTHREAD_PRIORITY subsystem is initialized
+debug_log_init: Error!! gPanicBase is still not initialized
+panic_trace: PE_arm_debug_enable_trace enter
+panic_trace: PE_arm_debug_enable_trace exit
+debug_log_init: Error!! gPanicBase is still not initialized
+kdp_core zlib memory 0x8000
+Registered coredump handler for kernel
+Serial requested, consistent debug disabled or debug boot arg not present, configuring debugging over serial
+Initializing serial KDP
+iBoot version: timelm-shim
+"name" not a kext
+"AAPL,phandle" not a kext
+"RAMDisk" not a kext
+ulock_initialize>thread_max=10240, ull_hash_buckets=4096 
+"AAPL,phandle" not a kext
+"RAMDisk" not a kext
+ulock_initialize>thread_max=10240, ull_hash_buckets=4096
+SWEET PRNG: HMAC-SHA256 registered
+SWEET pthread: libpthread-514.100.2 registered
+SWEET AMFI: built-in interface registered (XML entitlements)
+calling mpo_policy_init for vnguard
+Security policy loaded: Guarded vnode policy (vnguard)
+SWEET: trust caches unavailable (Image4/AMFI not installed)
+keepsyms boot arg specified; keeping linkedit segment for symbols.
+No PDST boot-arg set.
+SWEET: starting device-tree platform expert
+SWEET: platform expert registered
+SWEET AKS: AppleKeyStore registered (no passcode, unlocked)
+SWEET WDT: IOWatchdog registered (accepts check-ins, never fires)
+SWEET SURF: IOCoreSurfaceRoot registered
+SWEET HID: buttons registered (test every 0 s)
+SWEET HID: touch registered
+SWEET BATTERY: static fallback, 100% 4200mV external=1 charging=0
+
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe200a6ce080 cluster_id 0 cpu_number 0 is type 0
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe200a6cd520 cluster_id 0 cpu_number 1 is type 0
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe200a6cd980 cluster_id 0 cpu_number 2 is type 0
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe200a6cfba0 cluster_id 0 cpu_number 3 is type 0
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe200a6ce6a0 cluster_id 0 cpu_number 4 is type 0
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe200a6cd6e0 cluster_id 0 cpu_number 5 is type 0
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe200a6cf200 cluster_id 0 cpu_number 6 is type 0
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe200a6cda60 cluster_id 0 cpu_number 7 is type 0
+
+SWEET FB: AppleCLCD 1080x2460 stride 4320 at 0x9c000000, default surface 1, presented as 1080x2460
+SWEET CPU: requested=8 selected=8 (limit=8)
+cpu_start() cpu: 0
+SWEET CPU: cpu=0 entered initCPU mpidr=0x0 EL1 IRQs=1
+SWEET CPU: cpu=0 mpidr=0x0 came alive; SGI1 OK
+cpu_start() cpu: 1
+SWEET CPU: cpu=1 CPU_ON target=0x100 entry_pa=0x10148d000 context=1
+SWEET CPU: cpu=1 PSCI CPU_ON rc=0 
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe24d1fb51a0 cluster_id 0 cpu_number 0 is type 0
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe24d1fb56e0 cluster_id 0 cpu_number 1 is type 0
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe24d1fb4020 cluster_id 0 cpu_number 2 is type 0 
+
+
+kesimpulan
+Status boot iOS/XNU pada LG V60
+Berdasarkan foto terakhir:
+Komponen	Status
+XNU kernel initialization	Berjalan
+Mach scheduler	Terinisialisasi
+IPC / pthread	Terinisialisasi
+Platform Expert	Terdaftar
+AppleCLCD framebuffer	1080 × 2460
+CPU0	Aktif
+CPU1	Online via PSCI
+CPU2–CPU7	Belum terlihat online
+AMFI	Interface SWEET terdaftar; trust cache belum tersedia
+Serial KDP	Diinisialisasi, output fisik belum diverifikasi
+iOS userspace / launchd	Belum terlihat berjalan
+SpringBoard	Belum tercapai
+
+Kemajuan paling penting
+SWEET CPU: requested=8 selected=8 (limit=8)
+SWEET CPU: cpu=0 mpidr=0x0 came alive; SGI1 OK
+
+SWEET CPU: cpu=1 CPU_ON target=0x100
+SWEET CPU: cpu=1 PSCI CPU_ON rc=0
+
+arm_cpu_init(): cpu 1 online
+SWEET CPU: cpu=1 entered initCPU mpidr=0x100 EL1 IRQs=0
+
+
+Ini menunjukkan bahwa CPU sekunder sudah berhasil diaktifkan melalui PSCI dan mencapai kode inisialisasi XNU/SWEET. Pencapaian ini lebih jauh daripada sekadar menjalankan probe AArch64.
+
+Namun, pesan seperti SWEET HID: touch registered dan SWEET BATTERY: static fallback masih menunjukkan penggunaan implementasi atau stub platform. Itu belum membuktikan driver touchscreen dan baterai fisik LG V60 sudah bekerja.
+Target pengembangan selanjutnya
+Untuk benar-benar menuju boot iOS, urutan yang saya prioritaskan:
+1. Stabilitas SMP: pastikan CPU2–CPU7 berhasil online serta scheduling dan IPI berfungsi.
+2. Memory management: validasi translation tables, page allocator, dan exception handling pada SM8250.
+3. Platform drivers: interrupt controller, timer, UFS, USB, dan framebuffer.
+4. iOS boot environment: Apple Device Tree, layanan keamanan yang dibutuhkan, root filesystem, dan proses launchd.
+5. iOS graphical userspace: baru kemudian mencoba menjalankan komponen UI seperti SpringBoard.
+Ada satu pembedaan penting: log iBoot version: timelm-shim menunjukkan adanya boot shim, sedangkan SWEET menunjukkan komponen adaptasi platform. Jadi dari foto saja belum dapat dipastikan seberapa banyak kode berasal dari XNU Apple yang asli dibanding implementasi kompatibilitas dalam port tersebut. 

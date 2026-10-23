@@ -11,6 +11,7 @@ those constants with the device tree the LG V60 bootloader actually ships
 The DTB is parsed here (no dtc needed).  ADT parsing reuses tools/adt.py.
 Exit status is non-zero when a checked value differs.
 """
+import argparse
 import os
 import struct
 import sys
@@ -65,6 +66,11 @@ def parse_dtb(path):
 def parse_adt(path):
     """Apple device tree -> {node path: {property: raw bytes}}."""
     root, _ = adt.parse(adt.load(path))
+    return adt_nodes(root)
+
+
+def adt_nodes(root):
+    """Flatten an already parsed ADT, including one embedded in a payload."""
     out = {}
 
     def walk(node, path):
@@ -115,27 +121,54 @@ class Checker:
     def info(self, what, text):
         print('---- %-22s %s' % (what, text))
 
+    def missing(self, what):
+        self.check(what, 'missing', 'present')
+
+
+def virtual_timer_intid(nodes):
+    """Decode the virtual timer interrupt, including the GIC PPI base of 16."""
+    _, timer = find(nodes, lambda p, pr: b'arm,armv8-timer' in
+                    pr.get('compatible', b'').split(b'\0'))
+    if timer is None:
+        raise ValueError('missing arm,armv8-timer node')
+    names = timer.get('interrupt-names', b'').rstrip(b'\0').split(b'\0')
+    index = names.index(b'virt') if b'virt' in names else 2
+    irq = cells(timer.get('interrupts', b''))
+    if len(irq) % 3 or len(irq) < 3 * (index + 1):
+        raise ValueError('missing or malformed virtual timer interrupt tuple')
+    kind, number, _flags = irq[3 * index:3 * index + 3]
+    if kind != 1 or not 0 <= number < 16:
+        raise ValueError('virtual timer must be a GIC PPI numbered 0..15')
+    return number + 16
+
 
 def main(argv):
-    args = [a for a in argv[1:] if not a.startswith('--')]
-    soc_base = 0x01000000
-    for a in argv[1:]:
-        if a.startswith('--soc-base'):
-            soc_base = int(a.split('=')[1], 0)
-    if len(args) != 2:
-        print(__doc__)
-        return 2
-    dtb_path, adt_path = args
-    dtb = parse_dtb(dtb_path)
-    adt_nodes = parse_adt(adt_path)
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('dtb')
+    parser.add_argument('adt')
+    parser.add_argument('--soc-base', type=lambda s: int(s, 0), default=0x01000000)
+    args = parser.parse_args(argv[1:])
+    return check_nodes(parse_dtb(args.dtb), parse_adt(args.adt), args.soc_base)
+
+
+def check_nodes(dtb, adt_nodes, soc_base=0x01000000):
     c = Checker()
+
+    try:
+        timer = virtual_timer_intid(dtb)
+        raw = adt_nodes.get('/arm-io/gic', {}).get('virtual-timer-intid', b'')
+        if len(raw) != 4:
+            raise ValueError('missing or malformed ADT virtual-timer-intid')
+        c.check('virtual timer INTID', cells(raw, '<')[0], timer)
+    except ValueError as error:
+        c.missing(str(error))
 
     # --- GIC: /arm-io/gic in the ADT, "interrupt-controller" in the DTB ------
     adt_gic = adt_nodes.get('/arm-io/gic', {}).get('reg')
     dtb_gic_path, dtb_gic = find(dtb, lambda p, pr: 'interrupt-controller' in pr and
                                  pr.get('compatible', b'').startswith(b'arm,gic'))
     if adt_gic is None or dtb_gic is None:
-        c.info('gic', 'not found (adt=%s dtb=%s)' % (adt_gic is not None, dtb_gic_path))
+        c.missing('gic registers')
     else:
         adt_reg = cells64(adt_gic, '<')
         dtb_reg = cells64(dtb_gic['reg'])
@@ -148,7 +181,7 @@ def main(argv):
     adt_ufs = adt_nodes.get('/sweet-ufs', {}).get('reg')
     dtb_ufs_path, dtb_ufs = find(dtb, lambda p, pr: 'ufshc' in p)
     if adt_ufs is None or dtb_ufs is None:
-        c.info('ufs', 'not found (adt=%s dtb=%s)' % (adt_ufs is not None, dtb_ufs_path))
+        c.missing('ufs registers')
     else:
         adt_reg, dtb_reg = cells64(adt_ufs, '<'), cells64(dtb_ufs['reg'])
         c.check('ufs host', hex(adt_reg[0]), hex(dtb_reg[0]))
@@ -168,8 +201,9 @@ def main(argv):
             c.check('framebuffer inside', inside[0][2], inside[0][2])
             c.info('framebuffer', '%s size %s in %s' % (hex(fb[0]), hex(fb[1]), inside[0][2]))
         else:
-            c.info('framebuffer', '%s size %s not inside any reserved-memory region' %
-                   (hex(fb[0]), hex(fb[1])))
+            c.check('framebuffer reserved', False, True)
+    else:
+        c.missing('framebuffer registers')
 
     # --- CPU topology: MPIDR affinities must match the phone's ------------
     adt_cpus = {}
@@ -180,6 +214,8 @@ def main(argv):
     for path, props in dtb.items():
         if path.startswith('/cpus/cpu') and 'reg' in props:
             dtb_cpus[path.rsplit('/', 1)[1]] = cells64(props['reg'])[0]
+    if not dtb_cpus:
+        c.missing('DTB CPU nodes')
     c.check('cpu count', len(adt_cpus), len(dtb_cpus))
     for name in sorted(dtb_cpus, key=lambda n: dtb_cpus[n]):
         adt_name = 'cpu%d' % (dtb_cpus[name] >> 8)

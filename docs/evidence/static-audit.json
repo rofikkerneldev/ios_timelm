@@ -1,0 +1,68 @@
+{
+  "repository_commit": "aeb5f8f",
+  "dtb_sha256": "ba67ec4dcde5288135133c39b7703b049502aa296cced431807c41104fbb68a4",
+  "dtb_timer_interrupt_cells": [
+    [
+      1,
+      13,
+      65288
+    ],
+    [
+      1,
+      14,
+      65288
+    ],
+    [
+      1,
+      11,
+      65288
+    ],
+    [
+      1,
+      10,
+      65288
+    ]
+  ],
+  "dtb_timer_absolute_intids": [
+    29,
+    30,
+    27,
+    26
+  ],
+  "dtb_memory_reg_hex": "00000000800000000000000000000000",
+  "ufs_iommus_hex": "00000031000000e00000000000000031000004e000000000",
+  "images": [
+    {
+      "name": "high-0084-c1.img",
+      "sha256": "a12cee8653fb2f62604df504ff0b5b153a511251b545091c4ad273405f5fbec7",
+      "virtual_timer_intid": 19,
+      "cmdline": "debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress rd=ufsroot0 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin ufsrw=1 rootrw=1 launchd_unsecure_cache=1 wdt=-1 sweetfb_hz=30 startup_debug=1 sweetbeat=5",
+      "kernel_segments_verified": 10
+    },
+    {
+      "name": "high-0084-smp8.img",
+      "sha256": "592b4b4680e0adf70808f299ef4c17d7caefef8482eb97d11349205090b17ea3",
+      "virtual_timer_intid": 19,
+      "cmdline": "debug=0xc serial=3 cpus=8 keepsyms=1 -enable_kprintf_spam -noprogress rd=ufsroot0 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin ufsrw=1 rootrw=1 launchd_unsecure_cache=1 wdt=-1 sweetfb_hz=30 startup_debug=1 sweetbeat=5",
+      "kernel_segments_verified": 10
+    }
+  ],
+  "kernel_sha256": "b8b3375a569fbce0f26bf3fba3fe49dc2a59a010c89e0a224df184b3c696ab75",
+  "sgi_examples": [
+    {
+      "mpidr": "0x0",
+      "expected_sgi1": "0x1000001",
+      "patch0083_value": "0x11"
+    },
+    {
+      "mpidr": "0x100",
+      "expected_sgi1": "0x1010001",
+      "patch0083_value": "0x10011"
+    },
+    {
+      "mpidr": "0x700",
+      "expected_sgi1": "0x1070001",
+      "patch0083_value": "0x70011"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+Source: OpenCode session ses_e9d99dae7ffe0T1tI1Es5EHisP; message msg_166d5c346001yo99ijmk66CWw6; sequence 7078
+User-pasted evidence; not a fresh hardware capture.
+
+last c1
+[...]d queues configured: slot cou[...], per-slot size: 32768, total size: 262144
+Firehose configured: 16 chunks, 8 io pages
+OSLog stream configured: stream: 8192 bytes, cache: 2112 bytes
+OSLog stream verification: 0
+Telemetry: Sampling all tasks once per 1 second
+Scheduler: Default of clutch
+Setting scheduler priority decay band limit 18
+standard timeslicing quantum is 10000 us
+standard background quantum is 2500 us
+mig_table_max_displ = 54 mach_kobj_count = 374
+BANK subsystem is initialized
+IPC_PTHREAD_PRIORITY subsystem is initialized
+debug_log_init: Error!! gPanicBase is still not initialized
+panic_trace: PE_arm_debug_enable_trace enter
+panic_trace: PE_arm_debug_enable_trace exit
+debug_log_init: Error!! gPanicBase is still not initialized
+kdp_core zlib memory 0x8000
+Registered coredump handler for kernel
+Serial requested, consistent debug disabled or debug boot arg not present, configuring debugging over serial
+Initializing serial KDP
+iBoot version: timelm-shim
+"name" not a kext
+"AAPL,phandle" not a kext
+"RAMDisk" not a kext
+ulock_initialize>thread_max=10240, ull_hash_buckets=4096
+SWEET PRNG: HMAC-SHA256 registered
+SWEET pthread: libpthread-514.100.2 registered
+SWEET AMFI: built-in interface registered (XML entitlements)
+calling mpo_policy_init for vnguard
+Security policy loaded: Guarded vnode policy (vnguard)
+SWEET: trust caches unavailable (Image4/AMFI not installed)
+keepsyms boot arg specified; keeping linkedit segment for symbols.
+No POST boot-arg set.
+SWEET: starting device-tree platform expert
+SWEET: platform expert registered
+SWEET AKS: AppleKeyStore registered (no passcode, unlocked)
+SWEET WDT: IOWatchdog registered (accepts check-ins, never fires)
+SWEET SURF: IOCoreSurfaceRoot registered
+SWEET HID: buttons registered (test every 0 s)
+SWEET HID: touch registered
+SWEET BATTERY: static fallback, 100% 4200mV external=1 charging=0
+[0]ml_processor_register>pset_find(cluster_id=0) returned pset 0
+[0]ml_processor_register>cpu_id 0xfffffe2016f5b580 cluster_id 0 cpu_number 0 is type 0
+SWEET FB: AppleCLCD 1080x2460 stride 4320 at 0x9c000000, default surface 1, presented as 1080x2460
+SWEET CPU: requested=1 selected=1 (limit=8)
+cpu_start() cpu: 0
+SWEET CPU: cpu=0 entered initCPU mpidr=0x0 EL1 IRQs=1
+SWEET CPU: cpu=0 mpidr=0x0 came alive; SGI1 OK
+Copyright (c) 1982, 1986, 1989, 1991, 1993
+The Regents of the University of California. All rights reserved.
+MAC Framework successfully initialized
+using 7489 buffer headers and 5792 cluster IO buffer headers
+SWEET CPU: 1/1 CPUs initialized, SGI1 verified
+
+zone_init: pgzalloc 0xfffffe101577c000:0xfffffe1018530000 (45M) [1462 slots]
+zone_init: map VM       0xfffffe1018530000:0xfffffe14e4b20000 (19G)
+zone_init: map RO       0xfffffe14e4b20000:0xfffffe167e270000 (6G)
+zone_init: map GEN0     0xfffffe167e270000:0xfffffe1b4a860000 (19G)
+zone_init: map GEN1     0xfffffe1b4a860000:0xfffffe2016e50000 (19G)
+zone_init: map GEN2     0xfffffe2016e50000:0xfffffe24e3440000 (19G)
+zone_init: map GEN3     0xfffffe24e3440000:0xfffffe29afa34000 (19G)
+zone_init: map DATA     0xfffffe29afa34000:0xfffffe301577c000 (25G)
+zone_init: metadata     0xfffffe100c644000:0xfffffe1014644000 (128M)
+zone_init: metabits     0xfffffe1014644000:0xfffffe101576c000 (17M)
+zone_init: extra        0:0 (0B)
+VM bootstrap done: 85 maps, 165 entries and 502 holes left
+IOKit IOMD setownership ENABLED
+ATM subsystem is initialized
+[...]ong logs support configured: size: 16384 
