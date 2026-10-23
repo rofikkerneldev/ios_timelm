@@ -19,7 +19,7 @@ cd "$(dirname "$0")/.."
 MEM="${1:-low}"
 NAME="${2:-shim-boot-timelm-$MEM-rd.img}"
 KERNEL="xnu/out/kernel.development.sweet"
-BUILD=/tmp/opencode/timelm-build
+BUILD="${BUILD:-$HOME/work/timelm-build}"
 
 case "$MEM" in
 	high) ADT="${ADT:-shim/out/timelm.adt}" ;;
