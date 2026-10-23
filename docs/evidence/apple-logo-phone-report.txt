@@ -1,0 +1,28 @@
+User report received 2026-10-23, after the 0087 test recommendation:
+
+"logo apple terlihat dengan tulisan exec xpcproxy ada sekitar 5"
+
+Confirmed from this report only:
+- An Apple logo is visible.
+- User sees approximately five occurrences/lines of "exec xpcproxy".
+
+Pending clarification:
+- Exact image/trial: 0087-diag, 0087-gui, or another image.
+- Elapsed time, whether the screen changes, and whether a reboot occurs.
+- Heartbeat/timer progression and SWEET FB: swap lines.
+- Service publication/canvas markers and any actual crash/exit/error message.
+
+Interpretation bounded by source:
+- Patch 0042-sweet-short-exec-log.patch prints "exec %s" while permitting
+  the iOS binary platform path. The line itself is not an error or exit status,
+  and does not prove the new program has completed execution successfully.
+- Repetition alone cannot distinguish separate service launches from relaunches.
+- A visible logo alone does not identify its drawing source, prove IOMFB swaps,
+  or prove SpringBoard's interactive UI is ready.
+- On the 0087 GUI profile, console muting is triggered on the first present()
+  entry, before the layer validation/copy loop. Silent console therefore does
+  not establish a successful frame copy or a hang. Diag is preferable for
+  confirming heartbeat and swap evidence.
+
+No build or runtime configuration change is justified by these two observations
+alone. Keep the existing images as the comparison baseline.
