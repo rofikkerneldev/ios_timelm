@@ -1,0 +1,97 @@
+Command: /home/rofikkernel/tools/llvm-bin/llvm-objdump -d --disassemble-symbols=_flush_dcache,_FlushPoC_DcacheRegion,_CleanPoC_DcacheRegion,_CleanPoC_DcacheRegion_internal --no-show-raw-insn /home/rofikkernel/xnu/ios-timelm/xnu/out/kernel.development.sweet
+
+
+/home/rofikkernel/xnu/ios-timelm/xnu/out/kernel.development.sweet:	file format mach-o arm64
+
+Disassembly of section __TEXT_EXEC,__text:
+
+fffffe000747d0f0 <_flush_dcache>:
+fffffe000747d0f0:      	sub	sp, sp, #80
+fffffe000747d0f4:      	stp	x24, x23, [sp, #16]
+fffffe000747d0f8:      	stp	x22, x21, [sp, #32]
+fffffe000747d0fc:      	stp	x20, x19, [sp, #48]
+fffffe000747d100:      	stp	x29, x30, [sp, #64]
+fffffe000747d104:      	add	x29, sp, #64
+fffffe000747d108:      	mov	x19, x2
+fffffe000747d10c:      	mov	x20, x1
+fffffe000747d110:      	mov	x21, x0
+fffffe000747d114:      	bl	0xfffffe00074904d0 <_current_thread>
+fffffe000747d118:      	ldr	x23, [x0, #552]
+fffffe000747d11c:      	str	xzr, [sp, #8]
+fffffe000747d120:      	cbz	w20, 0xfffffe000747d1b8 <_flush_dcache+0xc8>
+fffffe000747d124:      	mov	w24, #16384
+fffffe000747d128:      	b	0xfffffe000747d13c <_flush_dcache+0x4c>
+fffffe000747d12c:      	ldr	x8, [sp, #8]
+fffffe000747d130:      	add	x21, x8, x21
+fffffe000747d134:      	subs	w20, w20, w8
+fffffe000747d138:      	b.eq	0xfffffe000747d1b8 <_flush_dcache+0xc8>
+fffffe000747d13c:      	cbz	w19, 0xfffffe000747d168 <_flush_dcache+0x78>
+fffffe000747d140:      	mov	w8, w20
+fffffe000747d144:      	str	x8, [sp, #8]
+fffffe000747d148:      	add	x1, sp, #8
+fffffe000747d14c:      	mov	x0, x21
+fffffe000747d150:      	bl	0xfffffe0007482574 <_phystokv_range>
+fffffe000747d154:      	ldr	w1, [sp, #8]
+fffffe000747d158:      	mov	x22, x21
+fffffe000747d15c:      	bl	0xfffffe000747dd58 <_FlushPoC_DcacheRegion>
+fffffe000747d160:      	cbnz	x22, 0xfffffe000747d198 <_flush_dcache+0xa8>
+fffffe000747d164:      	b	0xfffffe000747d12c <_flush_dcache+0x3c>
+fffffe000747d168:      	mov	x0, x21
+fffffe000747d16c:      	bl	0xfffffe0007470678 <_kvtophys>
+fffffe000747d170:      	mov	x22, x0
+fffffe000747d174:      	and	x8, x21, #0x3fff
+fffffe000747d178:      	mov	w9, w20
+fffffe000747d17c:      	sub	x8, x24, x8
+fffffe000747d180:      	cmp	x8, x9
+fffffe000747d184:      	csel	x1, x8, x9, lo
+fffffe000747d188:      	str	x1, [sp, #8]
+fffffe000747d18c:      	mov	x0, x21
+fffffe000747d190:      	bl	0xfffffe000747dd58 <_FlushPoC_DcacheRegion>
+fffffe000747d194:      	cbz	x22, 0xfffffe000747d12c <_flush_dcache+0x3c>
+fffffe000747d198:      	ldr	x8, [x23, #80]
+fffffe000747d19c:      	cbz	x8, 0xfffffe000747d12c <_flush_dcache+0x3c>
+fffffe000747d1a0:      	ldr	x0, [x23, #64]
+fffffe000747d1a4:      	ldr	w3, [sp, #8]
+fffffe000747d1a8:      	mov	w1, #5
+fffffe000747d1ac:      	mov	x2, x22
+fffffe000747d1b0:      	blr	x8
+fffffe000747d1b4:      	b	0xfffffe000747d12c <_flush_dcache+0x3c>
+fffffe000747d1b8:      	ldp	x29, x30, [sp, #64]
+fffffe000747d1bc:      	ldp	x20, x19, [sp, #48]
+fffffe000747d1c0:      	ldp	x22, x21, [sp, #32]
+fffffe000747d1c4:      	ldp	x24, x23, [sp, #16]
+fffffe000747d1c8:      	add	sp, sp, #80
+fffffe000747d1cc:      	ret
+
+fffffe000747dac4 <_CleanPoC_DcacheRegion_internal>:
+fffffe000747dac4:      	mov	x9, #63
+fffffe000747dac8:      	and	x2, x0, x9
+fffffe000747dacc:      	bic	x0, x0, x9
+fffffe000747dad0:      	add	x1, x1, x2
+fffffe000747dad4:      	sub	x1, x1, #1
+fffffe000747dad8:      	lsr	x1, x1, #6
+fffffe000747dadc:      	dsb	sy
+fffffe000747dae0:      	dc	cvac, x0
+fffffe000747dae4:      	add	x0, x0, #64
+fffffe000747dae8:      	subs	x1, x1, #1
+fffffe000747daec:      	b.pl	0xfffffe000747dae0 <_CleanPoC_DcacheRegion_internal+0x1c>
+fffffe000747daf0:      	dsb	sy
+fffffe000747daf4:      	ret
+
+fffffe000747daf8 <_CleanPoC_DcacheRegion>:
+fffffe000747daf8:      	b	0xfffffe000747dac4 <_CleanPoC_DcacheRegion_internal>
+
+fffffe000747dd58 <_FlushPoC_DcacheRegion>:
+fffffe000747dd58:      	mov	x9, #63
+fffffe000747dd5c:      	and	x2, x0, x9
+fffffe000747dd60:      	bic	x0, x0, x9
+fffffe000747dd64:      	add	x1, x1, x2
+fffffe000747dd68:      	sub	x1, x1, #1
+fffffe000747dd6c:      	lsr	x1, x1, #6
+fffffe000747dd70:      	dmb	sy
+fffffe000747dd74:      	dc	civac, x0
+fffffe000747dd78:      	add	x0, x0, #64
+fffffe000747dd7c:      	subs	x1, x1, #1
+fffffe000747dd80:      	b.pl	0xfffffe000747dd74 <_FlushPoC_DcacheRegion+0x1c>
+fffffe000747dd84:      	dsb	sy
+fffffe000747dd88:      	ret

@@ -2,6 +2,16 @@
 
 Checkpoint terbaru 2026-10-23. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
+**Referensi display Topaz sudah dibandingkan:**
+[analisis source dan roadmap display](docs/TOPAZ_DISPLAY_COMPARISON.md).
+Topaz 0102 memakai copy-and-flip bila back buffer tersedia; direct scanout dan GPU
+rendering adalah pekerjaan berbeda. Kernel timelm 0087 sudah memiliki loop cache
+maintenance nyata pada disassembly. Allocator Topaz di bawah 4 GiB tidak bisa
+langsung diasumsikan cocok dengan VM HIGH timelm yang seluruhnya di atas 4 GiB.
+Tetap tes image 0087 berikut dahulu; belum ada alasan dari perbandingan ini untuk
+build baru atau menulis register DPU. Roadmap lanjut: observasi present → jalur
+copy ABL → audit DPU/RAM → double buffer → zero-copy opsional → GPU Adreno 650.
+
 **Tambahan log 0086 sudah dianalisis:** [analisis dan symbolication](docs/0086_FULL_LOG_ANALYSIS.md).
 Transkripsi sembilan screenshot memastikan SpringBoard PID 26 dan heartbeat/timer
 bergerak di antara foto. PC/LR SpringBoard resolve ke `mach_msg2_trap` /

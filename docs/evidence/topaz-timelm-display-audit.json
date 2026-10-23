@@ -1,0 +1,109 @@
+{
+  "date": "2026-10-23",
+  "scope": "Host source, supplied static DTB and built kernel audit; no new phone result or MMIO programming",
+  "timelm_kernel_source_commit": "4ec36d14f2fc301d61d59443c2807c3146de7c7f",
+  "topaz_reference_commit": "e4772911e116ab4ab6c4ac1f38e6106fefe8b483",
+  "sha256": {
+    "/home/rofikkernel/xnu/ios-timelm/xnu/out/kernel.development.sweet": "42b9033b867b5b02ff8eb2beab03a983a781f6a3c6f129c4380c9132332823c0",
+    "/home/rofikkernel/xnu/ios-timelm/dtb/boot_unpacked/dtb": "ba67ec4dcde5288135133c39b7703b049502aa296cced431807c41104fbb68a4",
+    "/home/rofikkernel/work/timelm-0087/verify/pexpert/pexpert/arm64/SWEET.h": "61fc6ad6e81ea659631a5d69ff5b15f3c3c6dc6dd9011ed4e6276b65a56e9656",
+    "/home/rofikkernel/work/timelm-0087/verify/iokit/Kernel/arm/SweetFramebuffer.cpp": "3657fbb865293d2f8a4b589cadd40553725c4a3ca8b1a6d07b80af5ec4967c75",
+    "/home/rofikkernel/work/timelm-0087/verify/iokit/Kernel/arm/SweetSurface.cpp": "2a4e100968439a0a72012b008d40d6ec4723515a9952f4ce1f4d178814b02dba"
+  },
+  "dtb_display_gpu": {
+    "/soc@0/gpu@3d00000": {
+      "compatible": [
+        "qcom,adreno-650.2",
+        "qcom,adreno"
+      ],
+      "reg_u32_cells": [
+        "0x0",
+        "0x3d00000",
+        "0x0",
+        "0x40000"
+      ],
+      "iommus_u32_cells": [
+        "0x6e",
+        "0x0",
+        "0x401"
+      ]
+    },
+    "/soc@0/gmu@3d6a000": {
+      "compatible": [
+        "qcom,adreno-gmu-650.2",
+        "qcom,adreno-gmu"
+      ],
+      "reg_u32_cells": [
+        "0x0",
+        "0x3d6a000",
+        "0x0",
+        "0x30000",
+        "0x0",
+        "0x3de0000",
+        "0x0",
+        "0x10000",
+        "0x0",
+        "0xb290000",
+        "0x0",
+        "0x10000",
+        "0x0",
+        "0xb490000",
+        "0x0",
+        "0x10000"
+      ],
+      "iommus_u32_cells": [
+        "0x6e",
+        "0x5",
+        "0x400"
+      ]
+    },
+    "/soc@0/display-subsystem@ae00000": {
+      "compatible": [
+        "qcom,sm8250-mdss"
+      ],
+      "reg_u32_cells": [
+        "0x0",
+        "0xae00000",
+        "0x0",
+        "0x1000"
+      ],
+      "iommus_u32_cells": [
+        "0x31",
+        "0x820",
+        "0x402"
+      ]
+    },
+    "/soc@0/display-subsystem@ae00000/display-controller@ae01000": {
+      "compatible": [
+        "qcom,sm8250-dpu"
+      ],
+      "reg_u32_cells": [
+        "0x0",
+        "0xae01000",
+        "0x0",
+        "0x8f000",
+        "0x0",
+        "0xaeb0000",
+        "0x0",
+        "0x2008"
+      ],
+      "iommus_u32_cells": []
+    }
+  },
+  "kernel_managed_ram": {
+    "start": "0x100000000",
+    "size": "0x170000000",
+    "end_exclusive": "0x270000000"
+  },
+  "cache_binary_findings": [
+    "_flush_dcache calls _FlushPoC_DcacheRegion",
+    "_FlushPoC_DcacheRegion executes dc civac in a cache-line loop with a dsb sy completion barrier",
+    "_CleanPoC_DcacheRegion branches to _CleanPoC_DcacheRegion_internal, which executes dc cvac and dsb sy"
+  ],
+  "limitations": [
+    "Compiled operations do not prove correct call sites, mapping attributes, DMA ownership or device coherency",
+    "Static DTB does not prove live ABL framebuffer/SMMU state or reserved/free RAM ranges",
+    "Topaz below-4-GiB allocator cannot be assumed to succeed in timelm current above-4-GiB VM window; SM8250 address capability remains unaudited"
+  ],
+  "disassembly": "0087-cache-disassembly.txt"
+}
