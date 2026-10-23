@@ -2,6 +2,13 @@
 
 Checkpoint terbaru 2026-10-23. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
+**Update 0087-GUI:** logo sempat animasi lalu diam, bar merah tetap terlihat;
+sesudah jeda ada `__nexus_register` / `rapportd(82): nxprov_create: 1` menurut
+transkripsi user. Full log akan dikirim. [Analisis source](docs/0087_GUI_LOG_ANALYSIS.md):
+errno 1 = EPERM pada jalur jaringan Skywalk; PID 82 adalah rapportd. Belum ada
+bukti hubungan kausal dengan UI berhenti. Prioritas berikutnya membaca full log,
+menentukan liveness/swap dan perilaku console sebelum build/perubahan baru.
+
 **Laporan HP terbaru — 0087-diag:** user mengonfirmasi image
 `timelm-0087-ufs-rw-c1-wdtstop-diag.img`; logo Apple terlihat, sekitar lima baris
 `exec xpcproxy`, dan bar merah di bawah. User masih menunggu progres boot.
@@ -79,8 +86,9 @@ kernel      42b9033b867b5b02ff8eb2beab03a983a781f6a3c6f129c4380c9132332823c0
 trials      0087-diag-r39984162472 / 0087-gui-r39984162472
 ```
 
-**0087-diag sudah diuji sebagian:** logo Apple terlihat; hasil setelah menunggu
-masih pending. Profil GUI belum dilaporkan diuji. Keduanya mengizinkan filesystem writes pada userdata,
+**Kedua profil sudah dicoba user:** diag menampilkan logo; GUI sempat animasi lalu
+diam dengan bar merah dan pesan Nexus di atas. GUI interaktif, durasi akhir,
+liveness dan reboot belum terkonfirmasi. Keduanya mengizinkan filesystem writes pada userdata,
 memakai kernel/shim/ADT/static-init/DTB yang sama; hanya console flag dan trial ID
 berbeda. Root tetap `ufsroot0`, `ufsrw=1 rootrw=1 launchd_unsecure_cache=1`;
 `cpus=1`, timer 27, quiet, watchdog-stop dan probe hardware lain tetap mati.

@@ -59,8 +59,20 @@
       "patches_sha256": "afc0be50f55ee580b68b6bfde6945711c77b83d05e47c4b29200955df94a78b6",
       "download_url": "https://pixeldrain.com/u/Ljk2AiJQ",
       "uploaded_sha256": "53a8e4f5faff615877e035ba5608c6183c5a8a7b4d15d84f0e965dae9af8ad1c",
-      "hardware_tested": false
+      "hardware_tested": true,
+      "phone_result": {
+        "status": "partial; full log promised by user",
+        "identity_method": "user GUI profile description; runtime marker/hash not supplied",
+        "evidence": "../0087_GUI_LOG_ANALYSIS.md",
+        "observations": [
+          "Brief Apple animation then static logo",
+          "Red bar remains",
+          "Reported delayed __nexus_register / rapportd(82): nxprov_create: 1",
+          "Extent of black area unclear"
+        ],
+        "interactive_gui_confirmed": false
+      }
     }
   ],
-  "hardware_test_scope": "User-identified diag image only: Apple logo, about five exec xpcproxy lines and red bar below. User still waiting; interactive GUI, heartbeat/swap and final liveness/reboot result unconfirmed. GUI profile not tested."
+  "hardware_test_scope": "Both profiles tried by user filename: diag logo report; GUI brief Apple animation then static logo/red bar and delayed Nexus error. Full GUI log pending; interactive GUI, heartbeat/swap and final reboot status unconfirmed."
 }
