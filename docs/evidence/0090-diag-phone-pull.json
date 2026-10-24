@@ -1,0 +1,100 @@
+{
+  "capture_utc": "2026-10-24T09:15:14Z",
+  "source": "Read-only forwarded ADB recovery after user requested recovery check",
+  "raw_path": "/home/rofikkernel/work/timelm-0090-diag-phone/20261024T091514Z-console.txt.bin",
+  "raw_sha256": "876b65d95315dcfc577fe0dc2797c689610e6a77f40e6d01615a7080ad58fd44",
+  "raw_bytes": 4198400,
+  "console_sha256": "faced934a274f59f141e35d1b2bff96d1bfb0d54d1f43b43588ad64f7eb7a3cb",
+  "partition_name": "ios",
+  "device": "/dev/block/sda31",
+  "partition_bytes": 20705009664,
+  "tail_start_relative": 20700811264,
+  "version": 1,
+  "ring_size": 4194304,
+  "total_console_bytes": 45760,
+  "flush_sequence": 6,
+  "diagnostic_header": {
+    "heartbeat": 62,
+    "heartbeat_abs": 3005628269,
+    "timer_irqs": 103090,
+    "submitted": 5,
+    "presented": 4,
+    "copied": 4,
+    "rejected": 0,
+    "log_success_seq": 5,
+    "log_success_abs": 2819126124,
+    "log_phase": 3,
+    "ufs_waiters": 0,
+    "ufs_commands": 10252,
+    "ufs_completed": 10252,
+    "ufs_opcode": 42,
+    "last_errno": 0,
+    "ufs_phase": 0,
+    "trial": "0090-ios-diag-r40078086391"
+  },
+  "irq_header": {
+    "entered": 103356,
+    "handler_done": 103356,
+    "entry_abs": 3011128054,
+    "handler_done_abs": 3011128156,
+    "interrupted_pc": 18446741874808356776,
+    "interrupted_cpsr": 2151678468,
+    "phase": 2,
+    "draw_abs": 3002756490,
+    "interrupted_pc_hex": "0xfffffe0007467fa8",
+    "interrupted_cpsr_hex": "0x80400204"
+  },
+  "raw_event_header": {
+    "event_kind": 0,
+    "event_count": 0,
+    "caller_pc": 0,
+    "fault_pc": 0,
+    "fault_lr": 0,
+    "esr": 0,
+    "far": 0,
+    "format_pointer": 0,
+    "irq_stage": 6,
+    "irq_full_done": 103356,
+    "timer_ctl": 5,
+    "timer_cval": 3011128039,
+    "draw_enabled": 1,
+    "panic_draw_stage": 0
+  },
+  "screen_report": "0090-diag-screen-report.json",
+  "user_later_transcription": "HB70 T=5 H69 F2 OP28; T=5 not verified as complete timer counter",
+  "wait_duration": "User intended three minutes then requested recovery check; exact stopwatch duration not supplied",
+  "kernel_symbolication": {
+    "kernel_sha256": "b2fec26c7a4b1777bbb063712fa9a2ff0695ff8577e34d3e2b191d97298c5c6d",
+    "pc": "0xfffffe0007467fa8",
+    "symbol": "_ccsha256_ltc_compress",
+    "offset": "0x170",
+    "instruction": "fffffe0007467fa8: 11 46 a4 2e  \tushl.2s\tv17, v16, v4",
+    "interpretation": "Timer-interrupted kernel SHA256 path; not a fault report or proof of crypto failure.",
+    "mapping_basis": "Same CI kernel and static VM addresses preserved by payload/shim."
+  },
+  "exec_counts": {
+    "SpringBoard": 1,
+    "backboardd": 1
+  },
+  "crash_lines": [
+    "CRASH driverkitd[67] sig 9 code 0x0 sub 0x0 slide 0x1b8fc000 mh 0x1040a4000",
+    "CRASH driverkitd pc 0x1ddf0dd98 lr 0x19caa03a4 sp 0x16bd59200 fp 0x16bd59270 far 0x104560000",
+    "CRASH driverkitd bt 0x19ca9512c 0x19ca86514 0x1041426b4 0x10418d37c 0x10418e81c 0x1040cc31c 0x10411d00c 0x10413497c 0x10414acf8 0x1041464a8",
+    "CRASH driverkitd reason ns 1 code 0x7: (none)"
+  ],
+  "swap_lines": [
+    "SWEET FB: swap 2 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436",
+    "SWEET FB: swap 3 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436",
+    "SWEET FB: swap 4 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436",
+    "SWEET FB: swap 5 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436"
+  ],
+  "nonzero_bytes_after_total_in_last_written_block": 0,
+  "limitations": [
+    "Snapshot HB62/flush6 precedes visible HB70; cannot locate exact freeze.",
+    "No raw event before snapshot does not exclude a later panic that never flushed or rendered.",
+    "All observed IRQs reached Q6 at snapshot; does not prove interrupt delivery continued at the final freeze.",
+    "Entry timer_ctl5 is ENABLE+ISTATUS, IMASK clear, with CVAL near entry time; an expired timer at IRQ entry is expected.",
+    "UFS idle/error0 in header precedes screen phase2/read; do not treat either as a simultaneous end-state.",
+    "The screen userspace PC is not symbolicated with kernel symbols; correct process/cache slide still required."
+  ]
+}

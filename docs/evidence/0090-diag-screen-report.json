@@ -2,7 +2,7 @@
   "source": "User transcription while test still running; recovery header not pulled yet",
   "recorded_utc": "2026-10-24T09:05:56.012557+00:00",
   "expected_trial": "0090-ios-diag-r40078086391",
-  "trial_verified_from_disk": false,
+  "trial_verified_from_disk": true,
   "raw_report": "Q89 Q6 , HB=70 T=118731 P=5 R=0 I89 I=118484 H=69 PC-1ed3fe158 U F=2 W=0 E=0 U=12013:2 OP=28; will wait three minutes, no movement since Q6",
   "observed": {
     "q": 6,
@@ -26,7 +26,7 @@
     "logger_success_seq": null,
     "panic_marker_reported": false
   },
-  "test_status": "User still waiting three minutes; no final wait duration or recovery data yet",
+  "test_status": "Recovery pull completed; diag evidence preserved before next trial",
   "source_audit": {
     "command_timeout_seconds": 5,
     "ufs_wait_default": 0,
@@ -40,5 +40,7 @@
     "User PC needs correct process/shared-cache slide; do not use kernel symbols or assume a process.",
     "UFS full done/issued pair and L missing; do not infer an outstanding-count difference from 12013 alone.",
     "No panic marker reported does not exclude an uncaptured or unrendered panic."
-  ]
+  ],
+  "recovery_evidence": "0090-diag-phone-pull.json",
+  "later_raw_report": "HB70 T=5 H69 F2 OP28; timer field remains ambiguous"
 }

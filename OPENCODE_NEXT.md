@@ -2,12 +2,22 @@
 
 Checkpoint terbaru 2026-10-24. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
-**0090 diag sedang diuji; hasil sementara tersimpan, recovery pull belum ada.**
+**0090-diag sudah diuji dan log recovery diamankan. Tes nostatus berikutnya.**
+[Hasil dan instruksi berikutnya](docs/0090_DIAG_RESULT_AND_NOSTATUS.md),
+[console](docs/evidence/0090-diag-console.txt),
+[metadata](docs/evidence/0090-diag-phone-pull.json).
+Trial0090-ios-diag terverifikasi; snapshot flush6/HB62/T103090, S5/P=C4/R0,
+UFS10252/10252:0/W=E0, IRQ enter/done/full-Q6=103356, Q6, raw-event0/draw1.
+PC kernel ccsha256_ltc_compress+0x170 adalah sampel hashing/NEON, bukan fault.
+Tidak ada raw panic/fault sebelum snapshot; belum meniadakan kejadian sesudahnya.
+Snapshot mendahului HB70 yang terlihat diam. Berikutnya gunakan nostatus yang
+sudah diunggah (Cz9JMX3u), tiga menit setelah logo, lalu recovery/pull ke file baru.
+Nostatus memang tidak menampilkan angka tetapi telemetry tetap direkam; verifikasi
+trialnostatus/draw_enabled0. Tidak perlu build atau reflash root untuk pembanding.
 [Transkripsi sementara](docs/evidence/0090-diag-screen-report.json): Q6, HB70/
 T118731, P5/R0, I89 I118484/H69, PC0x1ed3fe158 U, W0/E0, UFS12013:2 OP28.
-User sedang menunggu3menit, belum melaporkan hasil akhir. Jangan membaca ADB
-saat user masih menjalankan XNU atau menganggap transkripsi sebagai trial disk
-yang sudah terverifikasi. Sesudah recovery, pull diag dahulu sebelum nostatus.
+Data ini laporan awal sebelum recovery. Trial sekarang sudah diverifikasi via
+header disk; L/done-issued footer belum terbaca, transkripsi T5 berikutnya ambigu.
 Q6 hanya milestone terakhir yang digambar; H69 dan HB70 berbeda waktu. Source
 UFS timeout5s/polling default, sehingga phase2 yang terlihat lama perlu dibandingkan
 dengan clock/IRQ/flush sebelum menyalahkan storage. PC user memerlukan slide proses.
@@ -34,7 +44,7 @@ baru pembanding nostatus tiga menit tanpa angka debug. Verifikasi trial/header
 TIMELM90/draw_enabled dan simpan dua raw tail terpisah. Jangan menunggu P90 pada
 nostatus: raw event dicatat tetapi tidak digambar. GUI copy/console panic tetap
 dapat menulis panel; ini hanya isolasi status drawing. Hasil awal diag ada di atas;
-belum ada raw tail0090 atau hasil nostatus.
+raw tail0090-diag sudah tersimpan; belum ada hasil nostatus.
 
 **Layout aktif: GPT `ios` sudah diaudit setelah user mem-flash iOS16 img/simg.**
 ADB recovery tersambung kembali; pembacaan live read-only berhasil. `ios` adalah

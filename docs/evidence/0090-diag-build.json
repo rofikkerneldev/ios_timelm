@@ -63,14 +63,15 @@
     "scope": "Only status drawings disabled; GUI copies/fade, surface mappings and console/panic behavior remain."
   },
   "phone_result": {
-    "source": "0090-diag-screen-report.json",
-    "expected_trial": "0090-ios-diag-r40078086391",
-    "trial_verified_from_disk": false,
-    "user_reported_heartbeat": 70,
-    "q_last_drawn": 6,
-    "userspace_pc_reported": "0x1ed3fe158",
-    "ufs_phase_reported": 2,
+    "source": "0090-diag-phone-pull.json",
+    "trial_verified": "0090-ios-diag-r40078086391",
+    "last_persisted_heartbeat": 62,
+    "last_reported_visible_heartbeat": 70,
+    "last_flush": 6,
+    "raw_event_count_at_snapshot": 0,
+    "irq_stage_at_snapshot": 6,
+    "irq_full_done_at_snapshot": 103356,
     "interactive_gui_confirmed": false,
-    "status": "User waiting three minutes; recovery pull pending"
+    "status": "Diag log saved; next comparison is existing 0090-nostatus"
   }
 }
