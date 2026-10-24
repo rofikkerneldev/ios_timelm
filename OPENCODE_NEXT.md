@@ -2,7 +2,15 @@
 
 Checkpoint terbaru 2026-10-24. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
-**0090 sudah dibuild dan diunggah, belum diuji HP. Tes diag dahulu.**
+**0090 diag sedang diuji; hasil sementara tersimpan, recovery pull belum ada.**
+[Transkripsi sementara](docs/evidence/0090-diag-screen-report.json): Q6, HB70/
+T118731, P5/R0, I89 I118484/H69, PC0x1ed3fe158 U, W0/E0, UFS12013:2 OP28.
+User sedang menunggu3menit, belum melaporkan hasil akhir. Jangan membaca ADB
+saat user masih menjalankan XNU atau menganggap transkripsi sebagai trial disk
+yang sudah terverifikasi. Sesudah recovery, pull diag dahulu sebelum nostatus.
+Q6 hanya milestone terakhir yang digambar; H69 dan HB70 berbeda waktu. Source
+UFS timeout5s/polling default, sehingga phase2 yang terlihat lama perlu dibandingkan
+dengan clock/IRQ/flush sebelum menyalahkan storage. PC user memerlukan slide proses.
 [diag cb3mvTSS](https://pixeldrain.com/u/cb3mvTSS),
 [nostatus Cz9JMX3u](https://pixeldrain.com/u/Cz9JMX3u),
 [manifest diag](docs/evidence/0090-diag-build.json),
@@ -25,7 +33,8 @@ Tes diag sekitar3menit, foto Q terakhir atau panel P90, recovery/pull dahulu;
 baru pembanding nostatus tiga menit tanpa angka debug. Verifikasi trial/header
 TIMELM90/draw_enabled dan simpan dua raw tail terpisah. Jangan menunggu P90 pada
 nostatus: raw event dicatat tetapi tidak digambar. GUI copy/console panic tetap
-dapat menulis panel; ini hanya isolasi status drawing. Belum ada hasil HP0090.
+dapat menulis panel; ini hanya isolasi status drawing. Hasil awal diag ada di atas;
+belum ada raw tail0090 atau hasil nostatus.
 
 **Layout aktif: GPT `ios` sudah diaudit setelah user mem-flash iOS16 img/simg.**
 ADB recovery tersambung kembali; pembacaan live read-only berhasil. `ios` adalah

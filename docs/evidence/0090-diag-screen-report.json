@@ -1,0 +1,44 @@
+{
+  "source": "User transcription while test still running; recovery header not pulled yet",
+  "recorded_utc": "2026-10-24T09:05:56.012557+00:00",
+  "expected_trial": "0090-ios-diag-r40078086391",
+  "trial_verified_from_disk": false,
+  "raw_report": "Q89 Q6 , HB=70 T=118731 P=5 R=0 I89 I=118484 H=69 PC-1ed3fe158 U F=2 W=0 E=0 U=12013:2 OP=28; will wait three minutes, no movement since Q6",
+  "observed": {
+    "q": 6,
+    "heartbeat": 70,
+    "heartbeat_timer_irqs": 118731,
+    "presented": 5,
+    "rejected": 0,
+    "irq_entered_visible": 118484,
+    "irq_heartbeat_visible": 69,
+    "interrupted_pc_hex": "0x1ed3fe158",
+    "interrupted_mode": "U",
+    "f_reported": 2,
+    "f_row_assignment_confirmed": false,
+    "ufs_waiters": 0,
+    "last_errno": 0,
+    "ufs_u_report": "12013:2",
+    "ufs_phase_reported": 2,
+    "ufs_completed": null,
+    "ufs_issued": null,
+    "ufs_opcode_hex": "28",
+    "logger_success_seq": null,
+    "panic_marker_reported": false
+  },
+  "test_status": "User still waiting three minutes; no final wait duration or recovery data yet",
+  "source_audit": {
+    "command_timeout_seconds": 5,
+    "ufs_wait_default": 0,
+    "active_profile_has_ufswait_override": false,
+    "read_command_opcode_hex": "28",
+    "timeout_dependency": "Polling loop must run and mach_absolute_time must advance; an old screen does not establish current UFS state."
+  },
+  "interpretation_limits": [
+    "Q6 is last drawn C-epilogue milestone, before final assertion/assembly return, not a proven halt location.",
+    "I89 H69/I118484 predates D88 HB70/T118731; visual rows are not a simultaneous machine snapshot.",
+    "User PC needs correct process/shared-cache slide; do not use kernel symbols or assume a process.",
+    "UFS full done/issued pair and L missing; do not infer an outstanding-count difference from 12013 alone.",
+    "No panic marker reported does not exclude an uncaptured or unrendered panic."
+  ]
+}

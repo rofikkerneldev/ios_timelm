@@ -2,7 +2,20 @@
 
 2026-10-24. Source `fe228e5b8816ec8ab56f075a8b28b626c04e5a2b`.
 CI [40078086391](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40078086391)
-**sukses**, kedua profil sudah dibuild dan diunggah. Belum diuji pada HP.
+**sukses**, kedua profil sudah dibuild dan diunggah. Diag sedang diuji pada HP;
+nostatus belum diuji. [Transkripsi sementara](evidence/0090-diag-screen-report.json):
+Q6, HB70/T118731, P5/R0, I89 I118484/H69, PC0x1ed3fe158 U,
+W0/E0 dan UFS `12013:2` OP28. User masih menunggu tiga menit; belum ada pull
+recovery/trial verification atau durasi akhir. L/done-issued lengkap belum terbaca.
+
+Q6 adalah milestone draw terakhir, bukan bukti halt tepat di epilogue. H69
+pada I89 lebih awal dari HB70, sehingga dua baris bukan snapshot serentak.
+PC user perlu process/cache slide, bukan simbol kernel. UFS phase2 menunjukkan
+command completion wait pada saat counter disalin; OP28 adalah read. Source
+menetapkan timeout5s dan default ufswait0 (polling). Jika layar tetap seperti ini
+selama tiga menit, timeout tidak dapat dinilai hanya dari layar: poller/clock
+mungkin tidak maju atau scanout/status sudah stale. Ambil raw log sesudah recovery
+sebelum memilih perbaikan storage atau trial berikutnya.
 Root tetap GPT ios RW, cpus=1,
 watchdog-stop, idle normal, sampler off.
 

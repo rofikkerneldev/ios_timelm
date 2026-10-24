@@ -18,7 +18,7 @@
   "patches_sha256": "db247929e153ee91ed33894a11dcb79b6268405b297af84f83e1bf0c339907e9",
   "download_url": "https://pixeldrain.com/u/cb3mvTSS",
   "uploaded_sha256": "68b45e6b69da51360152bc0a6903b098782365eac3d05e4efd61e7b7e50df4af",
-  "hardware_tested": false,
+  "hardware_tested": true,
   "kernel_source_commit": "fe228e5b8816ec8ab56f075a8b28b626c04e5a2b",
   "kernel_ci_run": 40078086391,
   "kernel_artifact_id": 12554092534,
@@ -61,5 +61,16 @@
       "unique timelm_trial"
     ],
     "scope": "Only status drawings disabled; GUI copies/fade, surface mappings and console/panic behavior remain."
+  },
+  "phone_result": {
+    "source": "0090-diag-screen-report.json",
+    "expected_trial": "0090-ios-diag-r40078086391",
+    "trial_verified_from_disk": false,
+    "user_reported_heartbeat": 70,
+    "q_last_drawn": 6,
+    "userspace_pc_reported": "0x1ed3fe158",
+    "ufs_phase_reported": 2,
+    "interactive_gui_confirmed": false,
+    "status": "User waiting three minutes; recovery pull pending"
   }
 }
