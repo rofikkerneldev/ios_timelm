@@ -1,5 +1,5 @@
 #!/bin/bash
-# Build a verified timelm boot image. Default: HIGH RAM, one CPU, RAM-disk init.
+# Build a verified timelm boot image. Default: validated2GiB HIGH RAM, one CPU, RAM-disk init.
 # Usage: PROFILE=rd|ufs-ro|ufs-rw tools/build-boot.sh [high] [output.img]
 # Optional: UFS_PARTITION=ios KERNEL=path ADT=path CMDLINE='...' TRIAL=id JOBS=56 BUILD=directory
 # Building writes local artifacts only. A ufs-rw boot writes the selected GPT partition.
@@ -24,6 +24,8 @@ if [ -z "${ADT:-}" ]; then
     python3 tools/mkadt.py "$ADT" --mem high
 fi
 python3 tools/check-adt-vs-dtb.py dtb/boot_unpacked/dtb "$ADT"
+RAM_AUDIT="${RAM_AUDIT:-docs/evidence/0090-recovery-ram-audit.json}"
+python3 tools/check-ram-window.py "$ADT" --audit "$RAM_AUDIT"
 
 # Always rebuild init, so assembly edits cannot be hidden by a stale file.
 CLANG="${CLANG:-$HOME/tools/llvm-bin/clang}"
@@ -67,5 +69,5 @@ cp shim/out/shim-boot.img "$OUT"
 python3 tools/unpack_bootv2.py "$OUT" "$BUILD/unpacked" >/dev/null
 cmp "$BUILD/unpacked/ramdisk" "$BUILD/payload.bin"
 python3 tools/inspect_boot.py "$OUT" --kernel "$KERNEL" --dtb dtb/boot_unpacked/dtb \
-    --trial "$TRIAL" --manifest "$OUT.json"
+    --trial "$TRIAL" --manifest "$OUT.json" --ram-audit "$RAM_AUDIT"
 sha256sum "$OUT" | tee "$OUT.sha256"

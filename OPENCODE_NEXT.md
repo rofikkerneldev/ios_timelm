@@ -2,7 +2,15 @@
 
 Checkpoint terbaru 2026-10-24. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
-**Checkpoint aktif: tes ulang2GiB5menit mencapai HB531/flush53.**
+**Pekerjaan aktif0091:** sampler GUI bounded+TIMELM91 sudah diimplementasikan,
+91patch apply, empat compile lokal dan regression/nativeASan/UBSan lolos.
+[Scope, batas dan roadmap](docs/0091_GUI_SNAPSHOT_TRIAL.md).
+CI [40094642531](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40094642531)
+source def5b767928e19c37d12fa4df186bb27bc8ea379 sedang build. Image0091 belum
+tersedia pada checkpoint ini. DefaultHIGH host sudah menjadi2GiB; guard coverage
+RAM sebelum packaging dan inspector akhir memakai audit recovery perangkat ini.
+
+**Hasil HP terbaru: tes ulang2GiB5menit mencapai HB531/flush53.**
 Baca [hasil tes5menit dan roadmap](docs/0090_RAM2G_5MIN_RESULT.md),
 [metadata baru](docs/evidence/0090-ram2g-5min-phone-pull.json),
 [review awal](docs/0090_RAM2G_RESULT_AND_REVIEW.md),
@@ -28,8 +36,8 @@ ulang permintaan tunggu identik. Jika masih logo/hitam, fokus GUI/IPC/present
 melalui sampler aman dan bounded, audit task_lock/faulting stack-read dahulu,
 dan tambahkan timestamp submit/copy bila diperlukan. Jika UI muncul, validasi
 visual/stabilitas sebelum fitur hardware baru. Tidak ada dasar patch idle/GPU/UFS
-hanya dari sampledPC/lastline. Guard coverage RAM pada packaging juga perlu
-menggantikan/memblokir default lama yang melintasi gap; belum diimplementasikan.
+hanya dari sampledPC/lastline. Guard coverage RAM pada packaging telah dibuat; default lama5,75GiB
+sudah diganti2GiB dan window lama ditolak.
 Gunakan ADT2GiB eksplisit untuk tes berikutnya. Rootfs tidak perlu reflash.
 
 Image [216CAPu5](https://pixeldrain.com/u/216CAPu5),

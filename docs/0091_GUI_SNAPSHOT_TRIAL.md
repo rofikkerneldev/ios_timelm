@@ -45,7 +45,9 @@ snapshot aktual dengan reference/lock mocks, task kosong, thread terminated,
 unexpected state count dan cap32/truncation. Decoder menguji extensionbaru,
 headerlama dan versi tidak dikenal. Regression boot/diag/IRQ/rawfault lulus.
 
-Build CI macOS dan packaging Linux belum selesai pada checkpoint awal ini.
+Build CI macOS [40094642531](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40094642531),
+source `def5b767928e19c37d12fa4df186bb27bc8ea379`, sedang berjalan.
+Packaging Linux belum selesai pada checkpoint ini.
 Jangan menganggap image0091 tersedia sampai manifest/hash/upload dicatat.
 
 ## Pengujian berikutnya
@@ -62,3 +64,20 @@ Jika sampler phase tertahan dan liveness menurun, gunakan fallback0090 dan audit
 jalur snapshot; jangan menjadikan profil diagnostik sebagai baseline stabil.
 Sample PC pada mach_msg/workqueue sendiri tidak membuktikan deadlock; bandingkan
 beberapa round dan thread/process yang sama beserta state/slide.
+
+## Guard RAM pada packaging host
+
+`tools/mkadt.py --mem high` kini default2GiB[4,6GiB), menggantikan5,75GiB lama.
+`tools/build-boot.sh` memanggil `check-ram-window.py` sebelum membangun init/shim;
+`inspect_boot.py` memeriksa kembali window dari ADT/payload dan menyimpan hash
+audit di manifest. Guard memerlukan cakupan penuh live banks dan System RAM,
+menolak gap, reserved-memory/memreserve, overflow dan alignment yang tidak sah.
+Static DTB memory size0 tetap tidak dianggap bukti RAM. Default audit berasal
+recovery perangkat12GB ini; ini bukan tabel universal semua varian LG V60.
+Jika topology berubah, audit ulang dan berikan RAM_AUDIT yang baru.
+
+Empat tes guard lokal mencakup kontrol2GiB yang valid, window lama yang melintasi
+hole, bank bersebelahan, coverage Linux, reserved/memreserve dan batas end-exclusive.
+Image fallback0090-ram2g juga lolos inspector baru dengan kernel0090 yang tepat.
+Guard host tidak mengubah kernel yang sedang dibuild di CI. Jalur manual yang
+melewati wrapper/inspector tetap tanggung jawab pembuat payload.

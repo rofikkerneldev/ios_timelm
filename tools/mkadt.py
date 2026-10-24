@@ -25,9 +25,10 @@ import adt  # noqa: E402
 # top-of-bank pools (rmtfs/ramdump sit around 0xfd000000): keep a margin.
 PHYS_BASE = 0xb0280000
 MEM_SIZE = 0x3fd80000
-# --highmem (phone only): the upper DDR bank, 0x100000000 (see NOTES.md).
+# --highmem: conservative4..6GiB window validated by live recovery/mainline.
+# The old5.75GiB size crossed the6..8GiB physical-address hole.
 HIGH_PHYS_BASE = 0x100000000
-HIGH_MEM_SIZE = 0x170000000
+HIGH_MEM_SIZE = 0x80000000
 # /arm-io children are relative to this; it must not be 0 (serial_init bails)
 SOC_BASE = 0x01000000
 

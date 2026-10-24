@@ -14,6 +14,9 @@ import mkpayload
 spec = importlib.util.spec_from_file_location('dtcheck', Path(__file__).with_name('check-adt-vs-dtb.py'))
 dtcheck = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(dtcheck)
+ram_spec = importlib.util.spec_from_file_location('ramcheck', Path(__file__).with_name('check-ram-window.py'))
+ramcheck = importlib.util.module_from_spec(ram_spec)
+ram_spec.loader.exec_module(ramcheck)
 
 
 def sha256(data):
@@ -100,6 +103,7 @@ def main():
     parser.add_argument('--dtb', type=Path, required=True)
     parser.add_argument('--manifest', type=Path)
     parser.add_argument('--trial')
+    parser.add_argument('--ram-audit', type=Path, default=ramcheck.DEFAULT_AUDIT)
     args = parser.parse_args()
     data, kernel = args.image.read_bytes(), args.kernel.read_bytes()
     if b'TIMELM IRQ FIX 0085:' not in kernel:
@@ -109,6 +113,7 @@ def main():
         if dtb != args.dtb.read_bytes():
             raise ValueError('embedded Android DTB differs from expected DTB')
         info, nodes = payload_info(payload, kernel)
+        info['ram_validation'] = ramcheck.check(int(info['phys_base'], 16), int(info['mem_size'], 16), args.ram_audit)
         if 'timelm_wdt=stop' in info['cmdline'].split():
             hardware = dtcheck.parse_dtb(args.dtb)
             _, watchdog = dtcheck.find(hardware, lambda p, props:
@@ -120,7 +125,7 @@ def main():
             raise ValueError('embedded trial ID differs')
         if dtcheck.check_nodes(dtcheck.parse_dtb(args.dtb), nodes):
             raise ValueError('embedded ADT does not match hardware DTB')
-    except (ValueError, struct.error, AssertionError) as error:
+    except (ValueError, struct.error, AssertionError, KeyError, TypeError, OSError) as error:
         raise SystemExit(str(error)) from error
     info.update(image=args.image.name, image_size=len(data), image_sha256=sha256(data),
                 kernel_sha256=sha256(kernel), dtb_sha256=sha256(dtb), shim_sha256=sha256(shim))
