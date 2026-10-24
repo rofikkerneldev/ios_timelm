@@ -8,12 +8,33 @@ GPT entry 31, `/dev/block/sda31`, **LUN 0**, sektor 4096. Partisi 20705009664 by
 (sekitar 19,28 GiB), HFSX di dalamnya 17179869184 byte (16 GiB). Header/entry GPT
 lolos CRC dan cocok dengan sysfs/blockdev. [Geometry](docs/evidence/ios-live-recovery-20261024.json).
 
-**Image tes utama: 0088-ios-diag, build/upload selesai, belum diuji HP.**
-[Download nYeQHR4s](https://pixeldrain.com/u/nYeQHR4s),
+**Image tes utama sekarang: 0088-ios-noidle, build/upload selesai, belum diuji HP.**
+[Download CnUC1KoY](https://pixeldrain.com/u/CnUC1KoY),
+[manifest](docs/evidence/0088-noidle-build.json),
+[hasil HP baseline dan roadmap](docs/0088_PHONE_RESULT_AND_NOIDLE.md).
+Trial `0088-ios-noidle-r40067579578`, SHA256
+`5ed52854ce812ad04f6ecf6caf51675c5ef6a7e491d9b9f8325bc14d3ea6ec48`.
+Ini controlled repack baseline 0088: hanya tambah **jtag=1** dan ganti trial,
+menonaktifkan CPU idle melalui jalur bawaan `cpu_machine_idle_init()/cpu_idle()`.
+Kernel/shim/ADT/DTB/static init/payload selain buffer command line identik.
+Hipotesis idle/wake belum teruji; pemakaian CPU/daya dapat meningkat. Tes tiga
+menit dengan dua catatan footer berselang 30 s, lalu recovery/pull trial baru.
+
+**0088 baseline sudah diuji HP; bukan lagi trial yang belum dites.**
+[Download baseline nYeQHR4s](https://pixeldrain.com/u/nYeQHR4s),
 [manifest](docs/evidence/0088-build.json),
-[langkah tes, counter footer dan pull log](docs/0088_DIAGNOSTIC_TRIAL.md).
-Trial `0088-ios-diag-r40067579578`, SHA256
-`d8e64b2747f790c67cb972645e813669ef716ebeadaa9f54b85d528dddfc13ba`.
+[console](docs/evidence/0088-console.txt), [metadata](docs/evidence/0088-phone-pull.json).
+Header flush=6 menyimpan HB=62, S=7/P=C=5; foto user menunjukkan HB=71,
+T=118024, S=8/P=C=6/R=0, F=W=E=0, U=14899/14899:0, OP=28. Nilai L tidak terbaca.
+User melihat counter bergerak sebelumnya lalu diam sesudah foto; lama diam tidak
+diukur dan tidak ada angka kedua. Observer tidak terblokir printf/UFS lock,
+tetapi T pada footer juga hanya disalin oleh heartbeat, bukan observer IRQ
+independen. Jangan langsung mengklaim timer/seluruh CPU berhenti. UFS idle tanpa
+error saat snapshot, enam copy selesai. Selisih S-P dapat normal karena latest
+record coalescing. Root ios/exec SpringBoard/backboardd/surfaces/swaps terverifikasi.
+CRASH driverkitd jetsam diikuti boot/frame, tidak ada crash GUI atau panic pada
+snapshot. Logo tetap; GUI belum terkonfirmasi.
+
 CI [40067579578](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40067579578)
 sukses, source `f004673e690618509c994bc32495be4ffbe313ce`. Kernel 0088 menambahkan
 observer tanpa printf/UFS lock, counter present/copy, fase logger/UFS dan header
@@ -43,14 +64,16 @@ raw-write carrier; trial tetap memakai area di luar HFSX pada ios. Driver loggin
 belum memiliki target partisi terpisah; carrier juga tetap bergantung UFS/mutex
 yang sama. Tidak ada mount/write carrier selama audit.
 
-**Langkah berikutnya:** user boot 0088-diag. Jika logo tetap diam, catat dua baris
-footer dua kali dengan selang 15–30 detik **sebelum recovery**. HB bergerak tetapi
+**Langkah berikutnya:** user boot 0088-noidle. Jika logo tetap diam, catat dua baris
+footer dua kali dengan selang 30 detik **sebelum recovery**. HB bergerak tetapi
 L berhenti: periksa F/W/U/OP/E. HB/L bergerak tetapi C diam: periksa jalur renderer/
 present/IPC. C bergerak dengan UI salah: periksa piksel/format/crop/lifetime.
 Jika HB juga diam, butuh bukti scheduler/interrupt/lock tambahan; footer diam
 sendiri belum menunjukkan lokasi instruksi. Pull sesudah recovery memakai decoder
-baru dan verifikasi trial pada extension TIMELMDG. Jangan mengubah GPU/SMP/FS
-sebelum membandingkan data ini. Alternatif tanpa persistent log:
+baru dan verifikasi trial noidle pada extension TIMELMDG. Jika membeku juga,
+roadmap 0089 memisahkan IRQ/thread/scanout tanpa heavy I/O dari IRQ. Jika bertahan,
+ulang A/B dan telusuri idle/wake; sampler GUI hanya bila HB/L terus maju.
+Jangan mengubah GPU/SMP/FS sebelum membandingkan data ini. Alternatif tanpa persistent log:
 [0087-ios-diag 6jWRQptn](https://pixeldrain.com/u/6jWRQptn), sweetlog=0.
 
 **Tambahan bantuan Sweet/Topaz sudah diverifikasi:** `tools/sweet-crash.py` lokal
@@ -59,8 +82,9 @@ berhasil menamai sampel SpringBoard 0086 dan crash driverkitd 0087 memakai cache
 `SMP` adalah snapshot proses; SIGKILL/exit reason jangan langsung dianggap fault.
 0088 mempertahankan crash logger, tetapi sampler `sweetsample=-`. Jika hasil
 footer mendukung pemeriksaan renderer/IPC, siapkan repack terpisah kernel yang
-sama dengan sampler SpringBoard/backboardd, trial unik; belum dibuat. Jangan
-mengganti image tes 0088 atau menyalin target userdata/clock touch dari referensi.
+sama dengan sampler SpringBoard/backboardd, trial unik; belum dibuat. Sampler
+bawaan mulai 90 s; tidak memberi sampel sebelum freeze yang lebih awal. Jangan
+menyalin target userdata/clock touch dari referensi.
 
 **Jangan pakai image logging userdata lama GnxdmsDC pada layout baru**, jangan
 menggunakan offset/sda28 lama. Old userdata audit tetap historis. Script packaging

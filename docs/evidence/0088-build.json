@@ -18,7 +18,7 @@
   "patches_sha256": "d73b9e084fc627b352292426746a27564753007938dfe490af413f97f73db885",
   "download_url": "https://pixeldrain.com/u/nYeQHR4s",
   "uploaded_sha256": "d8e64b2747f790c67cb972645e813669ef716ebeadaa9f54b85d528dddfc13ba",
-  "hardware_tested": false,
+  "hardware_tested": true,
   "kernel_source_commit": "f004673e690618509c994bc32495be4ffbe313ce",
   "kernel_ci_run": 40067579578,
   "kernel_artifact_id": 12549857154,
@@ -47,5 +47,12 @@
     "10 payload kernel segments and ADT versus DTB verified",
     "Pixeldrain size and SHA256 verified"
   ],
-  "baseline_trial": "0087-ios-gui-log-r39984162472"
+  "baseline_trial": "0087-ios-gui-log-r39984162472",
+  "phone_result": {
+    "trial_verified": "0088-ios-diag-r40067579578",
+    "evidence": "0088-phone-pull.json",
+    "last_persisted_heartbeat": 62,
+    "last_visible_heartbeat": 71,
+    "interactive_gui_confirmed": false
+  }
 }

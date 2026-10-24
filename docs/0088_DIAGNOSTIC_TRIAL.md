@@ -3,7 +3,10 @@
 2026-10-24. **Build CI sukses dan image sudah diunggah:**
 [40067579578](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40067579578),
 source `f004673e690618509c994bc32495be4ffbe313ce`.
-Belum diuji pada HP. Target GPT tetap `ios`.
+**Sudah diuji HP:** footer mencapai HB=71, enam copy frame selesai, kemudian
+user melihat status diam. Recovery pull memverifikasi trial dan header HB=62 /
+flush=6. [Analisis dan image pembanding CPU idle](0088_PHONE_RESULT_AND_NOIDLE.md)
+menjadi langkah tes terbaru. Target GPT tetap `ios`.
 
 ## Image tes dan langkah berikutnya
 

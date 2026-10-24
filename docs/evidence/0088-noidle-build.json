@@ -1,0 +1,54 @@
+{
+  "payload_sha256": "5914f0c188e1059bec3d48a20d618556771be2dbd83547def6298beb49677d8b",
+  "adt_sha256": "409137912042f1b0edaac697cff99a675c731588155c362e862516481bdb5ede",
+  "virtual_timer_intid": 27,
+  "cmdline": "debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress rd=ufsroot0 ufsrw=1 rootrw=1 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin wdt=-1 sweetfb_hz=5 startup_debug=0 sweetbeat=1 sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=1 timelm_wdt=stop launchd_unsecure_cache=1 sweetaccel=1 sweetakslog=32 sweetiolog=- sweetsample=- sweetscan=- sweetfb_noconsole=1 ufslogsecs=10 ufsroot=ios timelm_diag=1 jtag=1 timelm_trial=0088-ios-noidle-r40067579578",
+  "phys_base": "0x100000000",
+  "mem_size": "0x170000000",
+  "kernel_segments_verified": 10,
+  "watchdog_action": "shim stops APSS watchdog if enabled; runtime result unverified",
+  "image": "timelm-0088-ios-rw-c1-wdtstop-noidle.img",
+  "image_size": 16961536,
+  "image_sha256": "5ed52854ce812ad04f6ecf6caf51675c5ef6a7e491d9b9f8325bc14d3ea6ec48",
+  "kernel_sha256": "95f58a5f18605eab0854975de0a275165471d793564622503c59084fe248dd56",
+  "dtb_sha256": "ba67ec4dcde5288135133c39b7703b049502aa296cced431807c41104fbb68a4",
+  "shim_sha256": "42d794c59b7e9c8e4597cbf7309b1c08ad6ff7671b1daa4ca76f2dcaee50d506",
+  "source_commit": "59d2c4ab551493af15d8dd3e61f98c87d9431326",
+  "source_dirty": true,
+  "patches_sha256": "d73b9e084fc627b352292426746a27564753007938dfe490af413f97f73db885",
+  "hardware_tested": false,
+  "kernel_source_commit": "f004673e690618509c994bc32495be4ffbe313ce",
+  "kernel_ci_run": 40067579578,
+  "kernel_build_provenance": {
+    "commit": "f004673e690618509c994bc32495be4ffbe313ce",
+    "run_id": "40067579578",
+    "patches_sha256": "d73b9e084fc627b352292426746a27564753007938dfe490af413f97f73db885",
+    "machine_config": "SWEET"
+  },
+  "partition_name": "ios",
+  "lun": 0,
+  "persistent_logging_enabled": true,
+  "logging_geometry_audit": "ios-live-recovery-20261024.json",
+  "geometry_valid_for_current_layout": true,
+  "source_dirty_explanation": "Only uncommitted phone capture/manifest documentation; compiled code and kernel unchanged from CI.",
+  "controlled_comparison": {
+    "baseline_image": "timelm-0088-ios-rw-c1-wdtstop-diag.img",
+    "baseline_sha256": "d8e64b2747f790c67cb972645e813669ef716ebeadaa9f54b85d528dddfc13ba",
+    "equal_components": [
+      "kernel",
+      "shim",
+      "ADT",
+      "DTB",
+      "static init",
+      "payload outside command line buffer"
+    ],
+    "changed_arguments": [
+      "jtag=1",
+      "unique timelm_trial"
+    ],
+    "source_semantics": "osfmk/arm64/cpu.c cpu_machine_idle_init: jtag!=0 sets idle_enable=FALSE; cpu_idle checks it before idle/WFI path",
+    "hypothesis_not_fix": "CPU idle/wake or timer delivery may contribute to reported freeze; outcome not yet tested"
+  },
+  "download_url": "https://pixeldrain.com/u/CnUC1KoY",
+  "uploaded_sha256": "5ed52854ce812ad04f6ecf6caf51675c5ef6a7e491d9b9f8325bc14d3ea6ec48"
+}

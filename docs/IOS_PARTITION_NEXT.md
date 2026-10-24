@@ -1,9 +1,10 @@
 # Langkah berikutnya: root pada GPT ios, lalu diagnostik 0088
 
 **Checkpoint terbaru 2026-10-24:** trial 0087-ios sudah dites **10 menit dengan
-stopwatch**, snapshot berakhir HB=8/flush=6. Kernel diagnostik 0088 sudah dibuild
-dan diunggah, belum diuji HP. **Ikuti [trial 0088](0088_DIAGNOSTIC_TRIAL.md)**
-untuk image utama, pembacaan footer sebelum recovery dan decoder header baru.
+stopwatch**, snapshot berakhir HB=8/flush=6. Kernel diagnostik 0088 sudah diuji:
+footer HB=71/copy=6 kemudian dilaporkan diam; pull header HB=62/flush=6.
+**Ikuti [hasil 0088 dan trial no-idle](0088_PHONE_RESULT_AND_NOIDLE.md)**
+untuk image pembanding terbaru, pembacaan footer sebelum recovery dan roadmap.
 Instruksi 0087 di bawah dipertahankan sebagai baseline/audit layout.
 
 2026-10-24. User memindahkan filesystem iOS ke partisi GPT bernama **`ios`** dari

@@ -1,0 +1,73 @@
+{
+  "capture_utc": "2026-10-24T06:13:45Z",
+  "source": "Read-only recovery ADB pull plus user transcription of 0088 footer",
+  "raw_path": "/home/rofikkernel/work/timelm-0088-phone/20261024T061345Z-console.txt.bin",
+  "raw_sha256": "421a271ee33cbe7612532ede2b98622b6d0b9fda2201529ab53b784dc67b87d0",
+  "raw_bytes": 4198400,
+  "console_sha256": "bce790030736980350c2263f41985c7f44c192e527d63db313fa06855422be47",
+  "device": "/dev/block/sda31",
+  "partition_bytes": 20705009664,
+  "tail_start_relative": 20700811264,
+  "version": 1,
+  "ring_size": 4194304,
+  "total_console_bytes": 45390,
+  "flush_sequence": 6,
+  "diagnostic_header": {
+    "heartbeat": 62,
+    "heartbeat_abs": 1631341617,
+    "timer_irqs": 102823,
+    "submitted": 7,
+    "presented": 5,
+    "copied": 5,
+    "rejected": 0,
+    "log_success_seq": 5,
+    "log_success_abs": 1445756203,
+    "log_phase": 3,
+    "ufs_waiters": 0,
+    "ufs_commands": 12176,
+    "ufs_completed": 12176,
+    "ufs_opcode": 42,
+    "last_errno": 0,
+    "ufs_phase": 0,
+    "trial": "0088-ios-diag-r40067579578"
+  },
+  "user_footer": {
+    "heartbeat": 71,
+    "timer_irqs": 118024,
+    "submitted": 8,
+    "presented": 6,
+    "copied": 6,
+    "rejected": 0,
+    "log_success_seq": null,
+    "log_phase": 0,
+    "ufs_waiters": 0,
+    "ufs_completed": 14899,
+    "ufs_commands": 14899,
+    "ufs_phase": 0,
+    "ufs_opcode": 40,
+    "last_errno": 0
+  },
+  "user_report": "Counter changed before screenshot, then no further change observed; returned to recovery. Apple logo remains, earlier exec spring text; duration after snapshot not measured. Text described around screen center.",
+  "exec_counts": {
+    "SpringBoard": 1,
+    "backboardd": 1
+  },
+  "swaps": [
+    "SWEET FB: swap 2 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436",
+    "SWEET FB: swap 4 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436",
+    "SWEET FB: swap 5 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436",
+    "SWEET FB: swap 6 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436",
+    "SWEET FB: swap 7 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436"
+  ],
+  "driverkitd_symbols": "CRASH driverkitd[67] sig 9 code 0x0 sub 0x0 slide 0x2c2ac000 mh 0x100880000\nCRASH driverkitd pc 0x1ee8bdd98 lr 0x1ad4503a4 sp 0x16f57d200 fp 0x16f57d270 far 0x100aac000\n    0x1ee8bdd98 = cache 0x1c2611d98 _read + 8\n    0x1ad4503a4 = cache 0x1811a43a4 __NSReadFromFileDescriptorWithProgress + 192\n    0x100aac000 = main binary 0x10022c000\nCRASH driverkitd bt 0x1ad44512c 0x1ad436514 0x10091e6b4 0x10096937c 0x10096a81c 0x1008a831c 0x1008f900c 0x10091097c 0x100926cf8 0x1009224a8\n    0x1ad44512c = cache 0x18119912c __NSReadBytesFromFileWithExtendedAttributes + 816\n    0x1ad436514 = cache 0x18118a514 -[NSData(NSData) initWithContentsOfFile:options:maxLength:error:] + 128\n    0x10091e6b4 = main binary 0x10009e6b4\n    0x10096937c = main binary 0x1000e937c\n    0x10096a81c = main binary 0x1000ea81c\n    0x1008a831c = main binary 0x10002831c\n    0x1008f900c = main binary 0x10007900c\n    0x10091097c = main binary 0x10009097c\n    0x100926cf8 = main binary 0x1000a6cf8\n    0x1009224a8 = main binary 0x1000a24a8\nCRASH driverkitd reason ns 1 code 0x7: (none)\n",
+  "limitations": [
+    "Footer L unreadable, not assumed zero.",
+    "Header sampled before header write+sync; F=3 expected; log_success_seq=5 corresponds to preceding flush.",
+    "UFS completed=issued with E=0 is a snapshot, not proof all storage semantics correct.",
+    "Submitted=8, copied=6 does not mean two lost frames: latest-record coalescing is intentional.",
+    "Reported frozen footer suggests observer or visible scanout stopped; no independent IRQ observation proves total CPU/timer halt.",
+    "No captured SpringBoard/backboardd crash or kernel panic; later uncaptured events remain possible."
+  ],
+  "nonzero_bytes_beyond_total_in_last_written_block": 0,
+  "last_written_block_uncommitted_prefix_hex": "0000000000000000000000000000000000000000000000000000000000000000"
+}
