@@ -8,7 +8,23 @@ GPT entry 31, `/dev/block/sda31`, **LUN 0**, sektor 4096. Partisi 20705009664 by
 (sekitar 19,28 GiB), HFSX di dalamnya 17179869184 byte (16 GiB). Header/entry GPT
 lolos CRC dan cocok dengan sysfs/blockdev. [Geometry](docs/evidence/ios-live-recovery-20261024.json).
 
-**Image tes utama sekarang: 0088-ios-noidle, build/upload selesai, belum diuji HP.**
+**Checkpoint terbaru: no-idle juga membeku; 0089 sudah dibuild/diunggah, belum diuji HP.**
+[Download DgtbxBkY](https://pixeldrain.com/u/DgtbxBkY),
+[manifest](docs/evidence/0089-build.json).
+Image `timelm-0089-ios-rw-c1-wdtstop-irqdiag.img`,
+trial `0089-ios-irqdiag-r40074243259`, SHA256
+`10a80a42fb4713756369f06d177b5285613c4c689cba08114dabc798d961b560`.
+[Roadmap dan desain indikator IRQ](docs/0089_IRQ_DIAGNOSTIC_TRIAL.md),
+CI [40074243259](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40074243259),
+source `ac7bcf33eb2613319628ea0c83060a3d03f6cc11`. 89 patch apply, tiga targeted
+compile dan 21 checks boot/diagnostic lolos lokal; CI build/validation sukses.
+0089 menambahkan timer-IRQ strip terpisah dari heartbeat, tanpa printf/lock/UFS;
+counter masuk/handler-done dan saved PC/CPSR juga masuk extension header TIMELMIQ.
+Artifact provenance/hash, simbol dan linked IRQ hooks, payload/ADT/DTB serta hash
+upload sudah diverifikasi. Shim JOBS=56, root ios RW, CPU idle normal, observer
+96-row footer, cpus=1, watchdog-stop, sampler off. Belum ada hasil HP 0089.
+
+**0088-ios-noidle sudah diuji, bukan lagi image yang belum dites.**
 [Download CnUC1KoY](https://pixeldrain.com/u/CnUC1KoY),
 [manifest](docs/evidence/0088-noidle-build.json),
 [hasil HP baseline dan roadmap](docs/0088_PHONE_RESULT_AND_NOIDLE.md).
@@ -17,8 +33,17 @@ Trial `0088-ios-noidle-r40067579578`, SHA256
 Ini controlled repack baseline 0088: hanya tambah **jtag=1** dan ganti trial,
 menonaktifkan CPU idle melalui jalur bawaan `cpu_machine_idle_init()/cpu_idle()`.
 Kernel/shim/ADT/DTB/static init/payload selain buffer command line identik.
-Hipotesis idle/wake belum teruji; pemakaian CPU/daya dapat meningkat. Tes tiga
-menit dengan dua catatan footer berselang 30 s, lalu recovery/pull trial baru.
+Profil meminta CPU idle off sehingga pemakaian CPU/daya dapat meningkat.
+Hasil tes tiga menit dan recovery pull sudah tersedia di bawah.
+
+**Hasil:** user melihat HB=76/T=127289/S=6/P=C=4, F=W=0, OP=28, U=13876,
+kemudian diam setelah menunggu sekitar tiga menit. Recovery pull memverifikasi
+trial noidle, flush=7/HB=72/T=111280/S=6/P=C=4/R=0/E=0/U=11509/11509:0.
+[Metadata](docs/evidence/0088-noidle-phone-pull.json),
+[console](docs/evidence/0088-noidle-console.txt). R=8 dari transkripsi footer belum
+terkonfirmasi dan tidak konsisten dengan R=0 pada P/C sama di disk; jangan langsung
+memperbaiki delapan rejects. jtag=1 tidak mencegah gejala pada trial ini. Tidak ada
+dasar menjadikannya solusi atau menambahkan GPU/patch filesystem secara spekulatif.
 
 **0088 baseline sudah diuji HP; bukan lagi trial yang belum dites.**
 [Download baseline nYeQHR4s](https://pixeldrain.com/u/nYeQHR4s),
@@ -64,8 +89,12 @@ raw-write carrier; trial tetap memakai area di luar HFSX pada ios. Driver loggin
 belum memiliki target partisi terpisah; carrier juga tetap bergantung UFS/mutex
 yang sama. Tidak ada mount/write carrier selama audit.
 
-**Langkah berikutnya:** user boot 0088-noidle. Jika logo tetap diam, catat dua baris
-footer dua kali dengan selang 30 detik **sebelum recovery**. HB bergerak tetapi
+**Langkah berikutnya:** user tes 0089 yang sudah diunggah. Rekam I89/D88 pada tiga
+baris, dua foto berselang
+30 detik **sebelum recovery**. I89 I/O bergerak sementara HB/H diam berarti timer
+IRQ masih ditangani; telusuri heartbeat/thread timeout/scheduling. H dari I89
+bergerak sementara D88 tampak lama berarti heartbeat sebenarnya masih naik.
+HB bergerak tetapi
 L berhenti: periksa F/W/U/OP/E. HB/L bergerak tetapi C diam: periksa jalur renderer/
 present/IPC. C bergerak dengan UI salah: periksa piksel/format/crop/lifetime.
 Jika HB juga diam, butuh bukti scheduler/interrupt/lock tambahan; footer diam

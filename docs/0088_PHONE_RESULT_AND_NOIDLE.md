@@ -1,5 +1,10 @@
 # Hasil 0088 dan tes pembanding CPU idle
 
+**Update terbaru:** no-idle sudah diuji, footer kembali dilaporkan diam pada
+HB=76 setelah menunggu sekitar tiga menit. Recovery memverifikasi trial noidle,
+header terakhir HB=72/flush=7. [Hasil dan rancangan 0089](0089_IRQ_DIAGNOSTIC_TRIAL.md)
+menjadi checkpoint terbaru; no-idle belum menyelesaikan gejala.
+
 2026-10-24. [Raw metadata dan counter](evidence/0088-phone-pull.json),
 [console](evidence/0088-console.txt). Recovery ADB read-only berhasil membaca
 4198400 byte dari tail GPT `ios` / sda31. Extension memverifikasi trial
@@ -113,5 +118,6 @@ Kembali ke recovery, sambungkan forward, gunakan pull/decoder lokal sebagaimana
    source lifetime dan jalur scanout/cache. Lokasi footer yang dilaporkan user
    perlu dicocokkan dengan geometry aktual. GPU tetap pekerjaan terpisah.
 
-Tidak ada patch kernel 0089 atau image sampling baru pada checkpoint ini.
+Kernel 0089 sudah dibuild dan diunggah, belum diuji HP; lihat checkpoint di atas.
+Belum ada image sampling baru.
 Simpan raw tail/console/metadata setiap trial sebelum boot berikutnya menimpanya.

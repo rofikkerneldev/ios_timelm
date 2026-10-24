@@ -16,7 +16,7 @@
   "source_commit": "59d2c4ab551493af15d8dd3e61f98c87d9431326",
   "source_dirty": true,
   "patches_sha256": "d73b9e084fc627b352292426746a27564753007938dfe490af413f97f73db885",
-  "hardware_tested": false,
+  "hardware_tested": true,
   "kernel_source_commit": "f004673e690618509c994bc32495be4ffbe313ce",
   "kernel_ci_run": 40067579578,
   "kernel_build_provenance": {
@@ -50,5 +50,13 @@
     "hypothesis_not_fix": "CPU idle/wake or timer delivery may contribute to reported freeze; outcome not yet tested"
   },
   "download_url": "https://pixeldrain.com/u/CnUC1KoY",
-  "uploaded_sha256": "5ed52854ce812ad04f6ecf6caf51675c5ef6a7e491d9b9f8325bc14d3ea6ec48"
+  "uploaded_sha256": "5ed52854ce812ad04f6ecf6caf51675c5ef6a7e491d9b9f8325bc14d3ea6ec48",
+  "phone_result": {
+    "trial_verified": "0088-ios-noidle-r40067579578",
+    "evidence": "0088-noidle-phone-pull.json",
+    "last_persisted_heartbeat": 72,
+    "last_reported_visible_heartbeat": 76,
+    "user_wait": "three minutes",
+    "interactive_gui_confirmed": false
+  }
 }
