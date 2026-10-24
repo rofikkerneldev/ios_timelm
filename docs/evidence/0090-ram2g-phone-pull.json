@@ -1,0 +1,106 @@
+{
+  "capture_utc": "2026-10-24T11:29:00Z",
+  "source": "ADB recovery read-only tail; no mount, filesystem repair, flash or reboot",
+  "raw_path": "/home/rofikkernel/work/timelm-0090-ram2g-phone/20261024T112900Z-console.txt.bin",
+  "raw_sha256": "b3554a8ac1cf5659fc2bc8ebbc64993f22eda0d6d4d6e3e6d87aa20d9684107c",
+  "raw_bytes": 4198400,
+  "console_sha256": "ad824499ad1f053fb0c62989ddb5c9818e7f861725f356c346fa23aaaf5dbb00",
+  "partition_name": "ios",
+  "device": "/dev/block/sda31",
+  "partition_bytes": 20705009664,
+  "tail_start_relative": 20700811264,
+  "version": 1,
+  "ring_size": 4194304,
+  "total_console_bytes": 50042,
+  "flush_sequence": 15,
+  "diagnostic_header": {
+    "copied": 4,
+    "heartbeat": 152,
+    "heartbeat_abs": 3404457173,
+    "last_errno": 0,
+    "log_phase": 3,
+    "log_success_abs": 3229003850,
+    "log_success_seq": 14,
+    "presented": 4,
+    "rejected": 0,
+    "submitted": 6,
+    "timer_irqs": 287996,
+    "trial": "0090-ios-nostatus-ram2g-r40078086391",
+    "ufs_commands": 40326,
+    "ufs_completed": 40326,
+    "ufs_opcode": 42,
+    "ufs_phase": 0,
+    "ufs_waiters": 0
+  },
+  "irq_header": {
+    "draw_abs": 0,
+    "entered": 288030,
+    "entry_abs": 3421023790,
+    "handler_done": 288030,
+    "handler_done_abs": 3421023893,
+    "interrupted_cpsr": 1614807812,
+    "interrupted_pc": 18446741874808537688,
+    "phase": 2,
+    "interrupted_pc_hex": "0xfffffe0007494258",
+    "interrupted_cpsr_hex": "0x60400304",
+    "symbol": "_machine_idle+0xfc",
+    "instruction": "ldp x29, x30, [sp, #48]",
+    "interpretation": "Interrupted kernel context, not a fault or proof of idle hang; Q6 completed."
+  },
+  "raw_event_header": {
+    "caller_pc": 0,
+    "draw_enabled": 0,
+    "esr": 0,
+    "event_count": 0,
+    "event_kind": 0,
+    "far": 0,
+    "fault_lr": 0,
+    "fault_pc": 0,
+    "format_pointer": 0,
+    "irq_full_done": 288030,
+    "irq_stage": 6,
+    "panic_draw_stage": 0,
+    "timer_ctl": 5,
+    "timer_cval": 3421023773
+  },
+  "exec_counts": {
+    "SpringBoard": 1,
+    "backboardd": 1
+  },
+  "crash_lines": [
+    "CRASH driverkitd[67] sig 9 code 0x0 sub 0x0 slide 0x33c50000 mh 0x100c58000",
+    "CRASH driverkitd pc 0x1f6261d98 lr 0x1b4df43a4 sp 0x16f1a5200 fp 0x16f1a5270 far 0x100ebc000",
+    "CRASH driverkitd bt 0x1b4de912c 0x1b4dda514 0x100cf66b4 0x100d4137c 0x100d4281c 0x100c8031c 0x100cd100c 0x100ce897c 0x100cfecf8 0x100cfa4a8",
+    "CRASH driverkitd reason ns 1 code 0x7: (none)"
+  ],
+  "swap_lines": [
+    "SWEET FB: swap 2 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436",
+    "SWEET FB: swap 4 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436",
+    "SWEET FB: swap 5 layer 0 surface 2 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436",
+    "SWEET FB: swap 6 layer 0 surface 3 1125x2436 fmt 0x42475241 bpr 4608 a 0,0 1125x2436 b 0,0 1125x2436"
+  ],
+  "nonzero_bytes_after_total_in_last_written_block": 0,
+  "vm_page_bootstrap": {
+    "free_pages": 128190,
+    "wired_pages": 2882,
+    "page_size": 16384,
+    "total_pages": 131072,
+    "total_bytes": 2147483648
+  },
+  "limitations": [
+    "User reports waiting1minute, reference point unspecified; final UI and manual transition not explicitly reported. Last HB152 is not evidence of a freeze.",
+    "HB152/flush15 proves progress beyond prior captured HB62/flush6, not that trial stopped at HB152.",
+    "No raw panic event before snapshot does not exclude a later unflushed event.",
+    "P=C4/R0 does not prove interactive GUI or continued frame production.",
+    "Single trial changes usable capacity, allocation placement, pressure and timing; persisted filesystem state also changes across RW boots.",
+    "Driverkitd SIGKILL namespace1/code7 also appeared on larger-RAM trials; cannot attribute it uniquely to 2GiB."
+  ],
+  "user_report": {
+    "wait_duration": "1 minute; reference point not specified",
+    "ram_upgrade": "Physical RAM upgraded to12GB",
+    "dtbo": "User reports dtbo erased",
+    "dtb": "User reports DTB embedded in kernel, no separate DTB partition",
+    "final_ui_state": "Not specified in this reply",
+    "recovery_transition": "In recovery confirmed; manual versus automatic transition not explicitly stated"
+  }
+}

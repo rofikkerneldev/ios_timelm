@@ -1,6 +1,11 @@
 # NOSTATUS tidak memperpanjang snapshot; temuan peta RAM dan tes2GiB
 
-2026-10-24. [Log nostatus](evidence/0090-nostatus-console.txt),
+2026-10-24. **Update: RAM2GiB sudah diuji, HB152/flush15; user menunggu1menit.**
+[Hasil terbaru dan review roadmap](0090_RAM2G_RESULT_AND_REVIEW.md). Recovery
+mengonfirmasi gapRAM6–8GiB, user mengonfirmasi upgrade fisik12GB.
+Rincian sebelum tes di bawah dipertahankan sebagai riwayat.
+
+[Log nostatus](evidence/0090-nostatus-console.txt),
 [metadata](evidence/0090-nostatus-phone-pull.json),
 [audit RAM live](evidence/live-ram-map-20261024.json).
 
@@ -76,7 +81,7 @@ RAM    base0x100000000 size0x80000000 => [4GiB,6GiB)
 fastboot boot timelm-0090-ios-rw-c1-wdtstop-nostatus-ram2g.img
 ```
 
-**Belum diuji HP.** Rentang baru sepenuhnya berada di bank live/SystemRAM,
+**Sudah diuji HP; hasil terbaru ada pada tautan di atas.** Rentang baru sepenuhnya berada di bank live/SystemRAM,
 tidak overlap reserved-memory atau FDT memreserve live/static. Base kernel sama,
 sehingga alamat load tidak dipindah. Shim identity map sekarang hanya mencakup
 di bawah8GiB; jangan langsung memindah kernel ke bank8GiB tanpa audit/perubahan

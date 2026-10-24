@@ -16,7 +16,7 @@
   "source_commit": "fa6eb661875f1c94969c17bfe14a47e54daea11f",
   "source_dirty": true,
   "patches_sha256": "db247929e153ee91ed33894a11dcb79b6268405b297af84f83e1bf0c339907e9",
-  "hardware_tested": false,
+  "hardware_tested": true,
   "kernel_source_commit": "fe228e5b8816ec8ab56f075a8b28b626c04e5a2b",
   "kernel_ci_run": 40078086391,
   "kernel_build_provenance": {
@@ -51,7 +51,17 @@
     "unchanged_kernel_physical_base": "0x100000000",
     "validated_differences_only": true
   },
-  "hypothesis_not_fix": "Avoid live Android FDT gap6-8GiB. RAM topology provenance needs user clarification. Smaller memory can alter pressure/timing; hardware test pending.",
+  "hypothesis_not_fix": "2GiB tested: HB152/flush15 versus prior HB62/flush6. Recovery FDT and iomem independently agree with mainline gap6-8GiB. GUI/final liveness and causal attribution still unconfirmed.",
   "download_url": "https://pixeldrain.com/u/216CAPu5",
-  "uploaded_sha256": "8012dcdaabd349f40c9d07b70831f8afbb5f8f2b33d4a1751b59c6663d7e69f6"
+  "uploaded_sha256": "8012dcdaabd349f40c9d07b70831f8afbb5f8f2b33d4a1751b59c6663d7e69f6",
+  "phone_result": {
+    "evidence": "0090-ram2g-phone-pull.json",
+    "trial_verified": "0090-ios-nostatus-ram2g-r40078086391",
+    "last_persisted_heartbeat": 152,
+    "last_flush": 15,
+    "raw_event_count": 0,
+    "irq_full_done": 288030,
+    "interactive_gui_confirmed": false,
+    "runtime_bootstrap_pages_confirm_2g": true
+  }
 }

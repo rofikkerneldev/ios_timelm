@@ -1,7 +1,8 @@
 # Handoff 0090: semua observer terlihat berhenti, animasi Apple glitch
 
 2026-10-24. **Update:** patch0090 sudah diimplementasikan, kernel CI sukses,
-dua profil sudah diunggah dan belum diuji HP; [scope/trial aktual](0090_DIAGNOSTIC_TRIAL.md). Rancangan di bawah juga
+dua profil dan kontrolRAM2GiB sudah diuji HP;
+[hasil terbaru dan prioritas](0090_RAM2G_RESULT_AND_REVIEW.md); [scope/trial aktual](0090_DIAGNOSTIC_TRIAL.md). Rancangan di bawah juga
 memuat pekerjaan lanjutan yang belum seluruhnya bagian patch0090.
 User memperjelas hasil 0089: semua baris termasuk I89/HB awalnya bergerak lalu
 diam. Animasi Apple sempat terlihat sedikit/terpotong dan mengalami glitch frame.

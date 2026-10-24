@@ -366,8 +366,9 @@
     "inside_live_bank_and_linux_System_RAM": true,
     "overlaps_live_or_static_reserved": false
   },
-  "hypothesis": "Old assumed contiguous XNU range covers a 2GiB gap absent from live FDT. Could stall as allocated pages reach the gap; requires controlled boot test. Mainline-reported ~12GiB capacity/possible DT modification still needs user confirmation.",
+  "hypothesis": "Original contiguous XNU window crosses gap6-8GiB declared by both mainline and recovery. User confirms12GB physical upgrade. 2GiB control reachedHB152/flush15; causal role in earlier stalls still not proven.",
   "shim_constraint": "Shim identity map covers below8GiB only; first test retains4GiB base instead of moving kernel to upper bank.",
   "live_memreserve_entries": [],
-  "static_memreserve_entries": []
+  "static_memreserve_entries": [],
+  "followup": "Recovery kernel4.19 confirms same RAM banks/gap; see0090-recovery-ram-audit.json. User confirms physical upgrade to12GB, erased dtbo, DTB embedded in kernel. No electrical DDR test performed."
 }

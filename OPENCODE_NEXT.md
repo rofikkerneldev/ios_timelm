@@ -2,37 +2,47 @@
 
 Checkpoint terbaru 2026-10-24. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
-**Checkpoint terbaru: nostatus tetap HB62/flush6; audit menemukan mismatch RAM.**
-[Hasil nostatus, peta RAM, dan trial2GiB](docs/0090_NOSTATUS_RESULT_AND_RAM_WINDOW.md),
-[audit live RAM](docs/evidence/live-ram-map-20261024.json),
-[nostatus raw metadata](docs/evidence/0090-nostatus-phone-pull.json).
-Trial nostatus/draw0/draw_abs0 terverifikasi via ADB root **Android mainline16**,
-bukan recovery. Snapshot62/flush6, IRQ full-Q6=110988, P=C5/R0, raw-event0,
-UFS12229/12229:0/W=E0. Root access memungkinkan read-only tail tanpa recovery.
-User belum mengklarifikasi pindah ke Android manual/otomatis atau durasi nostatus.
+**Checkpoint aktif: RAM2GiB sudah diuji, HB152/flush15; user menunggu1menit.**
+Baca [hasil2GiB dan review roadmap](docs/0090_RAM2G_RESULT_AND_REVIEW.md),
+[metadata log](docs/evidence/0090-ram2g-phone-pull.json),
+[audit RAM recovery](docs/evidence/0090-recovery-ram-audit.json).
+Trial `0090-ios-nostatus-ram2g-r40078086391` terverifikasi lewat ADB recovery.
+Runtime free+wired131072 halaman16KiB mengonfirmasi2GiB. IRQ full-Q6=288030,
+UFS40326/40326:0/W=E0, S6/P=C4/R0, raw-event0, draw0. Kernel PC pada
+`machine_idle+0xfc` adalah sampel interrupt, bukan fault. SpringBoard/backboardd
+exec dan swap tercatat, GUI interaktif belum terkonfirmasi. **HB152 bukan bukti
+freeze:** user hanya melaporkan menunggu1menit, titik awal/UI akhir belum jelas.
 
-**Temuan RAM:** static DTB memory size0 adalah placeholder. Live Android FDT dan
-SystemRAM mempunyai gap[0x180000000,0x200000000) =6..8GiB, sedangkan default
-XNU high[0x100000000,0x270000000) melintasinya. Ini kandidat konkret, bukan
-hardware fault yang sudah terbukti: Android melaporkan~12GiB dan provenance RAM/
-DTB upgrade masih ditanyakan. Jangan anggap PASS checker MMIO sebagai validasi RAM.
-/dev/mem strict tidak mengembalikan data; tidak ada telemetry RAM pasca-reset
-yang berhasil diverifikasi dan tidak ada bypass/probe write dilakukan.
+User mengonfirmasi upgrade RAM fisik12GB, dtbo dihapus, DTB berada dalam kernel.
+Recovery4.19 dan mainline7.3 sama-sama menunjukkan gapRAM[6,8GiB).
+Default XNU lama[4,9.75GiB) melintasinya; static DTB size0 tidak memvalidasi RAM.
+Window2GiB[4,6GiB) ada di bank/SystemRAM kedua kernel dan bebas reserved.
+Kemajuan kontrol memperkuat pilihan window valid, belum membuktikan penyebab
+stall tunggal. Kapasitas/timing serta state filesystemRW antarboot juga berubah.
 
-**Image tes utama sekarang:**
-[nostatus-ram2g 216CAPu5](https://pixeldrain.com/u/216CAPu5),
-[manifest](docs/evidence/0090-nostatus-ram2g-build.json), belum diuji HP.
-`timelm-0090-ios-rw-c1-wdtstop-nostatus-ram2g.img`, trial
-`0090-ios-nostatus-ram2g-r40078086391`, SHA256
+**Langkah sekarang:** ulang image2GiB yang sama selama5menit setelah logo, catat
+UI/logo/reboot, lalu user masuk recovery dan pull raw tail unik. Tidak perlu
+rebuild/reflash root. Bandingkan HB/flush/IRQ/UFS/copy terhadap durasi tes baru.
+Jika liveness maju tetapi logo tetap, fokus proses GUI/IPC/present; jika snapshot
+berulang berhenti pada durasi lebih panjang, kembali audit stall/observer.
+Jangan langsung patch GPU, idle, UFS atau menjadikan lastPC sebagai penyebab.
+Guard coverage RAM pada packaging menjadi pekerjaan berikutnya; belum dibuat.
+Gunakan ADT2GiB eksplisit, jangan baseline default lama yang melintasi gap.
+
+Image [216CAPu5](https://pixeldrain.com/u/216CAPu5),
+[manifest](docs/evidence/0090-nostatus-ram2g-build.json), **sudah diuji HP**:
+`timelm-0090-ios-rw-c1-wdtstop-nostatus-ram2g.img`, SHA256
 `8012dcdaabd349f40c9d07b70831f8afbb5f8f2b33d4a1751b59c6663d7e69f6`.
-Kernel0090 sama; base4GiB tetap, mem_size/ADT dram-size saja menjadi2GiB,
-range[4,6GiB) sepenuhnya dalam live bank/SystemRAM dan bebas reserved. Semua
-komponen/argumen lain identik nostatus, kecuali trial unik. Payload byte-diff dan
-hash upload dicek; shim JOBS56. Status memang tidak digambar. Tes3menit setelah
-logo, lalu ADB root/recovery pull trial baru. Ini tes topology/capacity;2GiB bisa
-mengubah jetsam/memory pressure/timing. Belum perbaikan terkonfirmasi.
-Gunakan ADT2GiB eksplisit untuk tes baru; default high lama belum divalidasi ulang.
-Jangan pindah load base ke bank8GiB: shim identity map saat ini di bawah8GiB saja.
+Kernel0090 CI40078086391 sama, rootiosRW/cpus1/watchdog-stop/draw0/logger10s
+sama, hanya ukuranRAM dan trial berubah dibanding nostatus. Kernel aktif
+`xnu/out/kernel.development.sweet` adalah0090, source lengkap
+`$HOME/work/timelm-0090/verify`. Tidak ada build baru pada review hasil2GiB.
+Jangan pindah load base ke bank8GiB: shim identity map di bawah8GiB saja.
+
+## Arsip checkpoint sebelumnya
+
+Instruksi tes/"berikutnya" di bawah bersifat historis; checkpoint aktif di atas
+menggantikan urutannya. Root sekarang GPT `ios`, kernel0090, bukan userdata/0087.
 
 **Riwayat 0090-diag dan nostatus sudah diuji; lihat trial RAM di atas untuk langkah kini.**
 [Hasil dan instruksi berikutnya](docs/0090_DIAG_RESULT_AND_NOSTATUS.md),
@@ -76,7 +86,7 @@ baru pembanding nostatus tiga menit tanpa angka debug. Verifikasi trial/header
 TIMELM90/draw_enabled dan simpan dua raw tail terpisah. Jangan menunggu P90 pada
 nostatus: raw event dicatat tetapi tidak digambar. GUI copy/console panic tetap
 dapat menulis panel; ini hanya isolasi status drawing. Hasil awal diag ada di atas;
-raw tail0090-diag dan nostatus sudah tersimpan; belum ada hasil ram2g.
+raw tail0090-diag, nostatus dan ram2g sudah tersimpan; hasil aktif ada di atas.
 
 **Layout aktif: GPT `ios` sudah diaudit setelah user mem-flash iOS16 img/simg.**
 ADB recovery tersambung kembali; pembacaan live read-only berhasil. `ios` adalah
@@ -185,7 +195,7 @@ raw-write carrier; trial tetap memakai area di luar HFSX pada ios. Driver loggin
 belum memiliki target partisi terpisah; carrier juga tetap bergantung UFS/mutex
 yang sama. Tidak ada mount/write carrier selama audit.
 
-**Langkah berikutnya:** user tes nostatus-ram2g yang sudah diunggah; tarik raw log
+**Langkah historis (sudah dikerjakan):** user tes nostatus-ram2g yang sudah diunggah; tarik raw log
 dan verifikasi trial/RAM. Jika kelak memakai profile status, rekam I89/D88 pada
 tiga baris, dua foto berselang
 30 detik **sebelum recovery**. I89 I/O bergerak sementara HB/H diam berarti timer
@@ -454,7 +464,7 @@ Repo `/home/rofikkernel/xnu/ios-timelm`, Debian 12 tanpa GUI. Simpan scratch di
 `$HOME/work/`, hindari `/tmp` sesuai preferensi user. Git push SSH tersedia; `gh`
 lokal belum login. GitHub connector dapat membaca job logs/download artifacts.
 
-- Kernel aktif: `xnu/out/kernel.development.sweet` = **0087**; CI provenance di
+- Kernel saat checkpoint0087: `xnu/out/kernel.development.sweet` = **0087** (kini0090); CI provenance di
   `xnu/out/build-provenance.json`.
 - Source lengkap: `$HOME/work/timelm-0087/verify`; artifacts/build logs di
   `$HOME/work/timelm-0087/`; metadata/image hashes juga di `shim/out/*.img.json`.
