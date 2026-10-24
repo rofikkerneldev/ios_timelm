@@ -29,6 +29,15 @@ if data[64:72] == b'TIMELMDG':
         print('# TIMELM_DIAG ' + json.dumps(diag, sort_keys=True), file=sys.stderr)
     else:
         print('# unsupported TIMELM_DIAG extension', file=sys.stderr)
+if data[320:328] == b'TIMELMIQ':
+    irq_version, irq_bytes = struct.unpack_from('<II', data, 328)
+    if irq_version == 1 and irq_bytes == 80:
+        fields = ('entered', 'handler_done', 'entry_abs', 'handler_done_abs',
+                  'interrupted_pc', 'interrupted_cpsr', 'phase', 'draw_abs')
+        irq = dict(zip(fields, struct.unpack_from('<8Q', data, 336)))
+        print('# TIMELM_IRQ ' + json.dumps(irq, sort_keys=True), file=sys.stderr)
+    else:
+        print('# unsupported TIMELM_IRQ extension', file=sys.stderr)
 ring = data[4096:4096 + size]
 if total <= size:
     text = ring[:total]

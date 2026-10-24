@@ -46,6 +46,7 @@ jobs:
           python3 tools/validate-repo.py
           python3 tools/test_timelm_boot.py -v
           python3 tools/test_timelm_diag.py -v
+          python3 tools/test_timelm_irq.py -v
 
       - name: Fetch build script
         run: |
