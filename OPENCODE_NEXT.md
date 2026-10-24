@@ -8,7 +8,19 @@ GPT entry 31, `/dev/block/sda31`, **LUN 0**, sektor 4096. Partisi 20705009664 by
 (sekitar 19,28 GiB), HFSX di dalamnya 17179869184 byte (16 GiB). Header/entry GPT
 lolos CRC dan cocok dengan sysfs/blockdev. [Geometry](docs/evidence/ios-live-recovery-20261024.json).
 
-**Checkpoint terbaru: no-idle juga membeku; 0089 sudah dibuild/diunggah, belum diuji HP.**
+**Checkpoint terbaru: 0089 sudah diuji dan log recovery diambil.**
+[Hasil 0089 dan langkah berikutnya](docs/0089_PHONE_RESULT.md),
+[console](docs/evidence/0089-console.txt), [metadata](docs/evidence/0089-phone-pull.json).
+Trial terverifikasi. Header terakhir HB81/T119904, flush8, S4/P=C3/R0,
+U12809/12809:0, W=E=0, OP28; IRQ masuk/handler-done120918/120918, phase2.
+PC0xfffffe0007399e00 cocok dengan zalloc_ext+0x2c (`cmp w8,#16`) pada kernel
+0089 yang sama: sampel konteks, bukan allocator fault/panic. User melihat HB84,
+rapportd/nxprov_create dan sebagian animasi Apple; line rapportd tidak ada pada
+committed log dan belum menjadi bukti penyebab. exec DumpPanic juga bukan panic.
+**Data yang masih dibutuhkan:** I89 I/O/H/PC/F dua waktu saat HB84 tampak diam,
+plus durasi/L/E. Jika foto/catatan itu tidak tersedia, ulangi image 0089 yang sama
+dan rekam tiga baris berselang30s. Jangan build 0090/root fix/GPU hanya dari PC
+atau pesan terakhir ini. No-idle sebelumnya tidak mencegah gejala.
 [Download DgtbxBkY](https://pixeldrain.com/u/DgtbxBkY),
 [manifest](docs/evidence/0089-build.json).
 Image `timelm-0089-ios-rw-c1-wdtstop-irqdiag.img`,
@@ -22,7 +34,7 @@ compile dan 21 checks boot/diagnostic lolos lokal; CI build/validation sukses.
 counter masuk/handler-done dan saved PC/CPSR juga masuk extension header TIMELMIQ.
 Artifact provenance/hash, simbol dan linked IRQ hooks, payload/ADT/DTB serta hash
 upload sudah diverifikasi. Shim JOBS=56, root ios RW, CPU idle normal, observer
-96-row footer, cpus=1, watchdog-stop, sampler off. Belum ada hasil HP 0089.
+96-row footer, cpus=1, watchdog-stop, sampler off. Hasil HP awal tercatat di atas.
 
 **0088-ios-noidle sudah diuji, bukan lagi image yang belum dites.**
 [Download CnUC1KoY](https://pixeldrain.com/u/CnUC1KoY),
@@ -89,8 +101,8 @@ raw-write carrier; trial tetap memakai area di luar HFSX pada ios. Driver loggin
 belum memiliki target partisi terpisah; carrier juga tetap bergantung UFS/mutex
 yang sama. Tidak ada mount/write carrier selama audit.
 
-**Langkah berikutnya:** user tes 0089 yang sudah diunggah. Rekam I89/D88 pada tiga
-baris, dua foto berselang
+**Langkah berikutnya:** peroleh I89 sesudah heartbeat berhenti; jika belum ada,
+user ulangi 0089 yang sama. Rekam I89/D88 pada tiga baris, dua foto berselang
 30 detik **sebelum recovery**. I89 I/O bergerak sementara HB/H diam berarti timer
 IRQ masih ditangani; telusuri heartbeat/thread timeout/scheduling. H dari I89
 bergerak sementara D88 tampak lama berarti heartbeat sebenarnya masih naik.

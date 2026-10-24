@@ -2,7 +2,10 @@
 
 2026-10-24. Source `ac7bcf33eb2613319628ea0c83060a3d03f6cc11`.
 CI [40074243259](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40074243259)
-**sukses**, image sudah dibuild dan diunggah. Belum diuji pada HP.
+**sukses**, image sudah diuji pada HP. Recovery menyimpan HB81/flush8 dengan
+120918 timer IRQ masuk/selesai; user melihat HB84 dan sebagian animasi Apple.
+[Hasil dan langkah berikutnya](0089_PHONE_RESULT.md): data I89 sesudah HB84 belum
+tersedia, sehingga cabang IRQ-versus-thread saat layar diam belum dapat ditentukan.
 
 ## Image tes terbaru
 

@@ -18,7 +18,7 @@
   "patches_sha256": "3fad6e595dceaff870a10f242aa8b9039a53898f646264b7fb3c249e1d8b4e36",
   "download_url": "https://pixeldrain.com/u/DgtbxBkY",
   "uploaded_sha256": "10a80a42fb4713756369f06d177b5285613c4c689cba08114dabc798d961b560",
-  "hardware_tested": false,
+  "hardware_tested": true,
   "kernel_source_commit": "ac7bcf33eb2613319628ea0c83060a3d03f6cc11",
   "kernel_ci_run": 40074243259,
   "kernel_artifact_id": 12552372712,
@@ -52,5 +52,16 @@
     "10 kernel payload segments and ADT/DTB verified",
     "Pixeldrain size and SHA256 verified"
   ],
-  "hypothesis_not_fix": "Distinguish timer IRQ progress from thread heartbeat and visible scanout; no GUI or scheduler fix claimed"
+  "hypothesis_not_fix": "Distinguish timer IRQ progress from thread heartbeat and visible scanout; no GUI or scheduler fix claimed",
+  "phone_result": {
+    "trial_verified": "0089-ios-irqdiag-r40074243259",
+    "evidence": "0089-phone-pull.json",
+    "last_persisted_heartbeat": 81,
+    "last_reported_visible_heartbeat": 84,
+    "timer_irq_entered_and_done": 120918,
+    "frame_copies": 3,
+    "ufs_errors": 0,
+    "interactive_gui_confirmed": false,
+    "last_visible_irq_counters_supplied": false
+  }
 }
