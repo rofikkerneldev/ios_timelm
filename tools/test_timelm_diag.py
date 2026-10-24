@@ -113,6 +113,7 @@ static unsigned int mock_enable;
 static void lck_mtx_lock(int *) { timelm_diag_enabled = mock_enable; }
 ''' + lock + r'''
 unsigned int timelm_diag_enabled;
+unsigned int timelm_status_draw = 1, timelm90_claimed;
 unsigned long long timelm_diag_values[TIMELM_D_COUNT];
 char timelm_diag_trial[64];
 unsigned char iso_font[256 * 16];

@@ -36,6 +36,8 @@ class IRQTests(unittest.TestCase):
             header += '\nextern "C" {\n' + additions(patch, 'pexpert/pexpert/arm64/SWEET.h') + '\n}\n'
             code = additions(patch, 'iokit/Kernel/arm/SweetFramebuffer.cpp')
             code = code[code.index('/* 0089: only CPU0 timer IRQ'):code.index('    uint32_t irqdiagnostics = 0;')]
+        if '/* 0090:' in code:
+            code = code[:code.index('/* 0090:')]
         # Keep production draw/format/entry/done code, replacing only ARM barrier.
         self.assertEqual(code.count('__asm__ volatile("dsb sy" ::: "memory");'), 1)
         code = code.replace('__asm__ volatile("dsb sy" ::: "memory");',
@@ -50,6 +52,7 @@ class IRQTests(unittest.TestCase):
 ''' + header + r'''
 #endif
 unsigned int timelm_diag_enabled, timelm_irq_enabled;
+unsigned int timelm_status_draw = 1, timelm90_claimed;
 unsigned long long timelm_diag_values[TIMELM_D_COUNT];
 unsigned long long timelm_irq_values[TIMELM_I_COUNT], timelm_irq_period;
 char timelm_diag_trial[64];
@@ -113,6 +116,14 @@ int main() {
     assert(end - s == 20);
 }
 '''
+        if 'timelm_status_draw &&' in code:
+            harness = harness.replace('saved = mem; timelm_irq_strip = 0;', '''
+    saved = mem; timelm_status_draw = 0; fake_now = 300;
+    auto before = timelm_irq_values[TIMELM_I_ENTER];
+    assert(timelm_irq_enter(8, 0) == 0); timelm_irq_done(0);
+    assert(mem == saved && timelm_irq_values[TIMELM_I_ENTER] == before + 1);
+    timelm_status_draw = 1;
+    saved = mem; timelm_irq_strip = 0;''')
         with tempfile.TemporaryDirectory() as temp:
             f = Path(temp) / 'irq.cpp'; f.write_text(harness)
             exe = Path(temp) / 'irq-test'

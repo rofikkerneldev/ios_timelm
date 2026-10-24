@@ -47,6 +47,7 @@ jobs:
           python3 tools/test_timelm_boot.py -v
           python3 tools/test_timelm_diag.py -v
           python3 tools/test_timelm_irq.py -v
+          python3 tools/test_timelm_fault.py -v
 
       - name: Fetch build script
         run: |

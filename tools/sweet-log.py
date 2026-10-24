@@ -38,6 +38,16 @@ if data[320:328] == b'TIMELMIQ':
         print('# TIMELM_IRQ ' + json.dumps(irq, sort_keys=True), file=sys.stderr)
     else:
         print('# unsupported TIMELM_IRQ extension', file=sys.stderr)
+if data[448:456] == b'TIMELM90':
+    version90, bytes90 = struct.unpack_from('<II', data, 456)
+    if version90 == 1 and bytes90 == 128:
+        fields = ('event_kind', 'event_count', 'caller_pc', 'fault_pc', 'fault_lr',
+                  'esr', 'far', 'format_pointer', 'irq_stage', 'irq_full_done',
+                  'timer_ctl', 'timer_cval', 'draw_enabled', 'panic_draw_stage')
+        info90 = dict(zip(fields, struct.unpack_from('<14Q', data, 464)))
+        print('# TIMELM90 ' + json.dumps(info90, sort_keys=True), file=sys.stderr)
+    else:
+        print('# unsupported TIMELM90 extension', file=sys.stderr)
 ring = data[4096:4096 + size]
 if total <= size:
     text = ring[:total]
