@@ -50,8 +50,16 @@
     "text": "SK[0] __nexus_register rapportd(82): nxprov_create:",
     "display": "Partial Apple animation visible briefly during boot",
     "i89_values": null,
-    "changes_after_heartbeat_84": null,
-    "wait_after_heartbeat_84_seconds": null
+    "changes_after_heartbeat_84": false,
+    "wait_after_heartbeat_84_seconds": null,
+    "all_visible_status_lines_initially_moving": true,
+    "all_visible_status_lines_later_stopped": true,
+    "i89_initially_moving_then_stopped": true,
+    "animation_frame_glitches": true,
+    "clarifications": [
+      "Semua diam termasuk HB; awal masih gerak",
+      "Ada glitches frame pada animasi Apple"
+    ]
   },
   "kernel_pc_symbolication": {
     "kernel_sha256": "fdecccd5d0c5f5570a07e7167c0f2b038ad8ec200432ea636cfd5d4b3a1a4d49",
@@ -76,9 +84,9 @@
   "limitations": [
     "Header heartbeat81 precedes visible user heartbeat84; does not record final stall state.",
     "IRQ entered==handler_done and phase2 only characterize saved snapshot before common IRQ epilogue.",
-    "No second I89 screen observation was supplied, so IRQ versus heartbeat progress at the visible stop cannot yet be classified.",
     "Missing IOKit/exec/swap console lines do not override nonzero copy counters.",
     "exec DumpPanic is a daemon launch, not by itself a kernel panic report.",
-    "User rapportd line is not present in committed console snapshot and does not identify the instruction at stall."
+    "User rapportd line is not present in committed console snapshot and does not identify the instruction at stall.",
+    "User now confirms all visible lines including I89 initially moved then stopped; final numeric I89 PC/phase/counters and measured stop duration remain unavailable. Visual freeze alone still cannot distinguish IRQ/global halt from stale scanout or clock-throttled draw."
   ]
 }

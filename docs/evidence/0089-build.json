@@ -62,6 +62,9 @@
     "frame_copies": 3,
     "ufs_errors": 0,
     "interactive_gui_confirmed": false,
-    "last_visible_irq_counters_supplied": false
+    "last_visible_irq_counters_supplied": false,
+    "all_visible_observers_stopped_reported": true,
+    "animation_frame_glitches_reported": true,
+    "last_visible_irq_numeric_values_supplied": false
   }
 }

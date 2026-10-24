@@ -19,8 +19,10 @@ Trial terverifikasi **0089-ios-irqdiag-r40074243259**; ini hasil image 0089.
 
 User melaporkan HB=84, OP=28, tulisan `SK[0] __nexus_register
 rapportd(82): nxprov_create:`, serta animasi Apple terlihat sedikit/terpotong
-sebentar selama proses. Nilai I89 terakhir, perubahannya setelah HB84, dan lama
-penantian setelah angka itu belum diberikan. Jangan menyamakan heartbeat count
+sebentar selama proses. **Klarifikasi terbaru:** semua baris termasuk I89/HB
+awalnya bergerak lalu diam, dan animasi Apple mengalami glitch frame.
+Nilai numerik I89/PC/phase terakhir dan lama penantian setelah HB84 belum
+diberikan. Jangan menyamakan heartbeat count
 dengan pengukuran detik sejak logo.
 
 ## Apa yang dibuktikan
@@ -51,11 +53,12 @@ terakhir sesudah committed total semuanya nol; tidak ada suffix log baru di sana
 
 ## Langkah berikutnya
 
-1. Jika ada catatan/foto terakhir, ambil **baris I89**: I/O/H/PC/K-U/F, dan apakah
-   I/O masih berubah sesudah HB84. Sertakan L/F/W/U/OP/E serta durasi penantian.
-2. Jika data itu tidak tersedia, gunakan **image 0089 yang sama** dan rekam
-   ketiga baris dua kali berselang 30 s setelah HB tampak berhenti. Tidak ada
-   dasar build 0090 atau mengubah root/driver hanya dari snapshot ini.
+1. User sudah mengonfirmasi semua indikator termasuk I89 ikut diam. Tidak perlu
+   mengulang pertanyaan itu. Jika catatan/foto ada, ambil nilai numerik terakhir
+   I/O/H/PC/K-U/F, L/F/W/U/OP/E serta durasi penantian.
+2. Lanjutkan [roadmap 0090](0090_ALL_OBSERVERS_STOP_ROADMAP.md): early panic/fault
+   marker, phase IRQ sesudah entropy/epilogue, dan profil pembanding tanpa draw
+   framebuffer. Ini rancangan observasi, belum patch atau image 0090.
 3. I/O berubah tetapi H/HB diam: fokus timeout/wakeup/thread scheduling/lock;
    simpan PC berulang lalu simbolkan dengan kernel yang tepat. Jika H dari I89
    berubah tetapi D88 lama, periksa thread draw/scanout. Jika seluruh layar diam,
@@ -66,4 +69,5 @@ terakhir sesudah committed total semuanya nol; tidak ada suffix log baru di sana
    perlu dicocokkan dengan geometry/pixel source; jangan menyimpulkan GPU wajib.
 
 [Profil, cara pull dan tabel keputusan lengkap](0089_IRQ_DIAGNOSTIC_TRIAL.md).
-Belum ada hasil temporal dua titik I89 atau perbaikan penyebab GUI pada checkpoint ini.
+Belum ada angka temporal dua titik I89 atau perbaikan penyebab GUI pada checkpoint ini;
+perilaku awal bergerak lalu semua diam sudah dikonfirmasi user.

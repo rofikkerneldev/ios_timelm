@@ -4,8 +4,10 @@
 CI [40074243259](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40074243259)
 **sukses**, image sudah diuji pada HP. Recovery menyimpan HB81/flush8 dengan
 120918 timer IRQ masuk/selesai; user melihat HB84 dan sebagian animasi Apple.
-[Hasil dan langkah berikutnya](0089_PHONE_RESULT.md): data I89 sesudah HB84 belum
-tersedia, sehingga cabang IRQ-versus-thread saat layar diam belum dapat ditentukan.
+[Hasil dan langkah berikutnya](0089_PHONE_RESULT.md): user mengonfirmasi semua
+baris termasuk I89 awalnya bergerak lalu diam, disertai glitch animasi Apple.
+Angka PC/phase/I/O terakhir belum tersedia. [Roadmap0090](0090_ALL_OBSERVERS_STOP_ROADMAP.md)
+memisahkan early panic/fault, tahap IRQ yang belum diamati, dan akses framebuffer.
 
 ## Image tes terbaru
 
