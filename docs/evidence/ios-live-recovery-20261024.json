@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-24",
+  "source": "Forwarded ADB recovery, read-only blockdev/sysfs/HFSX/GPT reads; no mounts or writes",
+  "partition_name": "ios",
+  "device": "/dev/block/sda31",
+  "scsi_device_sysfs": "/sys/devices/platform/soc/1d84000.ufshc/host0/target0:0:0/0:0:0:0",
+  "logical_sector_bytes": 4096,
+  "partition_bytes": 20705009664,
+  "partition_start_512byte_sectors": 206385472,
+  "hfs_signature": "HX",
+  "hfs_block_size": 4096,
+  "hfs_total_blocks": 4194304,
+  "hfs_volume_bytes": 17179869184,
+  "header_sha256": "0eb7f911005c237bbc034ce81498adf15a6fd7b5d1729667f8f825bcf0cff43c",
+  "gpt_header_crc_valid": true,
+  "gpt_entries_crc_valid": true,
+  "gpt_selected_entries": [
+    {
+      "gpt_entry": 28,
+      "name": "userdata",
+      "first_lba": 6792744,
+      "last_lba": 15181351,
+      "bytes": 34359738368
+    },
+    {
+      "gpt_entry": 29,
+      "name": "esp",
+      "first_lba": 15181352,
+      "last_lba": 15312423,
+      "bytes": 536870912
+    },
+    {
+      "gpt_entry": 30,
+      "name": "win",
+      "first_lba": 15312424,
+      "last_lba": 25798183,
+      "bytes": 42949672960
+    },
+    {
+      "gpt_entry": 31,
+      "name": "ios",
+      "first_lba": 25798184,
+      "last_lba": 30853117,
+      "bytes": 20705009664
+    }
+  ],
+  "log_tail_bytes": 4198400,
+  "log_tail_start_relative": 20700811264,
+  "log_tail_start_block_4096": 5053909,
+  "gap_after_hfs_before_log_bytes": 3520942080,
+  "tail_outside_hfs": true,
+  "tail_inside_partition": true,
+  "tail_backup_completed": true,
+  "tail_backup_path": "/home/rofikkernel/work/timelm-ios-recovery-20261024/ios-tail-before-logging.bin",
+  "tail_backup_sha256": "c8dc48deebf8732024c54b41721dd43e3328d78f14d3d603468dfbff92676e6e",
+  "old_tail_magic_hex": "0000000000000000",
+  "valid_for_current_layout": true,
+  "log_tail_absolute_lba": 30852093,
+  "host_image_first8k_sha256": "0eb7f911005c237bbc034ce81498adf15a6fd7b5d1729667f8f825bcf0cff43c",
+  "first8k_matches_original_host_image": true
+}

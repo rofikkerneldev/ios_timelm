@@ -1,0 +1,83 @@
+{
+  "source": "Live /dev/block/sda31 via recovery ADB, read-only B-tree lookup; no mount, fsck or filesystem writes",
+  "hfs_signature": "HX",
+  "catalog_node_size": 8192,
+  "catalog_root_node": 270,
+  "key_compare_type": "0xbc",
+  "paths": {
+    "tmp": {
+      "id": 306382,
+      "kind": "file",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o120777",
+      "sha256": "7a6bb3db615226cf3e3f706010725c1c0df4d578787915b573e9fe554ba41dfc",
+      "symlink": "private/var/tmp"
+    },
+    "private/var/tmp": {
+      "id": 306375,
+      "kind": "directory",
+      "uid": 0,
+      "gid": 0,
+      "mode": "0o41777"
+    },
+    "private/var/run": {
+      "id": 306371,
+      "kind": "directory",
+      "uid": 0,
+      "gid": 1,
+      "mode": "0o40775"
+    },
+    "private/var/mobile/Library/Preferences/com.apple.migration.plist": {
+      "id": 321638,
+      "kind": "file",
+      "uid": 501,
+      "gid": 501,
+      "mode": "0o100600",
+      "sha256": "2c8b8563b740e9fdf44cd9d0ca7a18157f54513d583f19963cc3c7817b81d499",
+      "plist": {
+        "DMUserDataDisposition": {
+          "SyntheticDidUpgrade": false,
+          "buildVersion": "20H392"
+        },
+        "LastSystemVersion": "20H392"
+      }
+    },
+    "private/var/mobile/Library/Preferences/com.apple.springboard.plist": {
+      "id": 321639,
+      "kind": "file",
+      "uid": 501,
+      "gid": 501,
+      "mode": "0o100600",
+      "sha256": "e80395c626cc633e4998428d4c85bba17f55a36b00fd2d74e3b479450b037856",
+      "plist": {
+        "BKNoWatchdogs": true,
+        "FBLaunchWatchdogExceptions": {
+          "com.apple.purplebuddy": 100.0
+        },
+        "MCForceShowCloudConfigurationUI": false
+      }
+    },
+    "private/var/mobile/Library/Preferences/com.apple.purplebuddy.plist": {
+      "id": 321640,
+      "kind": "file",
+      "uid": 501,
+      "gid": 501,
+      "mode": "0o100600",
+      "sha256": "abcbddfc473a6a97fe19a3c70ac9e5c0c2935b49ea73a5b215dfa265f62c5549",
+      "plist": {
+        "SetupDone": true,
+        "SetupFinishedAllSteps": true,
+        "SetupVersion": 11,
+        "daemonizeNeedsToRun": false
+      }
+    }
+  },
+  "adb_read_calls": 15,
+  "complete": true,
+  "date": "2026-10-24",
+  "partition_name": "ios",
+  "auditor_path": "/home/rofikkernel/work/timelm-ios-recovery-20261024/audit_live_ios_readonly.py",
+  "auditor_sha256": "c2fc499d9cf7b11e7f494ec6c4d3efcc31aa74d6b1bd829ff4b8df82fd957974",
+  "limitation": "Selected file metadata/plist fields only; not a full image checksum, fsck or runtime iOS syscall probe."
+}

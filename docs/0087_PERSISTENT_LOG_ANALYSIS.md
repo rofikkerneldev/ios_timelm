@@ -109,10 +109,11 @@ canvas. Hilangnya garis tidak akan membuktikan penyebab logo berhenti sudah sele
 
 ## Roadmap 0088 untuk OpenCode
 
-**Update layout 2026-10-24:** iOS dipindah ke partisi `ios`, ADB sedang tidak
-disambungkan. Pemilihan root harus diperbaiki lebih dahulu; lihat
-[handoff terbaru](../OPENCODE_NEXT.md). Audit tail userdata lama bersifat historis
-dan tidak boleh dipakai untuk mengaktifkan logging pada layout baru.
+**Update layout 2026-10-24:** iOS dipindah ke partisi `ios`, kemudian ADB
+tersambung dan geometry/filesystem baru diaudit read-only. Profil target ios
+GUI-log sudah tersedia untuk baseline sesudah fresh flash; lihat
+[handoff terbaru](../OPENCODE_NEXT.md). Audit tail userdata lama tetap historis;
+logger ios sekarang memakai audit/backup baru di partisi ios sendiri.
 
 Langkah berikutnya adalah **diagnostik yang tidak bergantung hanya pada teks
 console atau worker UFS yang sedang diaudit**. Tidak ada kernel baru dibuild pada

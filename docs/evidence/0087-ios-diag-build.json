@@ -25,9 +25,8 @@
   "partition_name": "ios",
   "partition_type": "GPT per user confirmation on 2026-10-24",
   "lun": 0,
-  "live_new_partition_geometry_verified": false,
+  "live_new_partition_geometry_verified": true,
   "persistent_logging_enabled": false,
-  "adb_access_this_session": false,
   "controlled_comparison": {
     "baseline_image": "timelm-0087-ufs-rw-c1-wdtstop-diag.img",
     "baseline_sha256": "7c5f15501bbec6932f3f0f74a9d39c31935ffbb6cf2172e4f97a82a2f0936623",
@@ -46,5 +45,9 @@
       "unique timelm_trial"
     ],
     "persistent_logging_enabled": false
-  }
+  },
+  "post_build_recovery_audit": "ios-live-recovery-20261024.json",
+  "live_files_audit": "ios-live-hfs-files-20261024.json",
+  "adb_access_during_original_packaging": false,
+  "post_build_live_recovery_audit_completed": true
 }

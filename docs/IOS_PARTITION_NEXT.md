@@ -2,8 +2,9 @@
 
 2026-10-24. User memindahkan filesystem iOS ke partisi GPT bernama **`ios`** dari
 hasil pembagian area userdata; partisi Android userdata, Windows ESP dan win juga
-ada pada layout baru. ADB saat ini sengaja tidak disambungkan. Tidak ada akses ADB,
-mount, perubahan GPT atau filesystem phone pada pekerjaan packaging ini.
+ada pada layout baru. **Update:** user menyambungkan kembali ADB recovery dan
+mem-flash image/sparse image iOS16 ke `ios`. Audit live read-only berhasil;
+tidak ada mount, fsck, perubahan GPT atau write filesystem melalui ADB.
 
 User juga mengoreksi durasi tes sebelumnya: mungkin sekitar **tiga menit**, bukan
 pengukuran lima menit. Kesimpulan tetap: snapshot flush 5/heartbeat 13 belum dapat
@@ -21,32 +22,37 @@ rd=ufsroot0 ufsroot=ios ufsrw=1 rootrw=1
 ```
 
 Jangan mengganti root device menjadi `rd=ios`. Kernel tidak membutuhkan rebuild
-untuk memilih nama GPT baru. User mengonfirmasi GPT; tujuan symlink/geometry/LUN
-partisi baru belum diperiksa live. Pembagian userdata lama konsisten dengan LUN0,
-tetapi verifikasi alamat yang sebenarnya saat recovery tersedia.
+untuk memilih nama GPT baru. **Live terverifikasi:** GPT entry 31, `/dev/block/sda31`,
+LUN 0, sektor 4096. Header dan tabel entry GPT lolos CRC; extent partisi cocok
+dengan ukuran/offset yang dilaporkan sysfs/blockdev.
 
-**Image siap tes, belum diuji HP:**
-[timelm-0087-ios-rw-c1-wdtstop-diag.img](https://pixeldrain.com/u/6jWRQptn).
+**Image tes utama, belum diuji HP:**
+[timelm-0087-ios-rw-c1-wdtstop-gui-log.img](https://pixeldrain.com/u/wwiAWeh7).
 
 ```text
-trial  0087-ios-diag-r39984162472
-SHA256 39be255935f891cf1c62280843993d23f2b920ca89aba2c0dd06bacb3581c306
+trial  0087-ios-gui-log-r39984162472
+SHA256 9de708639b713235ccf722ef91ef37510e327f9589847022bbdc2fa95ca3bd46
 kernel 42b9033b867b5b02ff8eb2beab03a983a781f6a3c6f129c4380c9132332823c0
 ```
 
 ```bash
-fastboot boot timelm-0087-ios-rw-c1-wdtstop-diag.img
+fastboot boot timelm-0087-ios-rw-c1-wdtstop-gui-log.img
 ```
 
-Ini repack kernel 0087, dengan `ufsroot=ios`, console diagnostik dan **`sweetlog=0`**.
+Ini repack kernel 0087, dengan `ufsroot=ios`, GUI console mute dan **`sweetlog=1`**
+sesudah audit dan backup area log baru. Logger flush setiap 10 detik.
 Kernel, shim, ADT, DTB, static init dan seluruh payload selain command-line buffer
-identik dengan 0087-diag sebelumnya. Watchdog-stop, cpus=1, timer/SGI fix dan
+identik dengan 0087-GUI-log sebelumnya. Watchdog-stop, cpus=1, timer/SGI fix dan
 konfigurasi grafis tetap sama. Ini menyesuaikan target storage; penyebab GUI diam
 belum diperbaiki. Boot RW mengizinkan write filesystem hanya pada partisi `ios`
-yang dipilih driver; persistent raw-tail writer dimatikan.
+yang dipilih driver; raw-tail writer memakai area terverifikasi di partisi yang
+sama, di luar extent HFSX.
 
-[Manifest dan verifikasi](evidence/0087-ios-diag-build.json). Payload/10 segmen,
+[Manifest dan verifikasi](evidence/0087-ios-gui-log-build.json). Payload/10 segmen,
 kesetaraan komponen, pemilihan partisi, dan hash upload Pixeldrain telah dicek.
+Alternatif console tanpa persistent writes:
+[0087-ios-diag](https://pixeldrain.com/u/6jWRQptn),
+[manifest](evidence/0087-ios-diag-build.json), `sweetlog=0`.
 
 Cari log:
 
@@ -60,14 +66,43 @@ Jika `no GPT partition named "ios"` muncul, verifikasi label dan LUN sebelum
 mengubah driver. Tidak ada fallback otomatis ke userdata ketika pencarian gagal.
 Jika journal/mount gagal, kumpulkan error aktual; jangan reflash partition lain.
 
-## 2. Audit partisi baru saat ADB disambungkan kembali
+## 2. Audit partisi baru sudah selesai
+
+[Geometry live dan backup](evidence/ios-live-recovery-20261024.json),
+[audit file live](evidence/ios-live-hfs-files-20261024.json).
+
+| Parameter | Nilai |
+|---|---|
+| GPT `ios` / block device | Entry 31, `/dev/block/sda31`, LUN 0 |
+| Ukuran partisi | 20705009664 byte, sekitar 19,28 GiB |
+| Logical sector | 4096 byte |
+| HFSX (`HX`) | 4096 × 4194304 blocks = 17179869184 byte / 16 GiB |
+| Tail log relatif partisi | 20700811264 byte, block 5053909, panjang 4198400 byte |
+| Gap antara akhir HFSX dan awal log | 3520942080 byte |
+
+Header 8 KiB pertama persis cocok dengan image host asli. Ini memverifikasi header,
+bukan checksum seluruh 16 GiB. File live yang dibaca melalui B-tree memastikan
+`/tmp -> private/var/tmp` dengan target 01777, `/var/run` root:daemon 0775,
+migrasi 20H392/SyntheticDidUpgrade=false, BKNoWatchdogs dan SetupDone sesuai image
+yang disiapkan. Recovery tidak menyediakan driver HFS untuk mount, sehingga audit
+menggunakan pembacaan blok dan metadata read-only.
+
+Seluruh area tail baru dibackup sebelum mengaktifkan logging pada image:
+
+```text
+/home/rofikkernel/work/timelm-ios-recovery-20261024/ios-tail-before-logging.bin
+SHA256 c8dc48deebf8732024c54b41721dd43e3328d78f14d3d603468dfbff92676e6e
+```
+
+Magic lama nol, bukan SWEETLOG. Geometry di atas berlaku untuk layout sekarang;
+audit ulang bila partisi atau volume diresize.
 
 **Jangan boot image lama `GnxdmsDC` pada layout baru.** Image itu tidak mempunyai
 `ufsroot=ios`, sehingga masih memilih userdata, dan mengaktifkan tail logging.
 Audit 32-GiB userdata/16-GiB HFSX sebelumnya adalah bukti layout historis; tidak
 mengizinkan write pada userdata Android sekarang ataupun tail partisi `ios` baru.
 
-Saat user menyambungkan recovery/forward kembali, baca read-only:
+Contoh pembacaan read-only untuk audit ulang bila layout berubah:
 
 ```bash
 SWEET_ADB_BIN=/home/rofikkernel/alpha/out/host/linux-x86/bin/adb
@@ -97,13 +132,41 @@ SWEET_ADB_HOST=127.0.0.1 SWEET_ADB_PORT=15037 \
 sh tools/sweet-log-pull.sh "$HOME/work/ios-console.txt"
 ```
 
-Image ios-diag baru **tidak menyimpan ring ke disk**. Tidak ada alasan membaca
-tail dan menganggapnya hasil tes baru sampai logging kembali diaktifkan dengan
-geometry yang benar.
+Setelah boot image GUI-log di atas, tunggu **tiga menit setelah logo dengan
+stopwatch**, atau catat bila ada perubahan/reboot lebih awal, lalu kembali ke
+recovery dan sambungkan forward ADB lagi. Agent mengambil ring menggunakan
+perintah di atas. Pastikan ukuran dump 4198400, header/flush sequence valid dan
+trial **`0087-ios-gui-log-r39984162472`** ditemukan. Jangan menganggap ring lama
+hasil tes baru. Ring ini merekam console kernel/daemon yang memang diarahkan ke
+console; bukan seluruh unified log iOS.
+
+Jika memakai alternatif ios-diag `6jWRQptn`, persistent logging tetap mati dan
+tidak menghasilkan tail trial baru. Profil GUI-log ini masih memakai logger 0087;
+gap observasi pada snapshot terakhir tetap perlu dinilai, bukan dianggap selesai.
+
+### Alternatif carrier yang diusulkan user
+
+[Audit read-only carrier](evidence/carrier-readonly-audit-20261024.json):
+`/dev/block/sda18`, 50331648 byte (48 MiB), filesystem ext4 berlabel `carrier`.
+Superblock menyatakan 12288 blocks × 4096 byte, persis seluruh ukuran partisi.
+Ada 8595 blocks bebas di dalam filesystem, bukan area di luar filesystem.
+
+Logger SWEET sekarang menulis raw blocks pada partisi root yang dipilih. Tidak
+ada parameter terpisah untuk memilih `carrier`; mengganti `ufsroot=carrier`
+malah memilih root yang salah. Menulis log raw pada tail carrier dapat menimpa
+data/metadata filesystem. Log file normal yang dialokasikan filesystem atau
+partisi khusus log memerlukan rancangan terpisah; jangan format/mengubah carrier
+untuk pekerjaan ini. Audit hanya membaca metadata/8 KiB, tidak mount atau write.
+
+Untuk trial ini tetap gunakan tail **ios di luar HFSX** yang sudah dibuktikan dan
+dibackup. Carrier dan ios juga memakai UFS/LUN/controller yang sama, sehingga
+pemindahan alamat log tidak menghilangkan ketergantungan pada driver/mutex UFS.
+Observer independen pada roadmap 0088 tetap diperlukan bila logging berhenti.
 
 ## 3. Baru lanjut source diagnostik 0088
 
-Setelah root `ios` verified, implementasikan observer heartbeat, copy-completed,
+Setelah boot XNU dari root `ios` terkonfirmasi oleh hasil tes baru, implementasikan
+observer heartbeat, copy-completed,
 fase/errno logger-UFS dan status framebuffer sesuai
 [roadmap 0088](0087_PERSISTENT_LOG_ANALYSIS.md#roadmap-0088-untuk-opencode).
 Status layar diperlukan bila partisi baru tidak punya area log yang aman.

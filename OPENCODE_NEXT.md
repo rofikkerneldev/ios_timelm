@@ -2,36 +2,51 @@
 
 Checkpoint terbaru 2026-10-24. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
-**Layout aktif berubah: iOS sekarang pada partisi GPT `ios`.** User memecah area
-userdata untuk Android, Windows ESP/win dan ios. ADB sengaja belum disambungkan;
-jangan retry atau menyebut timeout lama sebagai kondisi baru. Tidak ada akses
-phone pada pekerjaan 2026-10-24 ini. [Langkah terbaru](docs/IOS_PARTITION_NEXT.md).
+**Layout aktif: GPT `ios` sudah diaudit setelah user mem-flash iOS16 img/simg.**
+ADB recovery tersambung kembali; pembacaan live read-only berhasil. `ios` adalah
+GPT entry 31, `/dev/block/sda31`, **LUN 0**, sektor 4096. Partisi 20705009664 byte
+(sekitar 19,28 GiB), HFSX di dalamnya 17179869184 byte (16 GiB). Header/entry GPT
+lolos CRC dan cocok dengan sysfs/blockdev. [Geometry](docs/evidence/ios-live-recovery-20261024.json).
 
-**Image berikutnya: 0087-ios-diag, belum diuji HP.**
-[Download 6jWRQptn](https://pixeldrain.com/u/6jWRQptn),
-[manifest](docs/evidence/0087-ios-diag-build.json).
-Trial `0087-ios-diag-r39984162472`, SHA256
-`39be255935f891cf1c62280843993d23f2b920ca89aba2c0dd06bacb3581c306`.
-Argumen penting `rd=ufsroot0 ufsroot=ios`, RW, `timelm_wdt=stop`, `sweetlog=0`,
-console diagnostik. Kernel/shim/ADT/DTB/static init dan payload selain command line
-sama dengan diag lama. Verifikasi marker pencarian GPT `ios` dan root mount dahulu;
-0088 instrumentasi independen tetap tahap berikutnya, belum dibuild.
+**Image tes utama: 0087-ios-GUI-log, belum diuji HP.**
+[Download wwiAWeh7](https://pixeldrain.com/u/wwiAWeh7),
+[manifest](docs/evidence/0087-ios-gui-log-build.json),
+[langkah tes dan pull log](docs/IOS_PARTITION_NEXT.md).
+Trial `0087-ios-gui-log-r39984162472`, SHA256
+`9de708639b713235ccf722ef91ef37510e327f9589847022bbdc2fa95ca3bd46`.
+Kernel/shim/ADT/DTB/static init dan payload selain command line identik 0087-GUI-log
+historis; target sekarang **ufsroot=ios**, watchdog-stop tetap aktif, logger 10s.
+Ini capture baseline setelah perpindahan/fresh flash, belum perbaikan source GUI.
 
-**Audit tail userdata lama tidak berlaku pada layout sekarang.** Jangan boot
-image `GnxdmsDC` atau image UFS lama yang memilih userdata pada layout baru.
-Jangan memakai offset/sda28 lama untuk menulis/membaca log trial baru. Saat ADB
-tersambung kembali, audit symlink/LUN/size/header HFS partisi `ios` read-only;
-logger tetap off sampai extent volume dan area di luar filesystem dibuktikan.
-Jika volume memenuhi partisi, gunakan observer layar untuk 0088 atau rancangan
-logging lain yang aman; jangan mengambil ruang milik Android/Windows/ESP.
+**Area log baru di ios sudah diverifikasi dan dibackup:** tail relatif partisi
+20700811264 byte (block 5053909), panjang 4198400 byte; gap sesudah HFSX sebelum
+log 3520942080 byte. Backup `$HOME/work/timelm-ios-recovery-20261024/ios-tail-before-logging.bin`.
+Audit ini hanya berlaku pada layout sekarang; ulangi jika partisi/volume diresize.
+[File live](docs/evidence/ios-live-hfs-files-20261024.json): tmp/run metadata,
+preferensi migrasi 20H392, BKNoWatchdogs dan SetupDone sesuai image yang disiapkan.
+Audit tidak melakukan mount, fsck, perubahan GPT atau write filesystem phone.
 
-Script packaging sekarang default `UFS_PARTITION=ios`, juga mengisi target pada
-custom CMDLINE tanpa ufsroot dan menolak konflik/duplikat. Script pull log default
-`SWEET_LOG_PARTITION=ios`, mendukung SWEET_ADB_BIN/HOST/PORT; memakai mock saat
-verifikasi, tidak mengakses phone. Jangan mengaktifkan logger sebelum audit baru.
+User mengusulkan carrier untuk log. [Audit carrier](docs/evidence/carrier-readonly-audit-20261024.json)
+menemukan `/dev/block/sda18`, 48 MiB, ext4 yang mencakup seluruh partisi. Jangan
+raw-write carrier; trial tetap memakai area di luar HFSX pada ios. Driver logging
+belum memiliki target partisi terpisah; carrier juga tetap bergantung UFS/mutex
+yang sama. Tidak ada mount/write carrier selama audit.
 
-Durasi tes terakhir dikoreksi user: **mungkin sekitar tiga menit**, bukan
-pengukuran lima menit. Hasil snapshot tetap tidak mengukur seluruh durasi tunggu.
+**Langkah berikutnya:** user boot image GUI-log baru, gunakan stopwatch tiga menit
+setelah logo (catat perubahan/reboot lebih awal), lalu kembali ke recovery dan
+forward ADB. Pull dengan SWEET_LOG_PARTITION=ios dan SWEET_ADB_BIN/HOST/PORT;
+verifikasi header/flush/trial baru. Catat marker mount GPT ios dan frame/liveness.
+Jika gap logger/kernel masih ada, implementasikan 0088 observer independen sesuai
+roadmap. 0088 belum dibuild. Alternatif tanpa persistent log:
+[0087-ios-diag 6jWRQptn](https://pixeldrain.com/u/6jWRQptn), sweetlog=0.
+
+**Jangan pakai image logging userdata lama GnxdmsDC pada layout baru**, jangan
+menggunakan offset/sda28 lama. Old userdata audit tetap historis. Script packaging
+sekarang default UFS_PARTITION=ios dan menolak konflik/duplikat; script pull log
+default SWEET_LOG_PARTITION=ios. Tetap pilih rd=ufsroot0 (alias BSD), ufsroot=ios
+(nama GPT). Jangan menyentuh partisi Android/Windows/ESP untuk log.
+
+Durasi tes lama dikoreksi user: mungkin sekitar tiga menit, bukan pengukuran lima.
 
 ## Riwayat hasil pada layout userdata sebelum perpindahan
 
