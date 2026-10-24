@@ -18,7 +18,7 @@
   "patches_sha256": "afc0be50f55ee580b68b6bfde6945711c77b83d05e47c4b29200955df94a78b6",
   "download_url": "https://pixeldrain.com/u/wwiAWeh7",
   "uploaded_sha256": "9de708639b713235ccf722ef91ef37510e327f9589847022bbdc2fa95ca3bd46",
-  "hardware_tested": false,
+  "hardware_tested": true,
   "kernel_source_commit": "4ec36d14f2fc301d61d59443c2807c3146de7c7f",
   "kernel_ci_run": 39984162472,
   "partition_name": "ios",
@@ -47,5 +47,18 @@
     ],
     "logging_geometry_source": "live ios partition audit 2026-10-24; not old userdata geometry"
   },
-  "alternate_partition_audit": "carrier-readonly-audit-20261024.json; existing ext4, not selected for raw logging"
+  "alternate_partition_audit": "carrier-readonly-audit-20261024.json; existing ext4, not selected for raw logging",
+  "phone_result": {
+    "trial_verified": "0087-ios-gui-log-r39984162472",
+    "user_wait": "10 minutes measured by stopwatch then recovery",
+    "persistent_log_verified": true,
+    "last_heartbeat": {
+      "count": 8,
+      "timer": 59240,
+      "sgi1": 1
+    },
+    "last_flush": 6,
+    "evidence": "0087-ios-10min-pull.json",
+    "interactive_gui_confirmed": false
+  }
 }

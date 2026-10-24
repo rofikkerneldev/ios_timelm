@@ -8,15 +8,26 @@ GPT entry 31, `/dev/block/sda31`, **LUN 0**, sektor 4096. Partisi 20705009664 by
 (sekitar 19,28 GiB), HFSX di dalamnya 17179869184 byte (16 GiB). Header/entry GPT
 lolos CRC dan cocok dengan sysfs/blockdev. [Geometry](docs/evidence/ios-live-recovery-20261024.json).
 
-**Image tes utama: 0087-ios-GUI-log, belum diuji HP.**
-[Download wwiAWeh7](https://pixeldrain.com/u/wwiAWeh7),
-[manifest](docs/evidence/0087-ios-gui-log-build.json),
-[langkah tes dan pull log](docs/IOS_PARTITION_NEXT.md).
-Trial `0087-ios-gui-log-r39984162472`, SHA256
-`9de708639b713235ccf722ef91ef37510e327f9589847022bbdc2fa95ca3bd46`.
-Kernel/shim/ADT/DTB/static init dan payload selain command line identik 0087-GUI-log
-historis; target sekarang **ufsroot=ios**, watchdog-stop tetap aktif, logger 10s.
-Ini capture baseline setelah perpindahan/fresh flash, belum perbaikan source GUI.
+**Image tes utama: 0088-ios-diag, build/upload selesai, belum diuji HP.**
+[Download nYeQHR4s](https://pixeldrain.com/u/nYeQHR4s),
+[manifest](docs/evidence/0088-build.json),
+[langkah tes, counter footer dan pull log](docs/0088_DIAGNOSTIC_TRIAL.md).
+Trial `0088-ios-diag-r40067579578`, SHA256
+`d8e64b2747f790c67cb972645e813669ef716ebeadaa9f54b85d528dddfc13ba`.
+CI [40067579578](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40067579578)
+sukses, source `f004673e690618509c994bc32495be4ffbe313ce`. Kernel 0088 menambahkan
+observer tanpa printf/UFS lock, counter present/copy, fase logger/UFS dan header
+liveness berkala. Footer mencadangkan 64 baris piksel bawah. Target **ufsroot=ios**,
+cpus=1, watchdog-stop, logger 10s, heartbeat observer 1s; shim JOBS=56.
+
+**Hasil 0087 pada ios: sudah dites 10 menit dengan stopwatch.**
+[Console](docs/evidence/0087-ios-10min-console.txt),
+[metadata](docs/evidence/0087-ios-10min-pull.json).
+Snapshot tetap berhenti pada HB=8, timer=59240, flush=6, 41158 console bytes.
+Root ios benar, UMD/cache selesai, exec SpringBoard tercatat; tidak ada backboardd/
+swap atau panic pada snapshot ini. Ini belum membuktikan kernel berhenti selama
+seluruh sepuluh menit. Blok ring belum ditulis cocok dengan backup residual lama;
+bukan output baru di luar committed total. Jangan ulangi penantian tanpa observer.
 
 **Area log baru di ios sudah diverifikasi dan dibackup:** tail relatif partisi
 20700811264 byte (block 5053909), panjang 4198400 byte; gap sesudah HFSX sebelum
@@ -32,12 +43,14 @@ raw-write carrier; trial tetap memakai area di luar HFSX pada ios. Driver loggin
 belum memiliki target partisi terpisah; carrier juga tetap bergantung UFS/mutex
 yang sama. Tidak ada mount/write carrier selama audit.
 
-**Langkah berikutnya:** user boot image GUI-log baru, gunakan stopwatch tiga menit
-setelah logo (catat perubahan/reboot lebih awal), lalu kembali ke recovery dan
-forward ADB. Pull dengan SWEET_LOG_PARTITION=ios dan SWEET_ADB_BIN/HOST/PORT;
-verifikasi header/flush/trial baru. Catat marker mount GPT ios dan frame/liveness.
-Jika gap logger/kernel masih ada, implementasikan 0088 observer independen sesuai
-roadmap. 0088 belum dibuild. Alternatif tanpa persistent log:
+**Langkah berikutnya:** user boot 0088-diag. Jika logo tetap diam, catat dua baris
+footer dua kali dengan selang 15–30 detik **sebelum recovery**. HB bergerak tetapi
+L berhenti: periksa F/W/U/OP/E. HB/L bergerak tetapi C diam: periksa jalur renderer/
+present/IPC. C bergerak dengan UI salah: periksa piksel/format/crop/lifetime.
+Jika HB juga diam, butuh bukti scheduler/interrupt/lock tambahan; footer diam
+sendiri belum menunjukkan lokasi instruksi. Pull sesudah recovery memakai decoder
+baru dan verifikasi trial pada extension TIMELMDG. Jangan mengubah GPU/SMP/FS
+sebelum membandingkan data ini. Alternatif tanpa persistent log:
 [0087-ios-diag 6jWRQptn](https://pixeldrain.com/u/6jWRQptn), sweetlog=0.
 
 **Jangan pakai image logging userdata lama GnxdmsDC pada layout baru**, jangan
@@ -66,11 +79,10 @@ limit (7), lalu heartbeat/swap berlanjut. Tidak ada crash SpringBoard/backboardd
 atau laporan kernel panic pada snapshot. Asal garis merah belum dipastikan:
 shim memang clear RED, dan copy full-canvas menyisakan margin 12 px atas/bawah.
 
-**Langkah berikutnya: 0088 diagnostik independen, belum dibuild.** Counter heartbeat
-harus naik sebelum printf; amati counter copy-completed dan fase/errno UFS/logger.
-Header liveness tetap di-flush walau ring console tidak bertambah; siapkan status
-framebuffer yang tetap terbaca bila storage gagal. Detail dan batas lock/observer
-ada pada roadmap analisis utama. Jangan menambah GPU/SMP, reflash root atau
+**Roadmap historis ini sudah diimplementasikan pada 0088 di atas.** Counter
+heartbeat kini naik tanpa printf; copy-completed dan fase/errno UFS/logger tersedia.
+Header tetap di-flush walau console senyap; footer tidak bergantung UFS. Detail dan
+batas observer ada di dokumen 0088. Jangan menambah GPU/SMP, reflash root atau
 menonaktifkan jetsam hanya dari log ini. Query crash-report tambahan terhenti
 karena ADB kemudian timeout, termasuk get-state; tidak membuktikan filesystem rusak.
 

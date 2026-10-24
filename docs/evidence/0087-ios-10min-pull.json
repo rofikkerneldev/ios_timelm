@@ -1,0 +1,72 @@
+{
+  "capture_utc": "2026-10-24T05:28:37.151614+00:00",
+  "device": "/dev/block/sda31",
+  "partition_bytes": 20705009664,
+  "hfs_volume_bytes": 17179869184,
+  "tail_start_relative": 20700811264,
+  "tail_bytes": 4198400,
+  "sha256": "7509f5827de1bca4baf3e1fd7ff73f59e7f833b6fcee2a3080df1abb36065b75",
+  "magic": "SWEETLOG",
+  "version": 1,
+  "ring_size": 4194304,
+  "total_console_bytes": 41158,
+  "flush_sequence": 6,
+  "user_reported_test": "10 minutes measured by stopwatch, then recovery",
+  "trial": "0087-ios-gui-log-r39984162472",
+  "console_sha256": "06960b0f5f0a2d89962503b099d15d7b0a3b5e58e3bccc253b7c9520db7402b9",
+  "source": "Read-only ios partition pull after ten minute stopwatch test",
+  "heartbeat": [
+    {
+      "count": 1,
+      "timer": 40185,
+      "sgi1": 1
+    },
+    {
+      "count": 2,
+      "timer": 43541,
+      "sgi1": 1
+    },
+    {
+      "count": 3,
+      "timer": 49331,
+      "sgi1": 1
+    },
+    {
+      "count": 4,
+      "timer": 52607,
+      "sgi1": 1
+    },
+    {
+      "count": 5,
+      "timer": 53586,
+      "sgi1": 1
+    },
+    {
+      "count": 6,
+      "timer": 54198,
+      "sgi1": 1
+    },
+    {
+      "count": 7,
+      "timer": 55143,
+      "sgi1": 1
+    },
+    {
+      "count": 8,
+      "timer": 59240,
+      "sgi1": 1
+    }
+  ],
+  "exec_counts": {
+    "SpringBoard": 1,
+    "backboardd": 0,
+    "lsd": 0,
+    "com.apple.datamigrator": 0
+  },
+  "swap_records": [],
+  "uncommitted_last_written_block_text_bytes": 0,
+  "unwritten_ring_matches_prelogging_backup": true,
+  "ring_last_nonzero_end": 4185917,
+  "kernel_panic_report_captured": false,
+  "limitations": "Last persisted heartbeat 8, flush 6; does not measure liveness for the whole ten minutes. No backboardd/swap in this snapshot does not prove none happened later. Residual bytes in unwritten ring blocks match prelogging backup, not later boot output."
+}

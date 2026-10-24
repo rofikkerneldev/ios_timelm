@@ -1,5 +1,11 @@
 # Langkah berikutnya: root pada GPT ios, lalu diagnostik 0088
 
+**Checkpoint terbaru 2026-10-24:** trial 0087-ios sudah dites **10 menit dengan
+stopwatch**, snapshot berakhir HB=8/flush=6. Kernel diagnostik 0088 sudah dibuild
+dan diunggah, belum diuji HP. **Ikuti [trial 0088](0088_DIAGNOSTIC_TRIAL.md)**
+untuk image utama, pembacaan footer sebelum recovery dan decoder header baru.
+Instruksi 0087 di bawah dipertahankan sebagai baseline/audit layout.
+
 2026-10-24. User memindahkan filesystem iOS ke partisi GPT bernama **`ios`** dari
 hasil pembagian area userdata; partisi Android userdata, Windows ESP dan win juga
 ada pada layout baru. **Update:** user menyambungkan kembali ADB recovery dan
@@ -26,7 +32,7 @@ untuk memilih nama GPT baru. **Live terverifikasi:** GPT entry 31, `/dev/block/s
 LUN 0, sektor 4096. Header dan tabel entry GPT lolos CRC; extent partisi cocok
 dengan ukuran/offset yang dilaporkan sysfs/blockdev.
 
-**Image tes utama, belum diuji HP:**
+**Image baseline 0087, sudah diuji HP sepuluh menit; lihat checkpoint di atas:**
 [timelm-0087-ios-rw-c1-wdtstop-gui-log.img](https://pixeldrain.com/u/wwiAWeh7).
 
 ```text
@@ -163,15 +169,14 @@ dibackup. Carrier dan ios juga memakai UFS/LUN/controller yang sama, sehingga
 pemindahan alamat log tidak menghilangkan ketergantungan pada driver/mutex UFS.
 Observer independen pada roadmap 0088 tetap diperlukan bila logging berhenti.
 
-## 3. Baru lanjut source diagnostik 0088
+## 3. Source diagnostik 0088 sudah dibuild
 
-Setelah boot XNU dari root `ios` terkonfirmasi oleh hasil tes baru, implementasikan
-observer heartbeat, copy-completed,
-fase/errno logger-UFS dan status framebuffer sesuai
-[roadmap 0088](0087_PERSISTENT_LOG_ANALYSIS.md#roadmap-0088-untuk-opencode).
-Status layar diperlukan bila partisi baru tidak punya area log yang aman.
-Kompilasi/check patch terarah, build CI kernel, shim `JOBS=56`, manifest/trial unik,
-lalu `pd upload`. Jangan gabungkan SMP/GPU atau perubahan filesystem spekulatif.
+Boot XNU dari root `ios` sudah terkonfirmasi. Observer heartbeat, copy-completed,
+fase/errno logger-UFS dan footer framebuffer telah diimplementasikan. Patch 0088
+dan targeted checks lolos, CI kernel sukses, shim dibuild `JOBS=56`, manifest/trial
+unik serta upload Pixeldrain selesai. [Trial 0088](0088_DIAGNOSTIC_TRIAL.md)
+menjelaskan batas observer dan langkah selanjutnya. Belum ada hasil HP 0088.
+Jangan gabungkan SMP/GPU atau perubahan filesystem spekulatif.
 
 Packaging script sekarang memakai `UFS_PARTITION=ios` default, menyisipkan
 `ufsroot=ios` juga pada custom CMDLINE yang belum memilikinya, serta menolak
