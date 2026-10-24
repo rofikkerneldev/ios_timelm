@@ -2,7 +2,9 @@
 
 2026-10-24. Source `fe228e5b8816ec8ab56f075a8b28b626c04e5a2b`.
 CI [40078086391](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40078086391)
-**sukses**, diag sudah diuji dan raw log recovery tersimpan; nostatus belum diuji.
+**sukses**, diag dan nostatus sudah diuji dan raw log tersimpan. Nostatus tetap
+HB62/flush6; **[audit RAM dan trial2GiB](0090_NOSTATUS_RESULT_AND_RAM_WINDOW.md)**
+menjadi checkpoint/image berikutnya. Belum ada hasil HP ram2g.
 **[Hasil diag dan tes nostatus berikutnya](0090_DIAG_RESULT_AND_NOSTATUS.md)**:
 trial terverifikasi, flush6/HB62, IRQ enter/done/full-Q6=103356,
 raw-event0, UFS error0 dan empat copy selesai pada snapshot. Snapshot masih

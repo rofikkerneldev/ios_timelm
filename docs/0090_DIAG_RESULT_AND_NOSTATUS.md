@@ -1,5 +1,10 @@
 # Hasil 0090-diag dan langkah berikutnya: nostatus
 
+**Update:** nostatus sudah diuji/dipull, draw0 terverifikasi namun tetap HB62/
+flush6. Audit menemukan default RAM window melintasi gap pada live Android FDT.
+**Ikuti [hasil nostatus dan trial RAM2GiB](0090_NOSTATUS_RESULT_AND_RAM_WINDOW.md)**
+untuk checkpoint/image utama berikutnya. Instruksi nostatus di bawah adalah riwayat.
+
 2026-10-24. User meminta cek recovery; forwarded ADB terhubung dan raw tail GPT
 ios/sda31 berhasil dibaca read-only,4198400byte. Trial terverifikasi
 `0090-ios-diag-r40078086391`. [Console](evidence/0090-diag-console.txt),

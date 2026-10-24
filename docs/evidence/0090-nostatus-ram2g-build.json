@@ -1,0 +1,57 @@
+{
+  "payload_sha256": "3f8fd10c0d44cef3f3007a388144d0cc259473ee4526446e5a27d55193229511",
+  "adt_sha256": "7e3f4b801bbb1316cc75d6c2e8daac015aa1cf34b8d7b40fc8a273c080ef7965",
+  "virtual_timer_intid": 27,
+  "cmdline": "debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress rd=ufsroot0 ufsrw=1 rootrw=1 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin wdt=-1 sweetfb_hz=5 startup_debug=0 sweetbeat=1 sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=1 timelm_wdt=stop launchd_unsecure_cache=1 sweetaccel=1 sweetakslog=32 sweetiolog=- sweetsample=- sweetscan=- sweetfb_noconsole=1 ufslogsecs=10 ufsroot=ios timelm_diag=1 timelm_irqdiag=1 timelm_status_draw=0 timelm_trial=0090-ios-nostatus-ram2g-r40078086391",
+  "phys_base": "0x100000000",
+  "mem_size": "0x80000000",
+  "kernel_segments_verified": 10,
+  "watchdog_action": "shim stops APSS watchdog if enabled; runtime result unverified",
+  "image": "timelm-0090-ios-rw-c1-wdtstop-nostatus-ram2g.img",
+  "image_size": 16977920,
+  "image_sha256": "8012dcdaabd349f40c9d07b70831f8afbb5f8f2b33d4a1751b59c6663d7e69f6",
+  "kernel_sha256": "b2fec26c7a4b1777bbb063712fa9a2ff0695ff8577e34d3e2b191d97298c5c6d",
+  "dtb_sha256": "ba67ec4dcde5288135133c39b7703b049502aa296cced431807c41104fbb68a4",
+  "shim_sha256": "42d794c59b7e9c8e4597cbf7309b1c08ad6ff7671b1daa4ca76f2dcaee50d506",
+  "source_commit": "fa6eb661875f1c94969c17bfe14a47e54daea11f",
+  "source_dirty": true,
+  "patches_sha256": "db247929e153ee91ed33894a11dcb79b6268405b297af84f83e1bf0c339907e9",
+  "hardware_tested": false,
+  "kernel_source_commit": "fe228e5b8816ec8ab56f075a8b28b626c04e5a2b",
+  "kernel_ci_run": 40078086391,
+  "kernel_build_provenance": {
+    "commit": "fe228e5b8816ec8ab56f075a8b28b626c04e5a2b",
+    "run_id": "40078086391",
+    "patches_sha256": "db247929e153ee91ed33894a11dcb79b6268405b297af84f83e1bf0c339907e9",
+    "machine_config": "SWEET"
+  },
+  "partition_name": "ios",
+  "lun": 0,
+  "persistent_logging_enabled": true,
+  "status_draw_enabled": false,
+  "logging_geometry_audit": "ios-live-recovery-20261024.json",
+  "ram_geometry_audit": "live-ram-map-20261024.json",
+  "source_dirty_explanation": "Only uncommitted nostatus evidence and RAM-map audit; compiled kernel/shim unchanged.",
+  "controlled_comparison": {
+    "baseline_image": "timelm-0090-ios-rw-c1-wdtstop-nostatus.img",
+    "baseline_image_sha256": "464e1fbd92d8f99235262ecf4a4d190bc34eaccbc245454ff3e68631e8f39257",
+    "equal_components": [
+      "kernel",
+      "shim",
+      "DTB",
+      "static init",
+      "all ADT properties except chosen/dram-size",
+      "all boot arguments except timelm_trial"
+    ],
+    "changed_fields": [
+      "payload mem_size:0x170000000 to0x80000000",
+      "ADT chosen/dram-size:0x170000000 to0x80000000",
+      "unique timelm_trial"
+    ],
+    "unchanged_kernel_physical_base": "0x100000000",
+    "validated_differences_only": true
+  },
+  "hypothesis_not_fix": "Avoid live Android FDT gap6-8GiB. RAM topology provenance needs user clarification. Smaller memory can alter pressure/timing; hardware test pending.",
+  "download_url": "https://pixeldrain.com/u/216CAPu5",
+  "uploaded_sha256": "8012dcdaabd349f40c9d07b70831f8afbb5f8f2b33d4a1751b59c6663d7e69f6"
+}

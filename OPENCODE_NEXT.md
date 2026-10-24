@@ -2,7 +2,39 @@
 
 Checkpoint terbaru 2026-10-24. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
-**0090-diag sudah diuji dan log recovery diamankan. Tes nostatus berikutnya.**
+**Checkpoint terbaru: nostatus tetap HB62/flush6; audit menemukan mismatch RAM.**
+[Hasil nostatus, peta RAM, dan trial2GiB](docs/0090_NOSTATUS_RESULT_AND_RAM_WINDOW.md),
+[audit live RAM](docs/evidence/live-ram-map-20261024.json),
+[nostatus raw metadata](docs/evidence/0090-nostatus-phone-pull.json).
+Trial nostatus/draw0/draw_abs0 terverifikasi via ADB root **Android mainline16**,
+bukan recovery. Snapshot62/flush6, IRQ full-Q6=110988, P=C5/R0, raw-event0,
+UFS12229/12229:0/W=E0. Root access memungkinkan read-only tail tanpa recovery.
+User belum mengklarifikasi pindah ke Android manual/otomatis atau durasi nostatus.
+
+**Temuan RAM:** static DTB memory size0 adalah placeholder. Live Android FDT dan
+SystemRAM mempunyai gap[0x180000000,0x200000000) =6..8GiB, sedangkan default
+XNU high[0x100000000,0x270000000) melintasinya. Ini kandidat konkret, bukan
+hardware fault yang sudah terbukti: Android melaporkan~12GiB dan provenance RAM/
+DTB upgrade masih ditanyakan. Jangan anggap PASS checker MMIO sebagai validasi RAM.
+/dev/mem strict tidak mengembalikan data; tidak ada telemetry RAM pasca-reset
+yang berhasil diverifikasi dan tidak ada bypass/probe write dilakukan.
+
+**Image tes utama sekarang:**
+[nostatus-ram2g 216CAPu5](https://pixeldrain.com/u/216CAPu5),
+[manifest](docs/evidence/0090-nostatus-ram2g-build.json), belum diuji HP.
+`timelm-0090-ios-rw-c1-wdtstop-nostatus-ram2g.img`, trial
+`0090-ios-nostatus-ram2g-r40078086391`, SHA256
+`8012dcdaabd349f40c9d07b70831f8afbb5f8f2b33d4a1751b59c6663d7e69f6`.
+Kernel0090 sama; base4GiB tetap, mem_size/ADT dram-size saja menjadi2GiB,
+range[4,6GiB) sepenuhnya dalam live bank/SystemRAM dan bebas reserved. Semua
+komponen/argumen lain identik nostatus, kecuali trial unik. Payload byte-diff dan
+hash upload dicek; shim JOBS56. Status memang tidak digambar. Tes3menit setelah
+logo, lalu ADB root/recovery pull trial baru. Ini tes topology/capacity;2GiB bisa
+mengubah jetsam/memory pressure/timing. Belum perbaikan terkonfirmasi.
+Gunakan ADT2GiB eksplisit untuk tes baru; default high lama belum divalidasi ulang.
+Jangan pindah load base ke bank8GiB: shim identity map saat ini di bawah8GiB saja.
+
+**Riwayat 0090-diag dan nostatus sudah diuji; lihat trial RAM di atas untuk langkah kini.**
 [Hasil dan instruksi berikutnya](docs/0090_DIAG_RESULT_AND_NOSTATUS.md),
 [console](docs/evidence/0090-diag-console.txt),
 [metadata](docs/evidence/0090-diag-phone-pull.json).
@@ -10,8 +42,8 @@ Trial0090-ios-diag terverifikasi; snapshot flush6/HB62/T103090, S5/P=C4/R0,
 UFS10252/10252:0/W=E0, IRQ enter/done/full-Q6=103356, Q6, raw-event0/draw1.
 PC kernel ccsha256_ltc_compress+0x170 adalah sampel hashing/NEON, bukan fault.
 Tidak ada raw panic/fault sebelum snapshot; belum meniadakan kejadian sesudahnya.
-Snapshot mendahului HB70 yang terlihat diam. Berikutnya gunakan nostatus yang
-sudah diunggah (Cz9JMX3u), tiga menit setelah logo, lalu recovery/pull ke file baru.
+Snapshot mendahului HB70 yang terlihat diam. Nostatus yang diunggah (Cz9JMX3u)
+sudah dipull sesudahnya dan tetap HB62/flush6; lihat audit/trial RAM di atas.
 Nostatus memang tidak menampilkan angka tetapi telemetry tetap direkam; verifikasi
 trialnostatus/draw_enabled0. Tidak perlu build atau reflash root untuk pembanding.
 [Transkripsi sementara](docs/evidence/0090-diag-screen-report.json): Q6, HB70/
@@ -44,7 +76,7 @@ baru pembanding nostatus tiga menit tanpa angka debug. Verifikasi trial/header
 TIMELM90/draw_enabled dan simpan dua raw tail terpisah. Jangan menunggu P90 pada
 nostatus: raw event dicatat tetapi tidak digambar. GUI copy/console panic tetap
 dapat menulis panel; ini hanya isolasi status drawing. Hasil awal diag ada di atas;
-raw tail0090-diag sudah tersimpan; belum ada hasil nostatus.
+raw tail0090-diag dan nostatus sudah tersimpan; belum ada hasil ram2g.
 
 **Layout aktif: GPT `ios` sudah diaudit setelah user mem-flash iOS16 img/simg.**
 ADB recovery tersambung kembali; pembacaan live read-only berhasil. `ios` adalah
@@ -153,8 +185,8 @@ raw-write carrier; trial tetap memakai area di luar HFSX pada ios. Driver loggin
 belum memiliki target partisi terpisah; carrier juga tetap bergantung UFS/mutex
 yang sama. Tidak ada mount/write carrier selama audit.
 
-**Langkah berikutnya:** user tes0090 diag, simpan raw log recovery, lalu gunakan
-profil nostatus sebagai pembanding. Pertahankan GPU/SMP/root. Rekam I89/D88 pada
+**Langkah berikutnya:** user tes nostatus-ram2g yang sudah diunggah; tarik raw log
+dan verifikasi trial/RAM. Jika kelak memakai profile status, rekam I89/D88 pada
 tiga baris, dua foto berselang
 30 detik **sebelum recovery**. I89 I/O bergerak sementara HB/H diam berarti timer
 IRQ masih ditangani; telusuri heartbeat/thread timeout/scheduling. H dari I89

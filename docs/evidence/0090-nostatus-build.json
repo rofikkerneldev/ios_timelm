@@ -18,7 +18,7 @@
   "patches_sha256": "db247929e153ee91ed33894a11dcb79b6268405b297af84f83e1bf0c339907e9",
   "download_url": "https://pixeldrain.com/u/Cz9JMX3u",
   "uploaded_sha256": "464e1fbd92d8f99235262ecf4a4d190bc34eaccbc245454ff3e68631e8f39257",
-  "hardware_tested": false,
+  "hardware_tested": true,
   "kernel_source_commit": "fe228e5b8816ec8ab56f075a8b28b626c04e5a2b",
   "kernel_ci_run": 40078086391,
   "kernel_artifact_id": 12554092534,
@@ -61,5 +61,15 @@
       "unique timelm_trial"
     ],
     "scope": "Only status drawings disabled; GUI copies/fade, surface mappings and console/panic behavior remain."
+  },
+  "phone_result": {
+    "evidence": "0090-nostatus-phone-pull.json",
+    "trial_verified": "0090-ios-nostatus-r40078086391",
+    "draw_enabled_verified": 0,
+    "last_persisted_heartbeat": 62,
+    "last_flush": 6,
+    "raw_event_count": 0,
+    "irq_full_done": 110988,
+    "interactive_gui_confirmed": false
   }
 }
