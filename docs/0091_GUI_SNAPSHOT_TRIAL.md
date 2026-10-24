@@ -1,6 +1,21 @@
 # 0091: snapshot GUI bounded dan waktu frame
 
-Checkpoint implementasi2026-10-24. Hasil2GiB sebelumnya mencapaiHB531/flush53;
+Checkpoint release2026-10-24. **Image0091 sudah dibuild dan diunggah; belum diuji HP.**
+[Download D9b5xEzL](https://pixeldrain.com/u/D9b5xEzL),
+[manifest](evidence/0091-guisample-ram2g-build.json),
+[verifikasi](evidence/0091-validation.json).
+
+```bash
+fastboot boot timelm-0091-ios-rw-c1-wdtstop-guisample-ram2g.img
+```
+
+```text
+trial  0091-ios-guisample-ram2g-r40094642531
+image  SHA256 d1f4c5c52907045e6ddf05b0d4ed105ecafe082e0cf8751e7d3f79e1d95b0c55
+kernel SHA256 8f2619ccda761f1e9c7f85c90b0114c4b1ffa9a7f37d48d9c739af810883f5b6
+```
+
+ Hasil2GiB sebelumnya mencapaiHB531/flush53;
 [bukti](0090_RAM2G_5MIN_RESULT.md). Kernel tetap satuCPU, rootiosRW, watchdog-stop,
 sampler profil lama off. Status UI akhir masih belum dilaporkan; tujuan0091
 adalah mengamati proses GUI tanpa mengulang sampler stack lama yang berisiko.
@@ -46,16 +61,21 @@ unexpected state count dan cap32/truncation. Decoder menguji extensionbaru,
 headerlama dan versi tidak dikenal. Regression boot/diag/IRQ/rawfault lulus.
 
 Build CI macOS [40094642531](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40094642531),
-source `def5b767928e19c37d12fa4df186bb27bc8ea379`, sedang berjalan.
-Packaging Linux belum selesai pada checkpoint ini.
-Jangan menganggap image0091 tersedia sampai manifest/hash/upload dicatat.
+source `def5b767928e19c37d12fa4df186bb27bc8ea379`, **success**.
+Artifact12560338576/digest cocok, kernel provenance/patch digest/simbol dan linked
+sampler diperiksa. Shim JOBS56; inspector memvalidasi10segmen kernel serta
+auxiliary init, ADT/DTB/RAM/trial. Hash/ukuran upload Pixeldrain cocok. Kernel
+baru dapat menggeser file offset auxiliary init di payload; byte/load extent init,
+embedded ADT, DTB, shim dan baseline args tetap sama selain sampler/trial.
+Commandline602byte muat dalam batas607byte tanpa truncation.
 
 ## Pengujian berikutnya
 
 Gunakan window2GiB[4,6GiB) yang sudah divalidasi; jangan kembali default5,75GiB.
-Setelah image tersedia, user boot manual dan tunggu5menit setelah logo. Catat
+User boot manual image0091 di atas dan tunggu5menit setelah logo. Catat
 apakah logo, hitam atau UI, lalu kembali recovery. Pull rawtail unik; verifikasi
-trial0091 dan TIMELM91 sebelum membandingkan.
+trial0091 dan TIMELM91 sebelum membandingkan. Angka HB/I89 tidak digambar pada
+profil ini; itu disengaja. Tidak perlu reflash root iOS.
 
 Jika vsync/time dan HB maju tetapi last_submit lama, periksa sampel GUI/IPC.
 Jika submit baru tetapi present/copy lama, telusuri fDirty/workloop/power state.

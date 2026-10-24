@@ -1,0 +1,55 @@
+{
+  "kernel_source_commit": "def5b767928e19c37d12fa4df186bb27bc8ea379",
+  "ci_run": 40094642531,
+  "patch_apply": {
+    "patches": 91,
+    "success": true,
+    "log": "/home/rofikkernel/work/timelm-0091/verify.log"
+  },
+  "local_compile": {
+    "translation_units": [
+      "osfmk/kern/exception.c",
+      "bsd/dev/sweet_sample.c",
+      "bsd/dev/sweet_ufs.c",
+      "iokit/Kernel/arm/SweetFramebuffer.cpp"
+    ],
+    "success": true,
+    "log_sha256": "d9ded6953254bd6353048313c318aa4aae5853637244c82746258b053818f439"
+  },
+  "integrated_source_test_methods": {
+    "boot": 14,
+    "diagnostic": 5,
+    "irq": 2,
+    "raw_fault": 2,
+    "gui_snapshot_and_decoder": 2
+  },
+  "host_ram_guard_tests": 4,
+  "native_gui_sanitizers": [
+    "AddressSanitizer",
+    "UndefinedBehaviorSanitizer"
+  ],
+  "gui_cases": [
+    "no threads",
+    "thread terminated during snapshot",
+    "unexpected register state count",
+    "more than32threads truncated",
+    "references released before output",
+    "no task lock held during thread APIs/output"
+  ],
+  "notes": [
+    "API mocks verify surrounding lock/reference discipline, not XNU internal concurrency.",
+    "thread_get_state can briefly stop a thread and has no hard latency bound in this sampler.",
+    "Hardware test pending; CI/provenance/upload results will be recorded in release manifest."
+  ],
+  "ci_conclusion": "success",
+  "ci_job_id": 120874229763,
+  "artifact_digest_verified": "b9a54bcc30a63a6668cfe88efde348b9fc43fbb72ed9d33b327c1aa0c68f50a6",
+  "linked_sampler_disassembly_sha256": "6aaa714cae02578a2f172b338f89c80cf63528f06d6ee2f4ffe2f14f1833b728",
+  "packaging_verified": [
+    "10kernel segments matched exact CI kernel",
+    "shim, DTB, embedded ADT and static init match0090RAM2GiB",
+    "commandline602bytes within607byte maximum",
+    "RAM bank/SystemRAM coverage and no reserved overlap",
+    "upload SHA256 and size match"
+  ]
+}

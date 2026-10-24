@@ -2,13 +2,37 @@
 
 Checkpoint terbaru 2026-10-24. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
-**Pekerjaan aktif0091:** sampler GUI bounded+TIMELM91 sudah diimplementasikan,
-91patch apply, empat compile lokal dan regression/nativeASan/UBSan lolos.
-[Scope, batas dan roadmap](docs/0091_GUI_SNAPSHOT_TRIAL.md).
-CI [40094642531](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40094642531)
-source def5b767928e19c37d12fa4df186bb27bc8ea379 sedang build. Image0091 belum
-tersedia pada checkpoint ini. DefaultHIGH host sudah menjadi2GiB; guard coverage
-RAM sebelum packaging dan inspector akhir memakai audit recovery perangkat ini.
+**Image tes aktif0091 sudah tersedia, belum diuji HP:**
+[Download D9b5xEzL](https://pixeldrain.com/u/D9b5xEzL),
+[scope/roadmap](docs/0091_GUI_SNAPSHOT_TRIAL.md),
+[manifest](docs/evidence/0091-guisample-ram2g-build.json),
+[verifikasi](docs/evidence/0091-validation.json).
+`timelm-0091-ios-rw-c1-wdtstop-guisample-ram2g.img`, SHA256
+`d1f4c5c52907045e6ddf05b0d4ed105ecafe082e0cf8751e7d3f79e1d95b0c55`.
+Trial `0091-ios-guisample-ram2g-r40094642531`; kernel CI
+[40094642531](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40094642531)
+**success**, source def5b767928e19c37d12fa4df186bb27bc8ea379.
+91patch apply,4targeted compile,25testmetode source terintegrasi+4RAMguard,
+nativeASan/UBSan dan CI validation/build sukses. Artifact provenance/hash,
+linked sampler, payload10kernel+1init, baselinecomponents dan uploadhash dicek.
+Shim JOBS56. DefaultHIGH/packaging guard sudah2GiB dengan audit recovery ini.
+
+0091 mereferensi maksimal2task/32thread, task_lock dilepas sebelum thread APIs/
+printf, tanpa userstackread. thread_get_state memakai stop/hold singkat (opt-in,
+bukan zero-impact/hard latency bound). sweetsample=SpringBoard,backboardd,
+first90s/interval60s/count6. TIMELM91 offset640/104byte menyimpan vsync/time,
+lastsubmit/present/copy, powerstate dan fase sampler. Draw tetap0. RAM[4,6GiB),
+rootiosRW/cpus1/watchdog-stop/renderer5Hz tetap. Kernel aktifxnu/out kini0091;
+source lengkap `$HOME/work/timelm-0091/verify`, fallback0090 dibackup di
+`$HOME/work/timelm-0091/before0091-kernel.development.sweet`.
+
+**Langkah user:** boot0091 manual, tunggu5menit setelah logo, catat UI/logo/hitam,
+lalu kembali ADB recovery. Pullrawtailunik dan verifikasitrial0091/TIMELM91.
+Angka debug memang tidak tampil. Tidak perlu reflash root. Jika vsync/HB maju
+namun submit lama, symbolicate sampel GUI perproses/slide cache20H392. Jika
+submit baru namun copy lama, telusuri displayworkloop/power. Jika copy maju namun
+layar salah, audit pixel/scanout/lifetime. Jika sampler mengganggu liveness,
+kembali fallback0090RAM2GiB. Jangan menyimpulkan deadlock hanya dari mach_msg PC.
 
 **Hasil HP terbaru: tes ulang2GiB5menit mencapai HB531/flush53.**
 Baca [hasil tes5menit dan roadmap](docs/0090_RAM2G_5MIN_RESULT.md),
@@ -45,9 +69,9 @@ Image [216CAPu5](https://pixeldrain.com/u/216CAPu5),
 `timelm-0090-ios-rw-c1-wdtstop-nostatus-ram2g.img`, SHA256
 `8012dcdaabd349f40c9d07b70831f8afbb5f8f2b33d4a1751b59c6663d7e69f6`.
 Kernel0090 CI40078086391 sama, rootiosRW/cpus1/watchdog-stop/draw0/logger10s
-sama, hanya ukuranRAM dan trial berubah dibanding nostatus. Kernel aktif
-`xnu/out/kernel.development.sweet` adalah0090, source lengkap
-`$HOME/work/timelm-0090/verify`. Tidak ada build baru pada review hasil2GiB.
+sama, hanya ukuranRAM dan trial berubah dibanding nostatus. Kernel saat tesRAM2GiB
+`xnu/out/kernel.development.sweet` adalah0090 (kini0091), source0090 di
+`$HOME/work/timelm-0090/verify`. Build0091 terbaru tercatat di atas.
 Jangan pindah load base ke bank8GiB: shim identity map di bawah8GiB saja.
 
 ## Arsip checkpoint sebelumnya

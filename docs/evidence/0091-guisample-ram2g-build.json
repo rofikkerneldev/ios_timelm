@@ -1,0 +1,95 @@
+{
+  "payload_sha256": "ecee1c08ff3c4df139fc4b33140fc96626509057debdf5c0869357f42b8b4b4d",
+  "adt_sha256": "7e3f4b801bbb1316cc75d6c2e8daac015aa1cf34b8d7b40fc8a273c080ef7965",
+  "virtual_timer_intid": 27,
+  "cmdline": "debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress rd=ufsroot0 ufsrw=1 rootrw=1 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin wdt=-1 sweetfb_hz=5 startup_debug=0 sweetbeat=1 sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=1 timelm_wdt=stop launchd_unsecure_cache=1 sweetaccel=1 sweetakslog=32 sweetiolog=- sweetscan=- sweetfb_noconsole=1 ufslogsecs=10 ufsroot=ios timelm_diag=1 timelm_irqdiag=1 timelm_status_draw=0 sweetsample=SpringBoard,backboardd sweetsample_start=90 sweetsample_secs=60 sweetsample_count=6 timelm_trial=0091-ios-guisample-ram2g-r40094642531",
+  "phys_base": "0x100000000",
+  "mem_size": "0x80000000",
+  "kernel_segments_verified": 10,
+  "ram_validation": {
+    "phys_base": "0x100000000",
+    "mem_size": "0x80000000",
+    "end_exclusive": "0x180000000",
+    "live_bank_coverage": true,
+    "system_ram_coverage": true,
+    "reserved_overlap": false,
+    "evidence_scope": "captured recovery topology for this phone",
+    "ram_audit": "docs/evidence/0090-recovery-ram-audit.json",
+    "ram_audit_sha256": "fd342eb6ea66274e5e872e43b3174e111e9e3941ef167f7f62ad1e639e3c4cd6"
+  },
+  "watchdog_action": "shim stops APSS watchdog if enabled; runtime result unverified",
+  "image": "timelm-0091-ios-rw-c1-wdtstop-guisample-ram2g.img",
+  "image_size": 16977920,
+  "image_sha256": "d1f4c5c52907045e6ddf05b0d4ed105ecafe082e0cf8751e7d3f79e1d95b0c55",
+  "kernel_sha256": "8f2619ccda761f1e9c7f85c90b0114c4b1ffa9a7f37d48d9c739af810883f5b6",
+  "dtb_sha256": "ba67ec4dcde5288135133c39b7703b049502aa296cced431807c41104fbb68a4",
+  "shim_sha256": "42d794c59b7e9c8e4597cbf7309b1c08ad6ff7671b1daa4ca76f2dcaee50d506",
+  "source_commit": "4f75bd912ea99319cc75cf4ccb770bada58d5a3f",
+  "source_dirty": true,
+  "patches_sha256": "dab71f49e68398e23fb678f0e0180332bfb352ebcd28026c4bae0a252f66522c",
+  "kernel_source_commit": "def5b767928e19c37d12fa4df186bb27bc8ea379",
+  "kernel_ci_run": 40094642531,
+  "kernel_build_provenance": {
+    "commit": "def5b767928e19c37d12fa4df186bb27bc8ea379",
+    "run_id": "40094642531",
+    "patches_sha256": "dab71f49e68398e23fb678f0e0180332bfb352ebcd28026c4bae0a252f66522c",
+    "machine_config": "SWEET"
+  },
+  "hardware_tested": false,
+  "partition_name": "ios",
+  "lun": 0,
+  "persistent_logging_enabled": true,
+  "status_draw_enabled": false,
+  "sampler": {
+    "targets": [
+      "SpringBoard",
+      "backboardd"
+    ],
+    "first_seconds": 90,
+    "interval_seconds": 60,
+    "rounds": 6,
+    "max_threads_per_task": 32,
+    "user_stack_read": false,
+    "thread_get_state_briefly_stops_threads": true
+  },
+  "logging_geometry_audit": "ios-live-recovery-20261024.json",
+  "ram_geometry_audit": "0090-recovery-ram-audit.json",
+  "baseline": "0090-nostatus-ram2g-build.json",
+  "scope": "New0091 kernel snapshots/frame timestamps; same2GiB seed, shim, DTB, init and baseline boot arguments except sampler options/trial.",
+  "source_dirty_explanation": "Pending release documentation only if dirty; compiled kernel patch digest matches CI provenance.",
+  "baseline_component_comparison": {
+    "shim_identical": true,
+    "android_dtb_identical": true,
+    "embedded_adt_identical": true,
+    "static_init_bytes_and_load_extent_identical": true,
+    "static_init_payload_file_offset_changes_with_new_kernel": true,
+    "kernel_segments_verified": 10,
+    "command_line_changes": {
+      "sweetsample": [
+        "sweetsample=-",
+        "sweetsample=SpringBoard,backboardd"
+      ],
+      "sweetsample_count": [
+        null,
+        "sweetsample_count=6"
+      ],
+      "sweetsample_secs": [
+        null,
+        "sweetsample_secs=60"
+      ],
+      "sweetsample_start": [
+        null,
+        "sweetsample_start=90"
+      ],
+      "timelm_trial": [
+        "timelm_trial=0090-ios-nostatus-ram2g-r40078086391",
+        "timelm_trial=0091-ios-guisample-ram2g-r40094642531"
+      ]
+    }
+  },
+  "kernel_artifact_sha256": "b9a54bcc30a63a6668cfe88efde348b9fc43fbb72ed9d33b327c1aa0c68f50a6",
+  "kernel_artifact_id": 12560338576,
+  "download_url": "https://pixeldrain.com/u/D9b5xEzL",
+  "uploaded_sha256": "d1f4c5c52907045e6ddf05b0d4ed105ecafe082e0cf8751e7d3f79e1d95b0c55",
+  "ci_conclusion": "success"
+}
