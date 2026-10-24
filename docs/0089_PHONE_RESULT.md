@@ -58,7 +58,8 @@ terakhir sesudah committed total semuanya nol; tidak ada suffix log baru di sana
    I/O/H/PC/K-U/F, L/F/W/U/OP/E serta durasi penantian.
 2. Lanjutkan [roadmap 0090](0090_ALL_OBSERVERS_STOP_ROADMAP.md): early panic/fault
    marker, phase IRQ sesudah entropy/epilogue, dan profil pembanding tanpa draw
-   framebuffer. Ini rancangan observasi, belum patch atau image 0090.
+   framebuffer. [Trial0090](0090_DIAGNOSTIC_TRIAL.md) kini sudah dibuild/diunggah,
+   belum diuji HP; scope aktual tercatat di sana.
 3. I/O berubah tetapi H/HB diam: fokus timeout/wakeup/thread scheduling/lock;
    simpan PC berulang lalu simbolkan dengan kernel yang tepat. Jika H dari I89
    berubah tetapi D88 lama, periksa thread draw/scanout. Jika seluruh layar diam,

@@ -2,6 +2,31 @@
 
 Checkpoint terbaru 2026-10-24. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
+**0090 sudah dibuild dan diunggah, belum diuji HP. Tes diag dahulu.**
+[diag cb3mvTSS](https://pixeldrain.com/u/cb3mvTSS),
+[nostatus Cz9JMX3u](https://pixeldrain.com/u/Cz9JMX3u),
+[manifest diag](docs/evidence/0090-diag-build.json),
+[manifest nostatus](docs/evidence/0090-nostatus-build.json).
+Image `timelm-0090-ios-rw-c1-wdtstop-diag.img` SHA256
+`68b45e6b69da51360152bc0a6903b098782365eac3d05e4efd61e7b7e50df4af`;
+nostatus SHA256 `464e1fbd92d8f99235262ecf4a4d190bc34eaccbc245454ff3e68631e8f39257`.
+[Implementasi/trial](docs/0090_DIAGNOSTIC_TRIAL.md),
+CI [40078086391](https://github.com/rofikkerneldev/ios_timelm/actions/runs/40078086391),
+source `fe228e5b8816ec8ab56f075a8b28b626c04e5a2b`.
+Raw panic hook mendahului inherited sweet_early_panic/_doprnt; first-event capture
+tanpa format/context-pointer dereference, Q1..6 untuk tahap IRQ, timer register
+snapshots, dan timelm_status_draw=0 yang tetap mencatat telemetry. Dua profil
+memakai kernel/shim/ADT/DTB/static init dan payload selain command line identik;
+hanya flag draw dan trial berbeda. 90 patch apply, empat targeted compile dan23
+checks lokal lolos; CI build/validation sukses. Artifact provenance/hash,
+linked hook disassembly, payload dan upload hash/ukuran sudah dicek. Shim JOBS=56.
+Trial `0090-ios-diag-r40078086391` dan `0090-ios-nostatus-r40078086391`.
+Tes diag sekitar3menit, foto Q terakhir atau panel P90, recovery/pull dahulu;
+baru pembanding nostatus tiga menit tanpa angka debug. Verifikasi trial/header
+TIMELM90/draw_enabled dan simpan dua raw tail terpisah. Jangan menunggu P90 pada
+nostatus: raw event dicatat tetapi tidak digambar. GUI copy/console panic tetap
+dapat menulis panel; ini hanya isolasi status drawing. Belum ada hasil HP0090.
+
 **Layout aktif: GPT `ios` sudah diaudit setelah user mem-flash iOS16 img/simg.**
 ADB recovery tersambung kembali; pembacaan live read-only berhasil. `ios` adalah
 GPT entry 31, `/dev/block/sda31`, **LUN 0**, sektor 4096. Partisi 20705009664 byte
@@ -12,8 +37,8 @@ lolos CRC dan cocok dengan sysfs/blockdev. [Geometry](docs/evidence/ios-live-rec
 [Roadmap 0090 untuk semua observer berhenti](docs/0090_ALL_OBSERVERS_STOP_ROADMAP.md).
 **Klarifikasi user terbaru:** semua baris termasuk I89/HB awalnya bergerak lalu
 diam; animasi Apple mengalami glitch frame. Jangan meminta konfirmasi itu lagi.
-Nilai PC/phase/I/O terakhir dan durasi setelah HB84 belum tersedia. Tidak ada
-patch/image 0090; lanjutkan early panic/fatal-fault marker, phase IRQ setelah
+Nilai PC/phase/I/O terakhir dan durasi setelah HB84 belum tersedia. Patch0090
+sudah dibuild/diunggah; meliputi early panic/fatal-fault marker, phase IRQ setelah
 entropy/epilogue, lalu profil yang memisahkan draw framebuffer dari telemetry.
 Glitch belum membuktikan GPU/cache/stride sebagai penyebab; front-buffer copy
 dan scanout/clock yang membeku tetap perlu dibedakan dari IRQ/global stall.
@@ -109,8 +134,8 @@ raw-write carrier; trial tetap memakai area di luar HFSX pada ios. Driver loggin
 belum memiliki target partisi terpisah; carrier juga tetap bergantung UFS/mutex
 yang sama. Tidak ada mount/write carrier selama audit.
 
-**Langkah berikutnya:** implementasikan roadmap0090 yang tercantum di atas tanpa
-menggabungkan perubahan GPU/SMP/root. Untuk tes selanjutnya rekam I89/D88 pada
+**Langkah berikutnya:** user tes0090 diag, simpan raw log recovery, lalu gunakan
+profil nostatus sebagai pembanding. Pertahankan GPU/SMP/root. Rekam I89/D88 pada
 tiga baris, dua foto berselang
 30 detik **sebelum recovery**. I89 I/O bergerak sementara HB/H diam berarti timer
 IRQ masih ditangani; telusuri heartbeat/thread timeout/scheduling. H dari I89

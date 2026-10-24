@@ -1,0 +1,65 @@
+{
+  "payload_sha256": "68e2c1c5ac937d46572db5693a826b993875737bf99878029da4c0e629642196",
+  "adt_sha256": "d6470977a4b8681f82bdbe8098962d88d9a1745d4139c1bab994f37c57fd4f3a",
+  "virtual_timer_intid": 27,
+  "cmdline": "debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress rd=ufsroot0 ufsrw=1 rootrw=1 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin wdt=-1 sweetfb_hz=5 startup_debug=0 sweetbeat=1 sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=1 timelm_wdt=stop launchd_unsecure_cache=1 sweetaccel=1 sweetakslog=32 sweetiolog=- sweetsample=- sweetscan=- sweetfb_noconsole=1 ufslogsecs=10 ufsroot=ios timelm_diag=1 timelm_irqdiag=1 timelm_status_draw=0 timelm_trial=0090-ios-nostatus-r40078086391",
+  "phys_base": "0x100000000",
+  "mem_size": "0x170000000",
+  "kernel_segments_verified": 10,
+  "watchdog_action": "shim stops APSS watchdog if enabled; runtime result unverified",
+  "image": "timelm-0090-ios-rw-c1-wdtstop-nostatus.img",
+  "image_size": 16977920,
+  "image_sha256": "464e1fbd92d8f99235262ecf4a4d190bc34eaccbc245454ff3e68631e8f39257",
+  "kernel_sha256": "b2fec26c7a4b1777bbb063712fa9a2ff0695ff8577e34d3e2b191d97298c5c6d",
+  "dtb_sha256": "ba67ec4dcde5288135133c39b7703b049502aa296cced431807c41104fbb68a4",
+  "shim_sha256": "42d794c59b7e9c8e4597cbf7309b1c08ad6ff7671b1daa4ca76f2dcaee50d506",
+  "source_commit": "fe228e5b8816ec8ab56f075a8b28b626c04e5a2b",
+  "source_dirty": true,
+  "patches_sha256": "db247929e153ee91ed33894a11dcb79b6268405b297af84f83e1bf0c339907e9",
+  "download_url": "https://pixeldrain.com/u/Cz9JMX3u",
+  "uploaded_sha256": "464e1fbd92d8f99235262ecf4a4d190bc34eaccbc245454ff3e68631e8f39257",
+  "hardware_tested": false,
+  "kernel_source_commit": "fe228e5b8816ec8ab56f075a8b28b626c04e5a2b",
+  "kernel_ci_run": 40078086391,
+  "kernel_artifact_id": 12554092534,
+  "kernel_build_provenance": {
+    "commit": "fe228e5b8816ec8ab56f075a8b28b626c04e5a2b",
+    "run_id": "40078086391",
+    "patches_sha256": "db247929e153ee91ed33894a11dcb79b6268405b297af84f83e1bf0c339907e9",
+    "machine_config": "SWEET"
+  },
+  "partition_name": "ios",
+  "lun": 0,
+  "persistent_logging_enabled": true,
+  "logging_geometry_audit": "ios-live-recovery-20261024.json",
+  "geometry_valid_for_current_layout": true,
+  "status_draw_enabled": false,
+  "diagnostic_footer_reserved_rows": 96,
+  "raw_event_extension": "TIMELM90 v1,128byte at offset448,14u64",
+  "source_dirty_explanation": "Only uncommitted 0090 handoff documentation; compiled patch digest and code match CI.",
+  "verification": [
+    "90 patches applied",
+    "Four targeted C/CPP files compiled",
+    "23 boot/diagnostic checks passed, raw marker code tested with ASan/UBSan",
+    "CI build and validation successful",
+    "Kernel SHA256SUMS and patch digest match CI",
+    "Raw panic/fault/IRQ hooks verified in linked disassembly",
+    "10 payload kernel segments and ADT/DTB verified",
+    "Pixeldrain image size and SHA256 verified"
+  ],
+  "paired_profile_comparison": {
+    "equal_components": [
+      "kernel",
+      "shim",
+      "ADT",
+      "DTB",
+      "static init",
+      "payload outside command-line buffer"
+    ],
+    "changed_arguments": [
+      "timelm_status_draw=1 versus 0",
+      "unique timelm_trial"
+    ],
+    "scope": "Only status drawings disabled; GUI copies/fade, surface mappings and console/panic behavior remain."
+  }
+}
