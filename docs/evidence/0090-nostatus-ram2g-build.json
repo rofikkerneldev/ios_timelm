@@ -51,17 +51,41 @@
     "unchanged_kernel_physical_base": "0x100000000",
     "validated_differences_only": true
   },
-  "hypothesis_not_fix": "2GiB tested: HB152/flush15 versus prior HB62/flush6. Recovery FDT and iomem independently agree with mainline gap6-8GiB. GUI/final liveness and causal attribution still unconfirmed.",
+  "hypothesis_not_fix": "Repeated2GiB trial reachesHB531/flush53 versus old5.75GiB HB62/flush6. Safe window strongly supported as current fallback; single-cause attribution and interactive GUI remain unconfirmed.",
   "download_url": "https://pixeldrain.com/u/216CAPu5",
   "uploaded_sha256": "8012dcdaabd349f40c9d07b70831f8afbb5f8f2b33d4a1751b59c6663d7e69f6",
   "phone_result": {
-    "evidence": "0090-ram2g-phone-pull.json",
+    "evidence": "0090-ram2g-5min-phone-pull.json",
     "trial_verified": "0090-ios-nostatus-ram2g-r40078086391",
-    "last_persisted_heartbeat": 152,
-    "last_flush": 15,
+    "user_wait_minutes": 5,
+    "last_persisted_heartbeat": 531,
+    "last_flush": 53,
     "raw_event_count": 0,
-    "irq_full_done": 288030,
+    "irq_full_done": 209134,
     "interactive_gui_confirmed": false,
     "runtime_bootstrap_pages_confirm_2g": true
-  }
+  },
+  "phone_results": [
+    {
+      "evidence": "0090-ram2g-phone-pull.json",
+      "trial_verified": "0090-ios-nostatus-ram2g-r40078086391",
+      "last_persisted_heartbeat": 152,
+      "last_flush": 15,
+      "raw_event_count": 0,
+      "irq_full_done": 288030,
+      "interactive_gui_confirmed": false,
+      "runtime_bootstrap_pages_confirm_2g": true
+    },
+    {
+      "evidence": "0090-ram2g-5min-phone-pull.json",
+      "trial_verified": "0090-ios-nostatus-ram2g-r40078086391",
+      "user_wait_minutes": 5,
+      "last_persisted_heartbeat": 531,
+      "last_flush": 53,
+      "raw_event_count": 0,
+      "irq_full_done": 209134,
+      "interactive_gui_confirmed": false,
+      "runtime_bootstrap_pages_confirm_2g": true
+    }
+  ]
 }

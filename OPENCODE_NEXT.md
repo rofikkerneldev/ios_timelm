@@ -2,16 +2,19 @@
 
 Checkpoint terbaru 2026-10-24. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
 
-**Checkpoint aktif: RAM2GiB sudah diuji, HB152/flush15; user menunggu1menit.**
-Baca [hasil2GiB dan review roadmap](docs/0090_RAM2G_RESULT_AND_REVIEW.md),
-[metadata log](docs/evidence/0090-ram2g-phone-pull.json),
+**Checkpoint aktif: tes ulang2GiB5menit mencapai HB531/flush53.**
+Baca [hasil tes5menit dan roadmap](docs/0090_RAM2G_5MIN_RESULT.md),
+[metadata baru](docs/evidence/0090-ram2g-5min-phone-pull.json),
+[review awal](docs/0090_RAM2G_RESULT_AND_REVIEW.md),
 [audit RAM recovery](docs/evidence/0090-recovery-ram-audit.json).
-Trial `0090-ios-nostatus-ram2g-r40078086391` terverifikasi lewat ADB recovery.
-Runtime free+wired131072 halaman16KiB mengonfirmasi2GiB. IRQ full-Q6=288030,
-UFS40326/40326:0/W=E0, S6/P=C4/R0, raw-event0, draw0. Kernel PC pada
-`machine_idle+0xfc` adalah sampel interrupt, bukan fault. SpringBoard/backboardd
-exec dan swap tercatat, GUI interaktif belum terkonfirmasi. **HB152 bukan bukti
-freeze:** user hanya melaporkan menunggu1menit, titik awal/UI akhir belum jelas.
+Trial ram2g/draw0 terverifikasi lewat ADB recovery; raw baru disimpan terpisah.
+Runtime131072 halaman16KiB=2GiB. IRQ full-Q6=209134, UFS22323/22323:0/W=E0,
+S6/P=C5/R0, raw-event0. Kernel PC machine_idle+0xfc adalah konteks interrupt.
+Dibanding baseline lamaHB62/flush6 dan tes2GiB pertamaHB152/flush15, liveness
+sudah maju jauh. **HB531 bukan bukti freeze**; user mengakhiri tes5menit.
+SpringBoard/backboardd masing-masing satu exec, swap2..6, tidak ada crash GUI
+terekam. bluetoothd/fairplayd.H2 berulang48/50exec; sebab exit belum diperiksa.
+Status layar akhir menunggu jawaban user; jangan mengasumsikan GUI sudah tampil.
 
 User mengonfirmasi upgrade RAM fisik12GB, dtbo dihapus, DTB berada dalam kernel.
 Recovery4.19 dan mainline7.3 sama-sama menunjukkan gapRAM[6,8GiB).
@@ -20,14 +23,14 @@ Window2GiB[4,6GiB) ada di bank/SystemRAM kedua kernel dan bebas reserved.
 Kemajuan kontrol memperkuat pilihan window valid, belum membuktikan penyebab
 stall tunggal. Kapasitas/timing serta state filesystemRW antarboot juga berubah.
 
-**Langkah sekarang:** ulang image2GiB yang sama selama5menit setelah logo, catat
-UI/logo/reboot, lalu user masuk recovery dan pull raw tail unik. Tidak perlu
-rebuild/reflash root. Bandingkan HB/flush/IRQ/UFS/copy terhadap durasi tes baru.
-Jika liveness maju tetapi logo tetap, fokus proses GUI/IPC/present; jika snapshot
-berulang berhenti pada durasi lebih panjang, kembali audit stall/observer.
-Jangan langsung patch GPU, idle, UFS atau menjadikan lastPC sebagai penyebab.
-Guard coverage RAM pada packaging menjadi pekerjaan berikutnya; belum dibuat.
-Gunakan ADT2GiB eksplisit, jangan baseline default lama yang melintasi gap.
+**Langkah sekarang:** liveness sudah terbukti melampaui batas sebelumnya; jangan
+ulang permintaan tunggu identik. Jika masih logo/hitam, fokus GUI/IPC/present
+melalui sampler aman dan bounded, audit task_lock/faulting stack-read dahulu,
+dan tambahkan timestamp submit/copy bila diperlukan. Jika UI muncul, validasi
+visual/stabilitas sebelum fitur hardware baru. Tidak ada dasar patch idle/GPU/UFS
+hanya dari sampledPC/lastline. Guard coverage RAM pada packaging juga perlu
+menggantikan/memblokir default lama yang melintasi gap; belum diimplementasikan.
+Gunakan ADT2GiB eksplisit untuk tes berikutnya. Rootfs tidak perlu reflash.
 
 Image [216CAPu5](https://pixeldrain.com/u/216CAPu5),
 [manifest](docs/evidence/0090-nostatus-ram2g-build.json), **sudah diuji HP**:

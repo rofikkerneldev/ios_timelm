@@ -1,6 +1,10 @@
 # Hasil 0090 RAM2GiB dan review roadmap
 
-2026-10-24. Trial `0090-ios-nostatus-ram2g-r40078086391` sudah diuji;
+2026-10-24. **Update: tes ulang5menit sudah mencapaiHB531/flush53.**
+[Hasil terbaru dan roadmap](0090_RAM2G_5MIN_RESULT.md) menggantikan langkah
+ulang5menit pada dokumen awal ini.
+
+Trial `0090-ios-nostatus-ram2g-r40078086391` sudah diuji;
 raw tail diambil dari ADB **recovery**, read-only pada `ios`/sda31.
 [Metadata](evidence/0090-ram2g-phone-pull.json),
 [console](evidence/0090-ram2g-console.txt),
