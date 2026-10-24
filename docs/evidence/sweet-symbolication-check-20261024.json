@@ -1,0 +1,34 @@
+{
+  "cache_source": "SystemOS 20H392 used for timelm iOS root",
+  "cache": "/home/rofikkernel/work/timelm-0086-full-log/cache/System/Library/Caches/com.apple.dyld/dyld_shared_cache_arm64",
+  "tool": "tools/sweet-crash.py",
+  "tool_sha256": "b6e8333b2856a52f28be4d650621f2fef9b4433307c673a1dac1fbcfed682e50",
+  "runs": [
+    {
+      "name": "0086-SpringBoard-sample",
+      "input_lines": 3,
+      "output_sha256": "b24a2239e8ce4e7782ced4301cff3383e7f65389982e8c6f040766596b714ead",
+      "exit_code": 0,
+      "symbols": "SMP SpringBoard[26] slide 0x6b00000 mh 0x102bc0000\nSMP SpringBoard t0 pc 0x1c9111030 lr 0x1c9122b18 sp [cropped]\n    0x1c9111030 = cache 0x1c2611030 _mach_msg2_trap + 8\n    0x1c9122b18 = cache 0x1c2622b18 _mach_msg2_internal + 76\nSMP SpringBoard t1 pc 0x1c91114f0 lr 0x1d869ac1c sp [cropped]\n    0x1c91114f0 = cache 0x1c26114f0 ___workq_kernreturn + 8\n    0x1d869ac1c = cache 0x1d1b9ac1c __pthread_wqthread + 360\n"
+    },
+    {
+      "name": "0087-driverkitd-crash",
+      "input_lines": 4,
+      "output_sha256": "7eaae5acd63e31c89efe621b1cfe9ad421ca2718f34f9dfce1ad93e4d89d353c",
+      "exit_code": 0,
+      "symbols": "CRASH driverkitd[67] sig 9 code 0x0 sub 0x0 slide 0x29014000 mh 0x102be4000\nCRASH driverkitd pc 0x1eb625d98 lr 0x1aa1b83a4 sp 0x16d219200 fp 0x16d219270 far 0x102e10000\n    0x1eb625d98 = cache 0x1c2611d98 _read + 8\n    0x1aa1b83a4 = cache 0x1811a43a4 __NSReadFromFileDescriptorWithProgress + 192\n    0x102e10000 = main binary 0x10022c000\nCRASH driverkitd bt 0x1aa1ad12c 0x1aa19e514 0x102c826b4 0x102ccd37c 0x102cce81c 0x102c0c31c 0x102c5d00c 0x102c7497c 0x102c8acf8 0x102c864a8\n    0x1aa1ad12c = cache 0x18119912c __NSReadBytesFromFileWithExtendedAttributes + 816\n    0x1aa19e514 = cache 0x18118a514 -[NSData(NSData) initWithContentsOfFile:options:maxLength:error:] + 128\n    0x102c826b4 = main binary 0x10009e6b4\n    0x102ccd37c = main binary 0x1000e937c\n    0x102cce81c = main binary 0x1000ea81c\n    0x102c0c31c = main binary 0x10002831c\n    0x102c5d00c = main binary 0x10007900c\n    0x102c7497c = main binary 0x10009097c\n    0x102c8acf8 = main binary 0x1000a6cf8\n    0x102c864a8 = main binary 0x1000a24a8\nCRASH driverkitd reason ns 1 code 0x7: (none)\n"
+    }
+  ],
+  "notes": [
+    "Isolated each report with its own slide/mh header; the inherited tool keeps a single active context.",
+    "ROOT argument is accepted by inherited tool but not read; main binary results are vmaddr translations, not symbol lookups.",
+    "SMP snapshots are observations, not evidence of a crash.",
+    "Current 0088 trial has sweetsample=-; existing crash collection remains enabled."
+  ],
+  "legacy_ring_decoder_comparison": {
+    "input": "0087-ios ten minute raw tail",
+    "input_sha256": "7509f5827de1bca4baf3e1fd7ff73f59e7f833b6fcee2a3080df1abb36065b75",
+    "upstream_and_local_console_bytes_identical": true,
+    "output_sha256": "06960b0f5f0a2d89962503b099d15d7b0a3b5e58e3bccc253b7c9520db7402b9"
+  }
+}

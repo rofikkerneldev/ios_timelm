@@ -53,6 +53,15 @@ baru dan verifikasi trial pada extension TIMELMDG. Jangan mengubah GPU/SMP/FS
 sebelum membandingkan data ini. Alternatif tanpa persistent log:
 [0087-ios-diag 6jWRQptn](https://pixeldrain.com/u/6jWRQptn), sweetlog=0.
 
+**Tambahan bantuan Sweet/Topaz sudah diverifikasi:** `tools/sweet-crash.py` lokal
+berhasil menamai sampel SpringBoard 0086 dan crash driverkitd 0087 memakai cache
+20H392 yang sama. [Workflow dan batas symbolicator](docs/0088_DIAGNOSTIC_TRIAL.md#tambahan-workflow-sweettopaz-crash-dan-stack-sample).
+`SMP` adalah snapshot proses; SIGKILL/exit reason jangan langsung dianggap fault.
+0088 mempertahankan crash logger, tetapi sampler `sweetsample=-`. Jika hasil
+footer mendukung pemeriksaan renderer/IPC, siapkan repack terpisah kernel yang
+sama dengan sampler SpringBoard/backboardd, trial unik; belum dibuat. Jangan
+mengganti image tes 0088 atau menyalin target userdata/clock touch dari referensi.
+
 **Jangan pakai image logging userdata lama GnxdmsDC pada layout baru**, jangan
 menggunakan offset/sda28 lama. Old userdata audit tetap historis. Script packaging
 sekarang default UFS_PARTITION=ios dan menolak konflik/duplikat; script pull log
