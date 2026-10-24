@@ -1,13 +1,15 @@
 #!/bin/bash
 # Build a verified timelm boot image. Default: HIGH RAM, one CPU, RAM-disk init.
 # Usage: PROFILE=rd|ufs-ro|ufs-rw tools/build-boot.sh [high] [output.img]
-# Optional: KERNEL=path ADT=path CMDLINE='...' TRIAL=id JOBS=56 BUILD=directory
-# Building writes local artifacts only. Booting a ufs-rw profile writes userdata.
+# Optional: UFS_PARTITION=ios KERNEL=path ADT=path CMDLINE='...' TRIAL=id JOBS=56 BUILD=directory
+# Building writes local artifacts only. A ufs-rw boot writes the selected GPT partition.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 MEM="${1:-high}"
 PROFILE="${PROFILE:-rd}"
+UFS_PARTITION="${UFS_PARTITION:-ios}"
+[[ "$UFS_PARTITION" =~ ^[a-zA-Z0-9_-]{1,36}$ ]] || { echo 'invalid UFS_PARTITION GPT name' >&2; exit 1; }
 TRIAL="${TRIAL:-0085-$PROFILE-$(date -u +%Y%m%dT%H%M%SZ)}"
 [[ "$TRIAL" =~ ^[a-zA-Z0-9_-]{1,63}$ ]] || { echo 'invalid TRIAL identifier' >&2; exit 1; }
 NAME="${2:-timelm-$TRIAL-c1.img}"
@@ -30,11 +32,27 @@ python3 tools/mkinit.py "$BUILD/sweet-init.o" "$BUILD/sweet-init"
 
 case "$PROFILE" in
     rd) ROOT_ARGS='rd=md0' ;;
-    ufs-ro) ROOT_ARGS='rd=ufsroot0 ufsrw=0 rootrw=0' ;;
-    ufs-rw) ROOT_ARGS='rd=ufsroot0 ufsrw=1 rootrw=1 launchd_unsecure_cache=1' ;;
+    ufs-ro) ROOT_ARGS="rd=ufsroot0 ufsroot=$UFS_PARTITION ufsrw=0 rootrw=0" ;;
+    ufs-rw) ROOT_ARGS="rd=ufsroot0 ufsroot=$UFS_PARTITION ufsrw=1 rootrw=1 launchd_unsecure_cache=1" ;;
     *) echo 'PROFILE must be rd, ufs-ro, or ufs-rw' >&2; exit 1 ;;
 esac
 CMDLINE="${CMDLINE:-debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress $ROOT_ARGS unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin wdt=-1 sweetfb_hz=30 startup_debug=0 sweetbeat=5 sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=0}"
+if [[ "$PROFILE" == ufs-* ]]; then
+    # Custom command lines must select the same partition as the build profile.
+    # Without this argument the inherited kernel silently defaults to userdata.
+    read -r -a cmdline_words <<< "$CMDLINE"
+    partition_args=0
+    for word in "${cmdline_words[@]}"; do
+        if [[ "$word" == ufsroot=* ]]; then
+            [[ "$word" == "ufsroot=$UFS_PARTITION" ]] || { echo 'CMDLINE ufsroot conflicts with UFS_PARTITION' >&2; exit 1; }
+            partition_args=$((partition_args + 1))
+        fi
+    done
+    [[ "$partition_args" -le 1 ]] || { echo 'duplicate ufsroot arguments' >&2; exit 1; }
+    if [[ "$partition_args" == 0 ]]; then
+        CMDLINE="$CMDLINE ufsroot=$UFS_PARTITION"
+    fi
+fi
 CMDLINE="$CMDLINE timelm_trial=$TRIAL"
 python3 tools/mkpayload.py "$KERNEL" "$ADT" "$BUILD/payload.bin" \
     --ramdisk "$BUILD/sweet-init" --cmdline "$CMDLINE"

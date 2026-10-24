@@ -135,7 +135,8 @@
     ]
   },
   "uncommitted_ring_suffix_bytes": 0,
-  "reported_phone_wait": "User reports five minutes at logo, then recovery",
-  "captured_state_limit": "Last persisted heartbeat is 13 and header sequence is 5. Does not establish liveness for all five minutes or distinguish kernel/console/UFS logger stall.",
-  "recovery_followup": "Additional crash-report directory query did not complete; subsequent adb get-state, shell id, and header read all timed out after 12 seconds. No conclusion about directory contents or storage health."
+  "reported_phone_wait": "User revised estimate on 2026-10-24: perhaps about three minutes, not measured; previously estimated five.",
+  "captured_state_limit": "Last persisted heartbeat is 13 and header sequence is 5. Does not establish liveness for the full user-estimated wait or distinguish kernel/console/UFS logger stall.",
+  "recovery_followup": "Additional crash-report directory query did not complete; subsequent adb get-state, shell id, and header read all timed out after 12 seconds. No conclusion about directory contents or storage health.",
+  "reported_phone_wait_previous": "User reports five minutes at logo, then recovery"
 }

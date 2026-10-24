@@ -20,5 +20,8 @@
   "header_first8k_sha256": "caac2def5046cc08097ebd65be4d0f9dc01a0616eca91986f448bfaeb5e984c1",
   "old_tail_magic_hex": "0000000000000000",
   "userdata_mounted_in_recovery": false,
-  "writes_performed_by_audit": false
+  "writes_performed_by_audit": false,
+  "valid_for_current_layout": false,
+  "superseded_on": "2026-10-24",
+  "superseded_reason": "User repartitioned/moved iOS to GPT ios. Values describe old userdata layout only; new ios partition geometry not yet verified."
 }

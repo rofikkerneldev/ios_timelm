@@ -1,6 +1,39 @@
 # Handoff OpenCode — LG V60 / timelm
 
-Checkpoint terbaru 2026-10-23. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
+Checkpoint terbaru 2026-10-24. Baca file ini dahulu; riwayat ada di `docs/evidence/`.
+
+**Layout aktif berubah: iOS sekarang pada partisi GPT `ios`.** User memecah area
+userdata untuk Android, Windows ESP/win dan ios. ADB sengaja belum disambungkan;
+jangan retry atau menyebut timeout lama sebagai kondisi baru. Tidak ada akses
+phone pada pekerjaan 2026-10-24 ini. [Langkah terbaru](docs/IOS_PARTITION_NEXT.md).
+
+**Image berikutnya: 0087-ios-diag, belum diuji HP.**
+[Download 6jWRQptn](https://pixeldrain.com/u/6jWRQptn),
+[manifest](docs/evidence/0087-ios-diag-build.json).
+Trial `0087-ios-diag-r39984162472`, SHA256
+`39be255935f891cf1c62280843993d23f2b920ca89aba2c0dd06bacb3581c306`.
+Argumen penting `rd=ufsroot0 ufsroot=ios`, RW, `timelm_wdt=stop`, `sweetlog=0`,
+console diagnostik. Kernel/shim/ADT/DTB/static init dan payload selain command line
+sama dengan diag lama. Verifikasi marker pencarian GPT `ios` dan root mount dahulu;
+0088 instrumentasi independen tetap tahap berikutnya, belum dibuild.
+
+**Audit tail userdata lama tidak berlaku pada layout sekarang.** Jangan boot
+image `GnxdmsDC` atau image UFS lama yang memilih userdata pada layout baru.
+Jangan memakai offset/sda28 lama untuk menulis/membaca log trial baru. Saat ADB
+tersambung kembali, audit symlink/LUN/size/header HFS partisi `ios` read-only;
+logger tetap off sampai extent volume dan area di luar filesystem dibuktikan.
+Jika volume memenuhi partisi, gunakan observer layar untuk 0088 atau rancangan
+logging lain yang aman; jangan mengambil ruang milik Android/Windows/ESP.
+
+Script packaging sekarang default `UFS_PARTITION=ios`, juga mengisi target pada
+custom CMDLINE tanpa ufsroot dan menolak konflik/duplikat. Script pull log default
+`SWEET_LOG_PARTITION=ios`, mendukung SWEET_ADB_BIN/HOST/PORT; memakai mock saat
+verifikasi, tidak mengakses phone. Jangan mengaktifkan logger sebelum audit baru.
+
+Durasi tes terakhir dikoreksi user: **mungkin sekitar tiga menit**, bukan
+pengukuran lima menit. Hasil snapshot tetap tidak mengukur seluruh durasi tunggu.
+
+## Riwayat hasil pada layout userdata sebelum perpindahan
 
 **Hasil terbaru — ring log 0087-GUI-log sudah diambil:**
 [analisis utama dan roadmap 0088](docs/0087_PERSISTENT_LOG_ANALYSIS.md),
@@ -9,8 +42,8 @@ Checkpoint terbaru 2026-10-23. Baca file ini dahulu; riwayat ada di `docs/eviden
 Marker IOAcceleratorES published; exec SpringBoard/backboardd masing-masing satu,
 backboardd membuat surfaces 2/3 dan mengirim swap 2–6. Heartbeat terakhir yang
 tersimpan **13**, timer **115978**; header hanya **flush 5**, total **47097** byte.
-User sudah menunggu lima menit. Jangan menganggap snapshot ini merekam seluruh
-lima menit atau menyimpulkan kernel hang; bedakan worker UFS/logger/console yang
+User kemudian memperkirakan mungkin sekitar tiga menit. Jangan menganggap snapshot
+ini merekam seluruh waktu tunggu atau menyimpulkan kernel hang; bedakan worker UFS/logger/console yang
 berhenti dari kernel/scheduler. Tidak ada suffix ring tambahan di luar snapshot.
 
 Driverkitd[67] mendapat SIGKILL dengan namespace JETSAM, reason per-process memory
@@ -26,7 +59,7 @@ ada pada roadmap analisis utama. Jangan menambah GPU/SMP, reflash root atau
 menonaktifkan jetsam hanya dari log ini. Query crash-report tambahan terhenti
 karena ADB kemudian timeout, termasuk get-state; tidak membuktikan filesystem rusak.
 
-**Image terbaru yang sudah diuji: 0087-GUI-log.**
+**Historis, layout userdata lama: 0087-GUI-log pernah diuji.**
 [Download GnxdmsDC](https://pixeldrain.com/u/GnxdmsDC),
 [langkah tes/pull log](docs/0087_RECOVERY_LOG_TRIAL.md),
 [manifest](docs/evidence/0087-gui-log-build.json).
@@ -34,7 +67,7 @@ Trial `0087-gui-log-r39984162472`, SHA256
 `e1dfb191b5988c8985510db70f1b03bea30dad27b53b0819bc849a3f9fae8e59`.
 Kernel/shim/ADT/DTB/static init dan payload di luar command-line buffer identik
 0087-GUI; hanya sweetlog=1, flush 10 detik eksplisit dan trial baru. Capture boot
-sesudah logo sudah diambil; lihat hasil di atas. Image ini menjadi fallback logging.
+sesudah logo sudah diambil; lihat hasil di atas. Image ini hanya baseline historis; bukan fallback untuk layout ios baru.
 
 **ADB recovery berhasil diaudit read-only:** server `127.0.0.1:15037`, gunakan
 `/home/rofikkernel/alpha/out/host/linux-x86/bin/adb -H 127.0.0.1 -P 15037`.

@@ -89,5 +89,6 @@
       }
     }
   ],
-  "hardware_test_scope": "Both profiles tried. GUI runtime trial confirmed by supplied photo transcription; root mounted, UMD and launchd cache steps complete, heartbeat 3/5/6 before logo. Post-logo liveness and interactive GUI unconfirmed."
+  "hardware_test_scope": "Both profiles tried. GUI runtime trial confirmed by supplied photo transcription; root mounted, UMD and launchd cache steps complete, heartbeat 3/5/6 before logo. Post-logo liveness and interactive GUI unconfirmed.",
+  "current_layout_status": "Historical userdata-layout images. User moved iOS to GPT ios on 2026-10-24; use the new explicit ufsroot=ios profile instead."
 }

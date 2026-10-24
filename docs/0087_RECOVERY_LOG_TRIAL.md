@@ -1,5 +1,10 @@
 # 0087-GUI-log: capture sesudah logo melalui ring persisten
 
+**Historis — layout userdata lama.** Pada 2026-10-24 user memindahkan iOS ke GPT
+`ios`. **Jangan memakai image atau offset tail pada dokumen ini di layout baru.**
+Gunakan [profil ios dan langkah baru](IOS_PARTITION_NEXT.md). Data audit di bawah
+tetap disimpan sebagai bukti pengambilan log sebelum perpindahan partisi.
+
 2026-10-23. Kernel tetap 0087 dari CI 39984162472. **Sudah diuji HP dan ring log
 berhasil diambil:** [hasil/roadmap terbaru](0087_PERSISTENT_LOG_ANALYSIS.md).
 Ini trial logging, bukan klaim perbaikan penyebab logo berhenti.

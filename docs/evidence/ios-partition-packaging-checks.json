@@ -1,0 +1,23 @@
+{
+  "build_script": [
+    "shell syntax",
+    "default/explicit ios target in packaged image",
+    "no duplicate ufsroot",
+    "conflicting userdata root rejected",
+    "invalid partition name rejected",
+    "all kernel/shim/ADT/DTB/static-init payload bytes unchanged outside command line",
+    "unset UFS_PARTITION produces byte-identical image to explicit ios"
+  ],
+  "log_pull_script": {
+    "mode": "Mock ADB only; no phone access",
+    "checks": [
+      "ios default",
+      "ADB host/port/serial argument boundaries",
+      "bounded tail read",
+      "decoded fixture hash equality",
+      "invalid partition rejected before ADB",
+      "short transfer rejected"
+    ]
+  },
+  "remote_adb_used": false
+}

@@ -1,5 +1,10 @@
 # LG V60 / timelm boot investigation and execution handoff
 
+**Current layout update, 2026-10-24:** iOS moved to GPT `ios`; use
+[the current partition handoff](IOS_PARTITION_NEXT.md) and `ufsroot=ios`.
+The userdata geometry/images below are historical. Do not enable their tail
+logging on the new layout without a fresh read-only audit.
+
 Prepared 2026-10-23 for GPT-6.1-Sol. Investigated repository HEAD `aeb5f8f`.
 Scope of this turn: analysis and planning. No kernel/shim implementation changes,
 build submission, upload, flash, or phone boot was performed.

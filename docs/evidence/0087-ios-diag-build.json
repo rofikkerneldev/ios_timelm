@@ -1,0 +1,50 @@
+{
+  "payload_sha256": "87e742b35a6e3e116f174d452697bb5f52c0f668d4be8d753a3d9faab437dc81",
+  "adt_sha256": "0df5676a33c9136356a7cef28f67df9293c25cdbd95405bf31f122c81bb4c761",
+  "virtual_timer_intid": 27,
+  "cmdline": "debug=0xc serial=3 cpus=1 keepsyms=1 -enable_kprintf_spam -noprogress rd=ufsroot0 ufsrw=1 rootrw=1 unentitled_ios_sim_launch=1 ignition_level=1 wdt_test=no_user_checkin wdt=-1 sweetfb_hz=5 startup_debug=0 sweetbeat=5 sweetkeys=0 sweettouch=0 sweetusb=0 sweetlog=0 timelm_wdt=stop launchd_unsecure_cache=1 sweetaccel=1 sweetakslog=32 sweetiolog=- sweetsample=- sweetscan=- sweetfb_noconsole=0 ufsroot=ios timelm_trial=0087-ios-diag-r39984162472",
+  "phys_base": "0x100000000",
+  "mem_size": "0x170000000",
+  "kernel_segments_verified": 10,
+  "watchdog_action": "shim stops APSS watchdog if enabled; runtime result unverified",
+  "image": "timelm-0087-ios-rw-c1-wdtstop-diag.img",
+  "image_size": 16945152,
+  "image_sha256": "39be255935f891cf1c62280843993d23f2b920ca89aba2c0dd06bacb3581c306",
+  "kernel_sha256": "42b9033b867b5b02ff8eb2beab03a983a781f6a3c6f129c4380c9132332823c0",
+  "dtb_sha256": "ba67ec4dcde5288135133c39b7703b049502aa296cced431807c41104fbb68a4",
+  "shim_sha256": "42d794c59b7e9c8e4597cbf7309b1c08ad6ff7671b1daa4ca76f2dcaee50d506",
+  "source_commit": "c91a4c9dea0f54dead3aa618f618ae11da299a36",
+  "source_dirty": true,
+  "patches_sha256": "afc0be50f55ee580b68b6bfde6945711c77b83d05e47c4b29200955df94a78b6",
+  "download_url": "https://pixeldrain.com/u/6jWRQptn",
+  "uploaded_sha256": "39be255935f891cf1c62280843993d23f2b920ca89aba2c0dd06bacb3581c306",
+  "hardware_tested": false,
+  "kernel_ci_run": 39984162472,
+  "kernel_source_commit": "4ec36d14f2fc301d61d59443c2807c3146de7c7f",
+  "source_dirty_reason": "Packaging scripts now select ios explicitly plus documentation updates; kernel patches and binary components match original 0087 diag.",
+  "partition_name": "ios",
+  "partition_type": "GPT per user confirmation on 2026-10-24",
+  "lun": 0,
+  "live_new_partition_geometry_verified": false,
+  "persistent_logging_enabled": false,
+  "adb_access_this_session": false,
+  "controlled_comparison": {
+    "baseline_image": "timelm-0087-ufs-rw-c1-wdtstop-diag.img",
+    "baseline_sha256": "7c5f15501bbec6932f3f0f74a9d39c31935ffbb6cf2172e4f97a82a2f0936623",
+    "new_image": "timelm-0087-ios-rw-c1-wdtstop-diag.img",
+    "new_sha256": "39be255935f891cf1c62280843993d23f2b920ca89aba2c0dd06bacb3581c306",
+    "equal_components": [
+      "kernel",
+      "shim",
+      "ADT",
+      "DTB",
+      "static init",
+      "all payload outside command-line buffer"
+    ],
+    "changed_arguments": [
+      "explicit ufsroot=ios replaces implicit userdata default",
+      "unique timelm_trial"
+    ],
+    "persistent_logging_enabled": false
+  }
+}

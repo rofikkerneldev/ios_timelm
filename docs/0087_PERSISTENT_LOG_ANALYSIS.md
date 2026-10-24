@@ -1,7 +1,8 @@
 # 0087-GUI-log: daemon grafis dan swap terbukti; observasi berhenti pada flush 5
 
 2026-10-23. User mengonfirmasi tes image `GnxdmsDC`, melihat logo/teks “caches” dan
-garis merah, menunggu sekitar lima menit, lalu kembali ke recovery. Agent mengambil
+garis merah, lalu kembali ke recovery. Pada 2026-10-24 user mengoreksi perkiraan
+durasi menjadi mungkin sekitar tiga menit (sebelumnya lima), tanpa pengukuran. Agent mengambil
 ring console langsung dari userdata melalui forward ADB; ini **bukan transkripsi foto**.
 
 - Trial di dalam ring: `0087-gui-log-r39984162472`.
@@ -41,14 +42,14 @@ Nomor baris merujuk salinan committed yang hashnya dicatat pada JSON. Byte strea
 memiliki beberapa printk/stdout yang interleave; jangan memaksakan setiap baris
 sebagai event atomik atau waktu dinding presisi.
 
-## Batas paling penting: belum ada liveness untuk seluruh lima menit
+## Batas paling penting: durasi liveness belum terukur
 
 Heartbeat 1..13 tercapture. Swap 6 berada sesudah heartbeat 11, dan heartbeat 12/13
 serta eksekusi daemon berikutnya masih berjalan setelah swap tersebut. Tidak ada
 crash SpringBoard/backboardd atau laporan kernel panic dalam snapshot ini.
 
 Namun header hanya sequence 5 dan log berakhir pada `exec calaccessd`. Ini
-**tidak membuktikan kernel hidup selama seluruh lima menit** dan juga belum
+**tidak membuktikan kernel hidup selama seluruh durasi tunggu yang diperkirakan** dan juga belum
 membuktikan kernel berhenti pada heartbeat 13. Kemungkinannya perlu dibedakan:
 
 1. Worker logging tertahan di mutex/UFS atau gagal write/sync kemudian keluar.
@@ -107,6 +108,11 @@ bersihkan area di luar viewport dengan bounds/format benar, tanpa mengubah posis
 canvas. Hilangnya garis tidak akan membuktikan penyebab logo berhenti sudah selesai.
 
 ## Roadmap 0088 untuk OpenCode
+
+**Update layout 2026-10-24:** iOS dipindah ke partisi `ios`, ADB sedang tidak
+disambungkan. Pemilihan root harus diperbaiki lebih dahulu; lihat
+[handoff terbaru](../OPENCODE_NEXT.md). Audit tail userdata lama bersifat historis
+dan tidak boleh dipakai untuk mengaktifkan logging pada layout baru.
 
 Langkah berikutnya adalah **diagnostik yang tidak bergantung hanya pada teks
 console atau worker UFS yang sedang diaudit**. Tidak ada kernel baru dibuild pada

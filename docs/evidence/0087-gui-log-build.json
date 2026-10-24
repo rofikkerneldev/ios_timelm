@@ -44,10 +44,11 @@
   "recovery_file_audit": "0087-live-hfs-path-audit.json: completed read-only after device reconnected; tmp/run metadata and selected migration/SpringBoard/Setup preferences verified live.",
   "phone_result": {
     "trial_confirmed": "0087-gui-log-r39984162472",
-    "user_observation": "Apple logo plus caches text and red bar; five minute wait then recovery",
+    "user_observation": "Apple logo plus caches text and red bar, then recovery; duration corrected by user on 2026-10-24 to perhaps about three minutes (previous estimate five).",
     "persistent_log_verified": true,
     "evidence": "0087-gui-log-pull.json",
     "interactive_gui_confirmed": false,
     "liveness_after_last_snapshot_unconfirmed": true
-  }
+  },
+  "current_layout_status": "Historical userdata-layout image. User moved iOS to partition ios on 2026-10-24; do not boot this image on the new layout. Prior userdata tail audit no longer authorizes logging on current partitions."
 }

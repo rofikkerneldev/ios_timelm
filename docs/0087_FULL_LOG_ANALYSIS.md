@@ -1,5 +1,9 @@
 # 0087 GUI: early boot selesai, penyebab logo berhenti belum terbukti
 
+**Update layout 2026-10-24:** root sekarang berada pada GPT `ios` menurut user;
+ikuti [langkah/profil baru](IOS_PARTITION_NEXT.md). Audit geometry dan image
+userdata pada dokumen ini bersifat historis.
+
 2026-10-23. Sumber user: [jt9UtCcm](https://pixeldrain.com/u/jt9UtCcm),
 `LGV60_XNU_trial_0087_GUI_bootlog_transkripsi.txt`, 12089 byte, SHA-256
 `2df3afe6389e086e3fffbbf609b40fe1f7a0e333bdfab46151a83ba065b87af7`.
