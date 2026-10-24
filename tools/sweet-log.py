@@ -48,6 +48,16 @@ if data[448:456] == b'TIMELM90':
         print('# TIMELM90 ' + json.dumps(info90, sort_keys=True), file=sys.stderr)
     else:
         print('# unsupported TIMELM90 extension', file=sys.stderr)
+if data[640:648] == b'TIMELM91':
+    version91, bytes91 = struct.unpack_from('<II', data, 648)
+    if version91 == 1 and bytes91 == 104:
+        fields = ('vsyncs', 'vsync_abs', 'submit_abs', 'present_abs', 'copy_abs',
+                  'power_off', 'power_abs', 'sample_cycle', 'sample_abs',
+                  'sample_targets', 'sample_phase')
+        info91 = dict(zip(fields, struct.unpack_from('<11Q', data, 656)))
+        print('# TIMELM91 ' + json.dumps(info91, sort_keys=True), file=sys.stderr)
+    else:
+        print('# unsupported TIMELM91 extension', file=sys.stderr)
 ring = data[4096:4096 + size]
 if total <= size:
     text = ring[:total]
